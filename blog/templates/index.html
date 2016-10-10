@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- hero unit -->
+
+
+<div class="hero-unit">
+    <h1>YC Test</h1>
+    <br>
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="active">
+            <a href="#tab1" data-toggle="tab">tab1</a>
+        </li>
+        <li>
+            <a href="#tab2" data-toggle="tab">tab2</a></li>
+        <li class="dropdown">
+            <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">tab3<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+                <li>
+                    <a href="#tab3-1" tabindex="-1" data-toggle="tab">tab3-1</a>
+                </li>
+                <li>
+                    <a href="#tab3-2" tabindex="-1" data-toggle="tab">tab3-2</a>
+                </li>
+            </ul>
+        </li>
+        <!-- search -->
+        <form class="navbar-form pull-left">
+            <input type="text" class="search-query" placeholder="Search">
+            <button class="btn btn-success" type="button">Search</button>
+        </form>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="tab1">
+            <!-- demo chart begin -->
+
+            <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+            <div id="main" style="width: 600px;height:400px;"></div>
+            <!--demo chart end -->
+        </div>
+        <div class="tab-pane fade" id="tab2">
+            <!-- table -->
+            <table class="table table-hover">
+                <caption>LayOut</caption>
+                <thead>
+                    <tr>
+                        <th>TestCase</th>
+                        <th>TestDate</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="info">
+                        <td>API 1</td>
+                        <td>23/11/2013</td>
+                        <td>waiting</td>
+                    </tr>
+                    <tr class="success">
+                        <td>API 2</td>
+                        <td>10/11/2013</td>
+                        <td>running</td>
+                    </tr>
+                    <tr class="warning">
+                        <td>API 3</td>
+                        <td>20/10/2013</td>
+                        <td>failed</td>
+                    </tr>
+                    <tr class="error">
+                        <td>API 4</td>
+                        <td>20/10/2013</td>
+                        <td>error</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="tab-pane fade" id="tab3-1">
+            <!-- progress bar -->
+            <p>4 TUI</p>
+            <p><a class="btn btn-primary btn-large">Regresion</a></p>
+            <div class="progress progress-striped active">
+                <div class="bar" style="width: 100%;"></div>
+            </div>
+            <p>jMeter 是一款开源的测试软件。它是 100% 纯 Java 应用程序，用于负载和性能测试。</p>
+        </div>
+        <div class="tab-pane fade" id="tab3-2">
+
+            <!-- demo chart2 begin -->
+
+
+
+            <!--demo chart2 end -->
+        </div>
+    </div>
+
+
+
+
+    <script>
+        $(function () {
+            $('#myTab li:eq(0) a').tab('show');
+        });
+    </script>
+
+
+
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart_pie = echarts.init(document.getElementById('main'), 'vintage');
+
+        // 指定图表的配置项和数据
+
+        option_pie = {
+            backgroundColor: '#2c343c',
+            visualMap: {
+                show: false,
+                min: 80,
+                max: 600,
+                inRange: {
+                    colorLightness: [0, 1]
+                }
+            },
+            series : [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius: '55%',
+                data:[
+                {value:235, name:'视频广告'},
+                {value:274, name:'联盟广告'},
+                {value:310, name:'邮件营销'},
+                {value:335, name:'直接访问'},
+                {value:400, name:'搜索引擎'}
+                ],
+                roseType: 'angle',
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#c23531',
+                        shadowBlur: 200,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+            ]
+        };
+
+
+// 使用刚指定的配置项和数据显示图表。
+myChart_pie.setOption(option_pie);
+    </script>
+
+
+
+</div>
+<!-- end hero unit -->
+
+
+{% endblock %}
+
