@@ -43,14 +43,14 @@ def create_fake_data():
         ])
 
 
-def bootstrap(request):
-    '''Demonstrate the use of the bootstrap template'''
+def bootstrap_table(request):
+    '''Demonstrate the use of the bootstrap table template'''
 
     create_fake_data()
     table = BootstrapTable(Person.objects.all(), order_by='-name')
     RequestConfig(request, paginate={'per_page': 10}).configure(table)
 
-    return render(request, 'bootstrap_template.html', {
+    return render(request, 'table_template.html', {
         'table': table
     })
 
