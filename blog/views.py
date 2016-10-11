@@ -30,9 +30,12 @@ def blog(request):
     return render_to_response('blog.html', {'blog_list': blog_list})
 
 
-# test table
+# plot chart example
+class ChartView(TemplateView):
+    template_name = 'chart_template.html'
 
 
+# table example
 def create_fake_data():
     # create some fake data to make sure we need to paginate
     if Person.objects.all().count() < 50:
@@ -55,15 +58,9 @@ def bootstrap_table(request):
     })
 
 
-
+# dynamic api example
 class DynamicView(TemplateView):
     template_name = 'dynamic_template.html'
-
-def server(request):
-    context = {
-        'title': u'服务器负载情况',
-    }
-    return render_to_response('dynamic_template.html', context, context_instance=RequestContext(request))
 
 
 def server_info_api(request):
@@ -72,5 +69,5 @@ def server_info_api(request):
 
 
 def get_server_info():
-    server_info = {'cpu': 99, 'memory': 30, 'network': 44, 'disk': 55,}
+    server_info = {'cpu': 99, 'memory': 30, 'network': 44, 'disk': 55, }
     return server_info
