@@ -34,6 +34,7 @@ urlpatterns = [
 
     url(r'^index/', views.IndexView.as_view(), name='index'),
     url(r'^blog/', views.blog),
+    url(r'^name/', views.get_name),
     # url(r'^blog/', include('blog.urls')),
     url(r'^chart-exmaple/$', views.ChartView.as_view(), name='chart-demo'),
     url(r'^table-example/$', views.bootstrap_table, name='bootstrap_table'),

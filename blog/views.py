@@ -19,6 +19,7 @@ from .models import BlogsPost
 # test table
 from .models import Country, Person
 from .tables import BootstrapTable
+from .forms import NameForm
 
 
 class IndexView(TemplateView):
@@ -58,7 +59,27 @@ def bootstrap_table(request):
     })
 
 
+def get_name(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NameForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return HttpResponseRedirect('/thanks/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = NameForm()
+
+    return render(request, 'index.html', {'form': form})
+
 # dynamic api example
+
+
 class DynamicView(TemplateView):
     template_name = 'dynamic_template.html'
 
