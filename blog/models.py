@@ -37,44 +37,17 @@ class Choice(models.Model):
 
 
 # demo country and person
-class Country(models.Model):
 
-    '''
-    Represents a geographical Country
-    '''
-    name = models.CharField(max_length=100)
-    population = models.PositiveIntegerField(
-        verbose_name=ugettext_lazy('population'))
-    tz = models.CharField(max_length=50)
-    visits = models.PositiveIntegerField()
-    commonwealth = models.NullBooleanField()
-    flag = models.FileField(upload_to='blog/static/country/flags/')
-
-    class Meta:
-        verbose_name_plural = ugettext_lazy('countries')
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return 'country/%d' % self.pk
-
-    @property
-    def summary(self):
-        return '%s (pop. %s)' % (self.name, self.population)
+class Organization(models.Model):
+    name = models.CharField(verbose_name="NAME", max_length=100)
 
 
 class Person(models.Model):
-    name = models.CharField(max_length=200, verbose_name='Full Name')
-    friendly = models.BooleanField(default=True)
+    name = models.CharField(verbose_name="full name", max_length=100)
+    organization = models.ForeignKey(Organization, null=True, blank=True, on_delete=models.CASCADE)
+    married = models.BooleanField(verbose_name="married", default=False)
 
-    country = models.ForeignKey(Country, null=True)
 
-    class Meta:
-        verbose_name_plural = 'people'
-
-    def __str__(self):
-        return self.name
 
 
 # mouse management
@@ -113,8 +86,8 @@ class Mouse(models.Model):
             (0, 'M'),
             (1, 'F'),
             (2, '?'),
-        )
-    )
+        ),
+    default=0)
 
     status = models.IntegerField(
         choices=(

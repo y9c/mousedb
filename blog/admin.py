@@ -4,8 +4,6 @@ from django.contrib import admin
 
 from .models import Question
 from .models import Choice
-from .models import Country
-from .models import Person
 
 from .models import BlogsPost
 
@@ -16,8 +14,6 @@ from .models import Genotype
 
 admin.site.register(Question)
 admin.site.register(Choice)
-admin.site.register(Country)
-admin.site.register(Person)
 
 admin.site.register(BlogsPost)
 

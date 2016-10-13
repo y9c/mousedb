@@ -17,8 +17,7 @@ import json
 
 from .models import BlogsPost
 # test table
-from .models import Country, Person
-from .tables import BootstrapTable
+from .models import Mouse
 from .forms import NameForm
 
 
@@ -36,47 +35,6 @@ class ChartView(TemplateView):
     template_name = 'chart_template.html'
 
 
-# table example
-def create_fake_data():
-    # create some fake data to make sure we need to paginate
-    if Person.objects.all().count() < 50:
-        countries = list(Country.objects.all()) + [None]
-        Person.objects.bulk_create([
-            Person(name=words(3, common=False), country=choice(countries))
-            for i in range(50)
-        ])
-
-
-def bootstrap_table(request):
-    '''Demonstrate the use of the bootstrap table template'''
-
-    create_fake_data()
-    table = BootstrapTable(Person.objects.all(), order_by='-name')
-    RequestConfig(request, paginate={'per_page': 10}).configure(table)
-
-    return render(request, 'table_template.html', {
-        'table': table
-    })
-
-
-def get_name(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = NameForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
-
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = NameForm()
-
-    return render(request, 'index.html', {'form': form})
-
 # dynamic api example
 
 
@@ -92,3 +50,94 @@ def server_info_api(request):
 def get_server_info():
     server_info = {'cpu': 99, 'memory': 30, 'network': 44, 'disk': 55, }
     return server_info
+
+
+# table example
+def bootstrap_table(request):
+    '''Demonstrate the use of the bootstrap table template'''
+
+    table = BootstrapTable(Mouse.objects.all(), order_by='-mouse_id')
+    RequestConfig(request, paginate={'per_page': 10}).configure(table)
+
+    return render(request, 'table_template.html', {
+        'table': table
+    })
+
+
+from table.views import FeedDataView
+
+from .tables import BootstrapTable
+from .tables import (
+    ModelTable, AjaxTable, AjaxSourceTable,
+    CalendarColumnTable, SequenceColumnTable,
+    LinkColumnTable, CheckboxColumnTable
+)
+
+
+def base(request):
+    table = ModelTable()
+    return render(request, "datatable.html", {'people': table})
+
+
+def ajax(request):
+    table = AjaxTable()
+    return render(request, "datatable.html", {'people': table})
+
+
+def ajax_source(request):
+    table = AjaxSourceTable()
+    return render(request, "datatable.html", {'people': table})
+
+
+class Foo(object):
+
+    def __init__(self, id, name, calendar):
+        self.id = id
+        self.name = name
+        self.calendar = calendar
+
+
+def sequence_column(request):
+    data = [
+        Foo(1, 'A', [1, 2, 3, 4, 5]),
+        Foo(2, 'B', [1, 2, 3, 4, 5]),
+        Foo(3, 'C', [1, 2, 3, 4, 5])
+    ]
+    table = SequenceColumnTable(data)
+    return render(request, "datatable.html", {'people': table})
+
+
+def calendar_column(request):
+    data = [
+        Foo(1, 'A', range(1, 14)),
+        Foo(2, 'B', range(1, 14)),
+        Foo(3, 'C', range(1, 14))
+    ]
+    table = CalendarColumnTable(data)
+    return render(request, "datatable.html", {'people': table})
+
+
+def link_column(request):
+    table = LinkColumnTable()
+    return render(request, "datatable.html", {'people': table})
+
+
+def checkbox_column(request):
+    table = CheckboxColumnTable()
+    return render(request, "datatable.html", {'people': table})
+
+
+def user_profile(request, uid):
+    from app.models import Person
+    from django.http import HttpResponse
+    from django.shortcuts import get_object_or_404
+    person = get_object_or_404(Person, pk=uid)
+    return HttpResponse("User %s" % person.name)
+
+
+class MyDataView(FeedDataView):
+
+    token = AjaxSourceTable.token
+
+    def get_queryset(self):
+        return super(MyDataView, self).get_queryset().filter(id__gt=5)

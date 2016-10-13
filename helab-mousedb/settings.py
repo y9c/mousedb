@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'blog',
+    'table',
     'django_tables2',
     'django.contrib.admin',
     'django.contrib.admindocs.urls',
@@ -80,7 +81,7 @@ WSGI_APPLICATION = 'helab-mousedb.wsgi.application'
 
 DATABASES = {
     'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',
          'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         # 'ENGINE': 'django.db.backends.mysql',
         # 'NAME': 'bi_test_snswin_brand',
