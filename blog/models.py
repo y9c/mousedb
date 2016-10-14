@@ -66,6 +66,14 @@ class Weighting(models.Model):
 class Genotype(models.Model):
     strain = models.CharField(max_length=50, default='C57BL/6')
     line = models.CharField(max_length=50, default='WT')
+    locus = models.CharField(max_length=50, null=True)
+    sex = models.IntegerField(
+        choices=(
+            (0, 'M'),
+            (1, 'F'),
+            (2, '?'),
+        ),
+    default=2)
 
     def __str__(self):
         return "{}:{}".format(self.strain,self.line)
@@ -75,12 +83,33 @@ class Genotype(models.Model):
 class Mouse(models.Model):
     mouse_id = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=50, default='?')
+    source = models.IntegerField(
+        choices=(
+            (0, '饲养产生后代'),
+            (1, '广东省实验动物中心'),
+            (2, '南京模式生物中心'),
+        ),
+    default=0)
 
     # Genotype
     genotype = models.ForeignKey(Genotype)
 
+    # genealogy
+    # mate many to many
+
     # Phenotype
     health = models.CharField(max_length=50, null=True)
+    status = models.IntegerField(
+        choices=(
+            (0, 'idle'),
+            (1, 'nuring'),
+            (2, 'mating'),
+            (3, 'weaning'),
+            (4, 'sacked'),
+            (5, 'dead'),
+        ),
+        default=0,
+    )
 
     # property
     dob = models.DateField('date of birth', blank=True, null=True)
@@ -89,26 +118,13 @@ class Mouse(models.Model):
     sacked = models.BooleanField(default=False)
     sackDate = models.DateField('sac date', blank=True, null=True)
 
-    sex = models.IntegerField(
-        choices=(
-            (0, 'M'),
-            (1, 'F'),
-            (2, '?'),
-        ),
-    default=2)
-
-    status = models.IntegerField(
-        choices=(
-            (0, 'idle'),
-            (1, 'nuring'),
-            (2, 'mating'),
-            (3, 'weaning'),
-        ),
-        default=0,
-    )
 
     notes = models.CharField(max_length=200, null=True, blank=True)
-
+    # 要关联的！！！
+    # mate id
+    # litter order
+    # day of beath
+    # day of sacked
 
     def age(self):
         if self.dob is None:

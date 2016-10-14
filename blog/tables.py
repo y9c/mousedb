@@ -15,12 +15,28 @@ from table import Table
 from table.utils import A
 
 from .models import Person
+from .models import Genotype
 from .models import Mouse
+from .models import Mate
 
 
 # mouse example
 
 image_url = 'img/user-512.png'
+
+class GenotypeTable(Table):
+    strain = Column(field='strain', header=u'STRAIN')
+    line = Column(field='line', header=u'LINE')
+    locus = Column(field='locus', header=u'LOCUS')
+    sex = Column(field='sex', header=u'SEX')
+
+    avatar = LinkColumn(header=u'AVATAR', links=[
+        ImageLink(viewname='mouse_profile', args=(A('id'),), image=image_url, image_title='avatar')])
+
+    class Meta:
+        model = Genotype
+        # ajax = True
+        # ajax_source = reverse_lazy('ajax_source_api')
 
 
 class MouseTable(Table):

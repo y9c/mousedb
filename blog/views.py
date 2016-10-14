@@ -15,6 +15,7 @@ from .forms import NameForm
 
 # test table
 from table.views import FeedDataView
+from .tables import GenotypeTable
 from .tables import MouseTable
 from .tables import MateTable
 
@@ -26,6 +27,11 @@ class IndexView(TemplateView):
 def blog(request):
     blog_list = BlogsPost.objects.all()
     return render_to_response('blog.html', {'blog_list': blog_list})
+
+# plot
+def statistic(request):
+    statistic_list = BlogsPost.objects.all()
+    return render_to_response('statistic.html', {'statistic_list': statistic_list})
 
 
 # plot chart example
@@ -52,6 +58,10 @@ def get_server_info():
 
 # table example
 
+def genotype_table(request):
+    table = GenotypeTable()
+    return render(request, "datatable.html", {'mouse': table})
+
 
 def mouse_table(request):
     table = MouseTable()
@@ -63,9 +73,9 @@ def mouse_profile(request, uid):
     return HttpResponse("User %s" % person.name)
 
 
-class MyDataView(FeedDataView):
+class MouseDataView(FeedDataView):
 
     token = MouseTable.token
 
     def get_queryset(self):
-        return super(MyDataView, self).get_queryset().filter(id__gt=5)
+        return super(MouseDataView, self).get_queryset().filter(id__gt=5)
