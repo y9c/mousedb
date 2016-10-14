@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'blog',
+    'app',
     'table',
     'django.contrib.admin',
     'django.contrib.admindocs.urls',
@@ -59,7 +59,7 @@ ROOT_URLCONF = 'helab-mousedb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "blog", "templates")],
+        'DIRS': [os.path.join(BASE_DIR, "app", "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
