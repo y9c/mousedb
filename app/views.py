@@ -5,10 +5,11 @@ from django.views.generic.base import TemplateView
 
 import json
 
-
 from .models import BlogsPost
 from .models import Person
+from .models import Genotype
 from .models import Mouse
+from .models import Mate
 
 # test form
 from .forms import NameForm
@@ -28,35 +29,20 @@ def blog(request):
     blog_list = BlogsPost.objects.all()
     return render_to_response('blog.html', {'blog_list': blog_list})
 
-# plot
+
+# api
+def mouse_count_api(request):
+    mouse_count = {'mouse': Mouse.objects.count()}
+    return HttpResponse(json.dumps(mouse_count))
+
+
+# statistic
 def statistic(request):
     statistic_list = BlogsPost.objects.all()
     return render_to_response('statistic.html', {'statistic_list': statistic_list})
 
 
-# plot chart example
-class ChartView(TemplateView):
-    template_name = 'chart_template.html'
-
-
-# dynamic api example
-
-
-class DynamicView(TemplateView):
-    template_name = 'dynamic_template.html'
-
-
-def server_info_api(request):
-    server_info = get_server_info()
-    return HttpResponse(json.dumps(server_info))
-
-
-def get_server_info():
-    server_info = {'cpu': 99, 'memory': 30, 'network': 44, 'disk': 55, }
-    return server_info
-
-
-# table example
+# datatable
 
 def genotype_table(request):
     table = GenotypeTable()
@@ -79,3 +65,20 @@ class MouseDataView(FeedDataView):
 
     def get_queryset(self):
         return super(MouseDataView, self).get_queryset().filter(id__gt=5)
+
+
+# plot chart example
+class ChartView(TemplateView):
+    template_name = 'chart_template.html'
+
+
+# dynamic api example
+class DynamicView(TemplateView):
+    template_name = 'dynamic_template.html'
+
+
+def server_info_api(request):
+    server_info = {'cpu': 99, 'memory': 30, 'network': 44, 'disk': 55, }
+    server_info = get_server_info()
+    return HttpResponse(json.dumps(server_info))
+
