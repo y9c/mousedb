@@ -64,16 +64,24 @@ class Weighting(models.Model):
 
 # 1.2 # Genotyping
 class Genotype(models.Model):
-    name = models.CharField(max_length=50, default='C57BL/6')
+    strain = models.CharField(max_length=50, default='C57BL/6')
     line = models.CharField(max_length=50, default='WT')
 
     def __str__(self):
-        return self.name
+        return "{}:{}".format(self.strain,self.line)
 
 
 # 1 # Individual
 class Mouse(models.Model):
     mouse_id = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, default='?')
+
+    # Genotype
+    genotype = models.ForeignKey(Genotype)
+
+    # Phenotype
+    health = models.CharField(max_length=50, null=True)
+
     # property
     dob = models.DateField('date of birth', blank=True, null=True)
     dod = models.DateField('date of death', blank=True, null=True)
@@ -87,20 +95,17 @@ class Mouse(models.Model):
             (1, 'F'),
             (2, '?'),
         ),
-    default=0)
+    default=2)
 
     status = models.IntegerField(
         choices=(
-            (0, 'weaning'),
-            (1, 'mating'),
-            (2, 'nuring'),
+            (0, 'idle'),
+            (1, 'nuring'),
+            (2, 'mating'),
+            (3, 'weaning'),
         ),
         default=0,
     )
-
-    # Phenotype
-    headplate_color = models.CharField(max_length=15, blank=True, null=True)
-    genotype = models.ForeignKey(Genotype)
 
     notes = models.CharField(max_length=200, null=True, blank=True)
 
@@ -134,6 +139,8 @@ class Mate(models.Model):
         Mouse, related_name='paternal', verbose_name='paternal mouse object')
     maternal_id = models.ManyToManyField(
         Mouse, related_name='maternal', verbose_name='maternal mouse object')
+    litter = models.IntegerField(default=0)
+
 
     def __str__(self):
         return self.mate_id

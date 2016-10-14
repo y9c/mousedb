@@ -36,21 +36,12 @@ urlpatterns = [
     url(r'^blog/', views.blog),
     # url(r'^blog/', include('blog.urls')),
     url(r'^chart-exmaple/$', views.ChartView.as_view(), name='chart-demo'),
-    url(r'^table-example/$', views.bootstrap_table, name='bootstrap_table'),
     url(r'^dynamic-exmaple/$', views.DynamicView.as_view(), name='dynamic'),
     url(r'^api/server-info-api$', views.server_info_api, name='server_info_api'),
 
 
-    url(r'^$', views.base, name='base'),
-    url(r'^datasource/ajax/$', views.ajax, name='ajax'),
-    url(r'^datasource/ajaxsource/$', views.ajax_source, name='ajax_source'),
-    url(r'^datasource/ajaxsource/api/$', views.MyDataView.as_view(), name='ajax_source_api'),
-
-    url(r'^column/sequence/$', views.sequence_column, name='sequence_column'),
-    url(r'^column/calendar/$', views.calendar_column, name='calendar_column'),
-    url(r'^column/link/$', views.link_column, name='link_column'),
-    url(r'^column/checkbox/$', views.checkbox_column, name='checkbox_column'),
-
-    url(r'^user/(\d+)/$', views.user_profile, name='user_profile'),
+    url(r'^datatable/$', views.mouse_table, name='mouse_table'),
+    url(r'^datatable/api/$', views.MyDataView.as_view(), name='ajax_source_api'),
+    url(r'^user/(\d+)/$', views.mouse_profile, name='mouse_profile'),
     url(r'^table/', include('table.urls')),
 ]
