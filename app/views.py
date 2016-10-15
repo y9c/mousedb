@@ -45,10 +45,32 @@ def mouse_table_api(request):
     return HttpResponse(data)
 
 
+# 接收POST请求数据
+from .models import Choice, Question
+def mouse_table_edit(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        # Redisplay the question voting form.
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+
 # statistic
 def statistic(request):
     statistic_list = BlogsPost.objects.all()
-    return render_to_response('statistic.html', {'statistic_list': statistic_list})
+    return render_to_response('statistic.html',
+                              {'statistic_list': statistic_list})
 
 
 # datatable
@@ -75,7 +97,6 @@ def mouse_profile(request, uid):
     person = get_object_or_404(Person, pk=uid)
     return HttpResponse("User %s" % person.name)
 
-
 # class MouseDataView(FeedDataView):
 #
 #    token = MouseTable.token
@@ -95,5 +116,8 @@ class DynamicView(TemplateView):
 
 
 def server_info_api(request):
-    server_info = {'cpu': 99, 'memory': 30, 'network': 44, 'disk': 55, }
+    server_info = {'cpu': 99,
+                   'memory': 30,
+                   'network': 44,
+                   'disk': 55, }
     return HttpResponse(json.dumps(server_info))

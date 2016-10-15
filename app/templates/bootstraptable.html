@@ -12,6 +12,54 @@
 
 <script>
     var table = $('#table').bootstrapTable({
+        //功能
+        search: true,
+        showToggle: true,
+        showRefresh: true,
+        showColumns: true,
+        pagination: true,
+
+        showExport: true,
+        exportOptions:{
+            fileName: 'custom_file_name',
+        },
+
+        onEditableSave: function (field, row, oldValue, $el) {
+            $.ajax({
+                type: "post",
+                url: "/api/mouse_table_edit",
+                data: { strJson: JSON.stringify(row) },
+                success: function (data, status) {
+                    if (status == "success") {
+                        alert("编辑成功");
+                    }
+                },
+                error: function () {
+                    alert("编辑失败");
+                },
+                complete: function () {
+                }
+            });
+        },
+
+        //外观
+        striped: true,
+        rowStyle: function (row, index) {
+            //这里有5个取值代表5中颜色['active', 'success', 'info', 'warning', 'danger'];
+            var strclass = "";
+            if (row.pk == "2") {
+                strclass = 'success';
+            }
+            else if (row.pk == "4") {
+                strclass = 'danger';
+            }
+            else {
+                return {};
+            }
+            return { classes: strclass }
+        },
+
+        //数据
         url: 'api/mouse_table_api',
         columns: [{
             field: 'pk',
@@ -28,17 +76,13 @@
             title: 'DateofBirth',
             sortable: true,
             editable: true,
+        }, {
+            field: 'fields.dod',
+            title: 'DateofDead',
+            sortable: true,
+            editable: true,
         }],
-            search: true,
-            showToggle: true,
-            showRefresh: true,
-            showColumns: true,
-            showExport: true,
-            pagination: true,
-            clickToSelect: true,
-            exportOptions:{
-                fileName: 'custom_file_name',
-            }
+
     });
 </script>
 
