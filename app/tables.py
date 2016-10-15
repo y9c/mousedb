@@ -24,6 +24,7 @@ from .models import Mate
 
 image_url = 'img/user-512.png'
 
+
 class GenotypeTable(Table):
     strain = Column(field='strain', header=u'STRAIN')
     line = Column(field='line', header=u'LINE')
@@ -41,10 +42,11 @@ class GenotypeTable(Table):
 
 class MouseTable(Table):
     id = Column(field='mouse_id', header=u'ID')
-    name = Column(field='name', header=u'ID')
-    sex = Column(field='sex', header=u'SEX')
-    genotype = Column(field='genotype', header=u'GEN')
-    sacked = CheckboxColumn(field='sacked', header=u'SAC')
+    name = Column(field='name', header=u'NAME')
+    status = Column(field='status', header=u'STATUS')
+    notes = Column(field='notes', header=u'NOTE')
+    dob = Column(field='dob', header=u'BIRTH')
+    dod = Column(field='dod', header=u'DEAD')
 
     avatar = LinkColumn(header=u'AVATAR', links=[
         ImageLink(viewname='mouse_profile', args=(A('id'),), image=image_url, image_title='avatar')])
@@ -56,16 +58,15 @@ class MouseTable(Table):
 
 
 class MateTable(Table):
-    id = Column(field='mouse_id', header=u'ID')
-    sex = Column(field='sex', header=u'SEX')
-    organization = Column(field='genotype', header=u'GEN')
+    id = Column(field='mate_id', header=u'ID')
+    paid = Column(field='paternal_id', header=u'PA_ID')
+    maid = Column(field='maternal_id', header=u'MA_ID')
     avatar = LinkColumn(header=u'AVATAR', links=[
         ImageLink(viewname='mouse_profile', args=(A('id'),), image=image_url, image_title='avatar')])
     # logo = ImageColumn(field='logo.url', header=u'Logo Image',
     # image_title='logo')
-    sacked = CheckboxColumn(field='sacked', header=u'SAC')
 
     class Meta:
-        model = Mouse
+        model = Mate
         # ajax = True
         # ajax_source = reverse_lazy('ajax_source_api')

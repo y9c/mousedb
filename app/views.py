@@ -2,11 +2,13 @@ from django.shortcuts import render_to_response, get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views.generic.base import TemplateView
+from django.core import serializers
 
 import json
 
 from .models import BlogsPost
 from .models import Person
+
 from .models import Genotype
 from .models import Mouse
 from .models import Mate
@@ -15,7 +17,7 @@ from .models import Mate
 from .forms import NameForm
 
 # test table
-from table.views import FeedDataView
+# from table.views import FeedDataView
 from .tables import GenotypeTable
 from .tables import MouseTable
 from .tables import MateTable
@@ -36,6 +38,13 @@ def mouse_count_api(request):
     return HttpResponse(json.dumps(mouse_count))
 
 
+def mouse_table_api(request):
+    data = serializers.serialize("json", Mouse.objects.all())
+    #struct = json.loads(data)
+    #data = json.dumps(struct)
+    return HttpResponse(data)
+
+
 # statistic
 def statistic(request):
     statistic_list = BlogsPost.objects.all()
@@ -43,15 +52,23 @@ def statistic(request):
 
 
 # datatable
-
-def genotype_table(request):
+def GenotypeTableView(request):
     table = GenotypeTable()
-    return render(request, "datatable.html", {'mouse': table})
+    return render(request, "datatable.html", {'search_table': table})
 
 
-def mouse_table(request):
+def MouseTableView(request):
     table = MouseTable()
-    return render(request, "datatable.html", {'mouse': table})
+    return render(request, "datatable.html", {'search_table': table})
+
+
+def MateTableView(request):
+    table = MateTable()
+    return render(request, "datatable.html", {'search_table': table})
+
+
+class BootstrapTableView(TemplateView):
+    template_name = 'bootstraptable.html'
 
 
 def mouse_profile(request, uid):
@@ -59,12 +76,12 @@ def mouse_profile(request, uid):
     return HttpResponse("User %s" % person.name)
 
 
-class MouseDataView(FeedDataView):
-
-    token = MouseTable.token
-
-    def get_queryset(self):
-        return super(MouseDataView, self).get_queryset().filter(id__gt=5)
+# class MouseDataView(FeedDataView):
+#
+#    token = MouseTable.token
+#
+#    def get_queryset(self):
+#        return super(MouseDataView, self).get_queryset().filter(id__gt=5)
 
 
 # plot chart example
@@ -79,6 +96,4 @@ class DynamicView(TemplateView):
 
 def server_info_api(request):
     server_info = {'cpu': 99, 'memory': 30, 'network': 44, 'disk': 55, }
-    server_info = get_server_info()
     return HttpResponse(json.dumps(server_info))
-

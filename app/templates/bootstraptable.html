@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+<script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+<link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+
+<div class="container" style="margin-top: 10px">
+    <table id="table"></table>
+</div>
+
+<script>
+    var table = $('#table').bootstrapTable({
+        url: 'api/mouse_table_api',
+        columns: [{
+            field: 'pk',
+            title: 'PK',
+            editable: true,
+        }, {
+            field: 'fields.mouse_id',
+            title: 'ID',
+            sortable: true,
+            editable: true,
+
+        }, {
+            field: 'fields.dob',
+            title: 'DateofBirth',
+            sortable: true,
+            editable: true,
+        }],
+            search: true,
+            showToggle: true,
+            showRefresh: true,
+            showColumns: true,
+            showExport: true,
+            pagination: true,
+            clickToSelect: true,
+            exportOptions:{
+                fileName: 'custom_file_name',
+            }
+    });
+</script>
+
+{% endblock %}

@@ -53,23 +53,24 @@ class Person(models.Model):
 # 0 # mouse property
 # Phenotype
 class Phenotype(models.Model):
-    check_point = models.DateField('check_point', unique=True)
+    #check_point = models.DateField('check_point', unique=True, default="apple")
     date = models.DateField('Weighting Date')
     time = models.TimeField('Weighting Time')
     weight = models.FloatField('Weight')
     health = models.CharField(max_length=50, null=True)
 
-    sex = models.IntegerField(
-        choices=((0, 'M'),
-                 (1, 'F'),
-                 (2, '?'), ), default=2)
+    color = models.IntegerField(
+        choices=((0, 'Black'),
+                 (1, 'White'),
+                 (2, 'Nake'), ), default=0)
 
-    def __str__(self):
-        return "{}:{}".format(self.weight, self.health)
+    #def __str__(self):
+    #    return "{}:{}".format(self.date, self.check_point)
 
 
 # genotype
 class Genotype(models.Model):
+    #check_point = models.DateField('check_point', unique=True, default="apple")
     strain = models.CharField(max_length=50, default='C57BL/6')
     line = models.CharField(max_length=50, default='WT')
     locus = models.CharField(max_length=50, null=True)
@@ -78,8 +79,8 @@ class Genotype(models.Model):
                  (1, 'F'),
                  (2, '?'), ), default=2)
 
-    def __str__(self):
-        return "{}:{}:{}".format(self.strain, self.line, self.locus)
+    #def __str__(self):
+    #    return "{}:{}".format(self.date, self.check_point)
 
 
 # 1 # Individual
@@ -101,11 +102,13 @@ class Mouse(models.Model):
                  (5, 'dead'), ),
         default=0, )
 
-    # property
     dob = models.DateField('date of birth', blank=True, null=True)
     dod = models.DateField('date of death', blank=True, null=True)
-
     notes = models.CharField(max_length=200, null=True, blank=True)
+
+    # property
+    #genotype = models.ForeignKey(Genotype)
+    #phenotype = models.ForeignKey(Phenotype)
 
     # 要关联的！！！
     # Phenotype
@@ -134,27 +137,79 @@ class Mouse(models.Model):
 
 # 2 # Event
 # 2.1 # Phenotyping
-class Get_Weight(models.Model):
+class Get_Phenotype(models.Model):
+    check_point = models.DateField('check_point', unique=True)
+    date = models.DateField('Weighting Date')
+    time = models.TimeField('Weighting Time')
+    health = models.CharField(max_length=50, null=True)
+    color = models.IntegerField(
+        choices=((0, 'Black'),
+                 (1, 'White'),
+                 (2, 'Nake'), ), default=0)
+
+    to_mouse = models.ManyToManyField(
+        Mouse,
+        related_name='phenotype',
+        verbose_name='get phenotype for mouse object')
+
+    def __str__(self):
+        return str(self.date) + ': ' + ' / '.join(mouse.mouse_id
+                                             for mouse in self.to_mouse.all())
+
+
+class Get_Phenotype_Weight(models.Model):
     date = models.DateField('Weighting Date')
     time = models.TimeField('Weighting Time')
     weight = models.FloatField('Weight')
 
+    to_mouse = models.ManyToManyField(
+        Mouse,
+        related_name='phenotype_weight',
+        verbose_name='get phenotype weight for mouse object')
+
     def __str__(self):
-        return self.category
+        return str(self.date) + ': ' + ' / '.join(mouse.mouse_id
+                                             for mouse in self.to_mouse.all())
 
 
 # 2.2 # Genotyping
 class Get_Genotype(models.Model):
+    check_point = models.DateField('check_point', unique=True)
     date = models.DateField('Genotyping Date')
     time = models.TimeField('Genotyping Time')
+    strain = models.CharField(max_length=50, default='C57BL/6')
+    line = models.CharField(max_length=50, default='WT')
+    locus = models.CharField(max_length=50, null=True)
+    sex = models.IntegerField(
+        choices=((0, 'M'),
+                 (1, 'F'),
+                 (2, '?'), ), default=2)
+
+    to_mouse = models.ManyToManyField(
+        Mouse,
+        related_name='genotype',
+        verbose_name='get genotype for mouse object')
+
+    def __str__(self):
+        return str(self.date) + ': ' + ' / '.join(mouse.mouse_id
+                                             for mouse in self.to_mouse.all())
 
 
 # 2.3 # Sack
 class Do_Sack(models.Model):
     date = models.DateField('Sacked Date')
     time = models.TimeField('Sacked Time')
-    sacked = models.BooleanField(default=False)
-    sackDate = models.DateField('sac date', blank=True, null=True)
+    corpse = models.IntegerField(
+        choices=((0, '丢弃'),
+                 (1, '实验'),
+                 (2, '送出'), ), default=0)
+
+    to_mouse = models.ManyToManyField(
+        Mouse, related_name='sack', verbose_name='sack event to mouse object')
+
+    def __str__(self):
+        return self.date + ': ' + ' / '.join(mouse.mouse_id
+                                             for mouse in self.to_mouse.all())
 
 
 # 2.4 # Mating
@@ -162,11 +217,11 @@ class Mate(models.Model):
     mate_id = models.CharField(max_length=20)
     mate_start_date = models.DateTimeField('Mate Start Date')
     mate_end_date = models.DateTimeField('Mate End Date')
+
     paternal_id = models.ManyToManyField(
         Mouse, related_name='paternal', verbose_name='paternal mouse object')
     maternal_id = models.ManyToManyField(
         Mouse, related_name='maternal', verbose_name='maternal mouse object')
-    litter = models.IntegerField(default=0)
 
     def __str__(self):
         return self.mate_id
@@ -175,28 +230,84 @@ class Mate(models.Model):
         return datetime.now() - self.mate_start_date
 
 
-# 2.2 # Feeding
-class AddChow(models.Model):
+# 2.5 # Weaning
+class Wean(models.Model):
+    weam_id = models.CharField(max_length=20)
+    weam_start_date = models.DateTimeField('weam Start Date')
+    weam_end_date = models.DateTimeField('weam End Date')
+    litter = models.IntegerField(default=0)
+
+    to_mouse = models.ManyToManyField(
+        Mouse, related_name='wean', verbose_name='wean event to mouse object')
+
+    def __str__(self):
+        return self.mate_id
+
+    def days(self):
+        return datetime.now() - self.mate_start_date
+
+
+# 2.6 # Feeding
+class Do_AddChow(models.Model):
     category = models.CharField(max_length=200)
     date = models.DateField('Chow Added Date')
     time = models.TimeField('Chow Added Time')
     amount = models.FloatField('Chow Added Amount')
 
+    to_mouse = models.ManyToManyField(
+        Mouse,
+        related_name='add_chow',
+        verbose_name='addchow event to mouse object')
+
     def __str__(self):
-        return self.category
+        return self.category + ': ' + ' / '.join(
+            mouse.mouse_id for mouse in self.to_mouse.all())
 
 
-class AddDrink(models.Model):
+class Do_AddDrink(models.Model):
     category = models.CharField(max_length=200)
     date = models.DateField('Drink Added Date')
     time = models.TimeField('Drink Added Time')
     amount = models.FloatField('Drink Amount')
 
+    to_mouse = models.ManyToManyField(
+        Mouse,
+        related_name='add_drink',
+        verbose_name='adddrink event to mouse object')
+
     def __str__(self):
-        return self.category
+        return self.category + ': ' + ' / '.join(
+            mouse.mouse_id for mouse in self.to_mouse.all())
 
 
-class AddBedding(models.Model):
+class Do_AddBedding(models.Model):
+    category = models.CharField(max_length=200, null=True)
     date = models.DateField('Bedding Added Date')
     time = models.TimeField('Bedding Added Time')
     note = models.CharField(max_length=200)
+
+    to_mouse = models.ManyToManyField(
+        Mouse,
+        related_name='add_bedding',
+        verbose_name='add bedding event to mouse object')
+
+    def __str__(self):
+        return self.category + ': ' + ' / '.join(
+            mouse.mouse_id for mouse in self.to_mouse.all())
+
+
+# 2.7 # experiment
+class Do_InjectVirus(models.Model):
+    category = models.CharField(max_length=200, null=True)
+    date = models.DateField('Bedding Added Date')
+    time = models.TimeField('Bedding Added Time')
+    note = models.CharField(max_length=200)
+
+    to_mouse = models.ManyToManyField(
+        Mouse,
+        related_name='inject_virus',
+        verbose_name='inject virus event to mouse object')
+
+    def __str__(self):
+        return self.category + ': ' + ' / '.join(
+            mouse.mouse_id for mouse in self.to_mouse.all())
