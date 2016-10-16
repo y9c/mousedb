@@ -95,12 +95,13 @@ class Mouse(models.Model):
 
     status = models.IntegerField(
         choices=((0, 'idle'),
-                 (1, 'nuring'),
+                 (1, 'suckling'),
                  (2, 'mating'),
-                 (3, 'weaning'),
-                 (4, 'sacked'),
-                 (5, 'dead'), ),
+                 (3, 'lactating'),
+                 (4, 'dead'), ),
         default=0, )
+
+
 
     dob = models.DateField('date of birth', blank=True, null=True)
     dod = models.DateField('date of death', blank=True, null=True)

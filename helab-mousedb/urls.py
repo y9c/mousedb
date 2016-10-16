@@ -25,6 +25,8 @@ urlpatterns = [
         views.mouse_table_api, name='mouse_table_api'),
     url(r'^api/mouse-(?P<mouse_pk>[0-9]+)-detail-api$',
         views.mouse_detail_api, name='mouse_detail_api'),
+    url(r'^api/mouse-table-edit$',
+        views.mouse_table_edit, name='mouse_table_edit'),
 
 
     #  show statistic

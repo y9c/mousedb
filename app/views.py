@@ -57,24 +57,9 @@ def mouse_detail_api(request, mouse_pk):
 
 
 # 接收POST请求数据
-from .models import Choice, Question
-def mouse_table_edit(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    try:
-        selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
-        return render(request, 'polls/detail.html', {
-            'question': question,
-            'error_message': "You didn't select a choice.",
-        })
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        return HttpResponseRedirect(
-            reverse(
-                'polls:results', args=(question.id, )))
-
+def mouse_table_edit(request):
+    #print(request)
+    pass
 
 
 # statistic

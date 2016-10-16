@@ -22,6 +22,7 @@
         showRefresh: true,
         showColumns: true,
         pagination: true,
+
         detailView: true,
         detailFormatter: "detailFormatter",
 
@@ -30,18 +31,38 @@
             fileName: 'custom_file_name',
         },
 
-        onEditableSave: "onEditableSave",
+        onEditableSave: function (field, row, oldValue, $el) {
+            console.log(row);
+            $.ajax({
+                type: "post",
+                url: "/api/mouse-table-edit",
+                data: { strJson: JSON.stringify(row) },
+                success: function (data, status) {
+                    if (status == "success") {
+                        alert("编辑提交成功");
+                    }
+                },
+                error: function () {
+                    alert("编辑提交失败");
+                },
+                complete: function () {
+                }
+            });
+        },
 
         //外观
         striped: true,
         rowStyle: function (row, index) {
             //这里有5个取值代表5中颜色['active', 'success', 'info', 'warning', 'danger'];
             var strclass = "";
-            if (row.pk == "2") {
+            if (row.fields.status == "1") {
                 strclass = 'success';
             }
-            else if (row.pk == "4") {
+            else if (row.fields.status == "2") {
                 strclass = 'danger';
+            }
+            else if (row.fields.status == "3") {
+                strclass = 'warning';
             }
             else {
                 return {};
@@ -69,25 +90,41 @@
             field: 'fields.source',
             title: 'SOURCE',
             sortable: true,
-            editable: true,
+            editable: {
+                type: 'select',
+                title: 'SOURCE',
+                source: [
+                {value:"0", text:"饲养产生后代"},
+                {value:"1", text:"广东省实验动物中心"},
+                {value:"2", text:"南京模式生物中心"},
+                ],
+            },
         }, {
             field: 'fields.status',
             title: 'STATUS',
             sortable: true,
-            editable: true,
+            editable: {
+                type: 'select',
+                title: 'STATUS',
+                source: [
+                {value:"0", text:"idle"},
+                {value:"1", text:"suckling"},
+                {value:"2", text:"mating"},
+                {value:"3", text:"lactating"},
+                {value:"4", text:"dead"},
+                ],
+            },
         }, {
             field: 'fields.dob',
             title: 'BirthDate',
             sortable: true,
-            editable: true,
         }, {
             field: 'fields.dod',
             title: 'DeadDate',
             sortable: true,
-            editable: true,
         }, {
-            field: 'field.note',
-            title: 'NOTE',
+            field: 'fields.notes',
+            title: 'NOTES',
             sortable: true,
             editable: true,
         }],
@@ -95,25 +132,6 @@
     });
 </script>
 
-<script>
-    function onEditableSave(field, row, oldValue, $el) {
-        $.ajax({
-            type: "post",
-            url: "/api/mouse-table-edit",
-            data: { strJson: JSON.stringify(row) },
-            success: function (data, status) {
-                if (status == "success") {
-                    alert("编辑提交成功");
-                }
-            },
-            error: function () {
-                alert("编辑提交失败");
-            },
-            complete: function () {
-            }
-        });
-    },
-</script>
 <script>
     function detailFormatter(index, row) {
         detail=JSON.parse(
