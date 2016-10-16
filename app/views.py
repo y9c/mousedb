@@ -56,6 +56,11 @@ def mouse_detail_api(request, mouse_pk):
     return HttpResponse(genotype)
 
 
+def mate_table_api(request):
+    data = serializers.serialize("json", Mate.objects.all())
+    return HttpResponse(data)
+
+
 # 接收POST请求数据
 def mouse_table_edit(request):
     #print(request)

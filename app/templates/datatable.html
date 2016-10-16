@@ -9,13 +9,18 @@
 
 
 
+<h1> mouse table </h1>
 <div class="container" style="margin-top: 10px">
-    <table id="table"></table>
+    <table id="mousetable"></table>
 </div>
 
+<h1> mate table </h1>
+<div class="container" style="margin-top: 10px">
+    <table id="matetable"></table>
+</div>
 
 <script>
-    var table = $('#table').bootstrapTable({
+    var table = $('#mousetable').bootstrapTable({
         //功能
         search: true,
         showToggle: true,
@@ -75,6 +80,7 @@
         columns: [{
             field: 'pk',
             title: 'PK',
+            sortable: true,
         }, {
             field: 'fields.mouse_id',
             title: 'ID',
@@ -153,4 +159,122 @@
     }
 </script>
 
+<script>
+    var table = $('#matetable').bootstrapTable({
+        //功能
+        search: true,
+        showToggle: true,
+        showRefresh: true,
+        showColumns: true,
+        pagination: true,
+
+        detailView: true,
+        detailFormatter: "detailFormatter",
+
+        showExport: true,
+        exportOptions:{
+            fileName: 'custom_file_name',
+        },
+
+        onEditableSave: function (field, row, oldValue, $el) {
+            console.log(row);
+            $.ajax({
+                type: "post",
+                url: "/api/mate-table-edit",
+                data: { strJson: JSON.stringify(row) },
+                success: function (data, status) {
+                    if (status == "success") {
+                        alert("编辑提交成功");
+                    }
+                },
+                error: function () {
+                    alert("编辑提交失败");
+                },
+                complete: function () {
+                }
+            });
+        },
+
+        //外观
+        striped: true,
+        rowStyle: function (row, index) {
+            //这里有5个取值代表5中颜色['active', 'success', 'info', 'warning', 'danger'];
+            var strclass = "";
+            if (row.fields.status == "1") {
+                strclass = 'success';
+            }
+            else if (row.fields.status == "2") {
+                strclass = 'danger';
+            }
+            else if (row.fields.status == "3") {
+                strclass = 'warning';
+            }
+            else {
+                return {};
+            }
+            return { classes: strclass }
+        },
+
+        //数据
+        url: 'api/mate-table-api',
+        columns: [{
+            field: 'pk',
+            title: 'PK',
+            sortable: true,
+        }, {
+            field: 'fields.mouse_id',
+            title: 'ID',
+            sortable: true,
+            editable: true,
+
+        }, {
+            field: 'fields.name',
+            title: 'NAME',
+            sortable: true,
+            editable: true,
+        }, {
+            field: 'fields.source',
+            title: 'SOURCE',
+            sortable: true,
+            editable: {
+                type: 'select',
+                title: 'SOURCE',
+                source: [
+                {value:"0", text:"饲养产生后代"},
+                {value:"1", text:"广东省实验动物中心"},
+                {value:"2", text:"南京模式生物中心"},
+                ],
+            },
+        }, {
+            field: 'fields.status',
+            title: 'STATUS',
+            sortable: true,
+            editable: {
+                type: 'select',
+                title: 'STATUS',
+                source: [
+                {value:"0", text:"idle"},
+                {value:"1", text:"suckling"},
+                {value:"2", text:"mating"},
+                {value:"3", text:"lactating"},
+                {value:"4", text:"dead"},
+                ],
+            },
+        }, {
+            field: 'fields.dob',
+            title: 'BirthDate',
+            sortable: true,
+        }, {
+            field: 'fields.dod',
+            title: 'DeadDate',
+            sortable: true,
+        }, {
+            field: 'fields.notes',
+            title: 'NOTES',
+            sortable: true,
+            editable: true,
+        }],
+
+    });
+</script>
 {% endblock %}

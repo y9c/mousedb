@@ -33,7 +33,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'app',
-    'table',
+    #'table',
+    #'import_export',
     'django.contrib.admin',
     'django.contrib.admindocs.urls',
     'django.contrib.auth',
@@ -129,3 +130,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+#SITE_ROOT = os.path.dirname(os.path.abspath(__file__))
+#SITE_ROOT = os.path.abspath(os.path.join(SITE_ROOT, '../'))
+#STATIC_ROOT = STATIC_ROOT = os.path.join(SITE_ROOT,"static")

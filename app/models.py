@@ -1,5 +1,7 @@
 # Create your models here.
 import datetime
+import random
+import string
 
 from django.db import models
 from django.utils import timezone
@@ -53,7 +55,6 @@ class Person(models.Model):
 # 0 # mouse property
 # Phenotype
 class Phenotype(models.Model):
-    #check_point = models.DateField('check_point', unique=True, default="apple")
     date = models.DateField('Weighting Date')
     time = models.TimeField('Weighting Time')
     weight = models.FloatField('Weight')
@@ -70,17 +71,20 @@ class Phenotype(models.Model):
 
 # genotype
 class Genotype(models.Model):
-    #check_point = models.DateField('check_point', unique=True, default="apple")
     strain = models.CharField(max_length=50, default='C57BL/6')
     line = models.CharField(max_length=50, default='WT')
     locus = models.CharField(max_length=50, null=True)
-    sex = models.IntegerField(
-        choices=((0, 'M'),
-                 (1, 'F'),
-                 (2, '?'), ), default=2)
 
-    #def __str__(self):
-    #    return "{}:{}".format(self.date, self.check_point)
+    def sex(self):
+        if "S(XY)" in self.locus.upper().strip():
+            return "Female"
+        if "S(XX)" in self.locus.upper().strip():
+            return "Male"
+        else:
+            return "Unknow"
+
+    def __str__(self):
+        return "{}:{}:{}".format(self.strain, self.line, self.locus)
 
 
 # 1 # Individual
@@ -137,9 +141,27 @@ class Mouse(models.Model):
 
 
 # 2 # Event
-# 2.1 # Phenotyping
+# 2.1 # Mating
+class Mate(models.Model):
+    mate_id = models.CharField(max_length=20)
+    mate_start_date = models.DateTimeField('Mate Start Date')
+    mate_end_date = models.DateTimeField('Mate End Date')
+
+    paternal_id = models.ManyToManyField(
+        Mouse, related_name='paternal', verbose_name='paternal mouse object')
+    maternal_id = models.ManyToManyField(
+        Mouse, related_name='maternal', verbose_name='maternal mouse object')
+
+    def __str__(self):
+        return self.mate_id
+
+    def days(self):
+        return datetime.now() - self.mate_start_date
+
+
+# 2.2 # Phenotyping
 class Get_Phenotype(models.Model):
-    check_point = models.DateField('check_point', unique=True)
+    check_point = models.CharField('check_point', max_length=50, unique=True)
     date = models.DateField('Weighting Date')
     time = models.TimeField('Weighting Time')
     health = models.CharField(max_length=50, null=True)
@@ -159,6 +181,7 @@ class Get_Phenotype(models.Model):
 
 
 class Get_Phenotype_Weight(models.Model):
+    check_point = models.CharField('check_point', max_length=50, unique=True)
     date = models.DateField('Weighting Date')
     time = models.TimeField('Weighting Time')
     weight = models.FloatField('Weight')
@@ -173,11 +196,13 @@ class Get_Phenotype_Weight(models.Model):
             mouse.mouse_id for mouse in self.to_mouse.all())
 
 
-# 2.2 # Genotyping
+# 2.3 # Genotyping
 class Get_Genotype(models.Model):
-    check_point = models.DateField('check_point', unique=True)
+    check_point = models.CharField('check_point', max_length=50, unique=True)
     date = models.DateField('Genotyping Date')
     time = models.TimeField('Genotyping Time')
+    mate = Mate()
+    litter = models.IntegerField(null=True)
 
     genotype = models.ForeignKey(Genotype, on_delete=models.CASCADE, null=True)
 
@@ -207,23 +232,6 @@ class Do_Sack(models.Model):
         return self.date + ': ' + ' / '.join(mouse.mouse_id
                                              for mouse in self.to_mouse.all())
 
-
-# 2.4 # Mating
-class Mate(models.Model):
-    mate_id = models.CharField(max_length=20)
-    mate_start_date = models.DateTimeField('Mate Start Date')
-    mate_end_date = models.DateTimeField('Mate End Date')
-
-    paternal_id = models.ManyToManyField(
-        Mouse, related_name='paternal', verbose_name='paternal mouse object')
-    maternal_id = models.ManyToManyField(
-        Mouse, related_name='maternal', verbose_name='maternal mouse object')
-
-    def __str__(self):
-        return self.mate_id
-
-    def days(self):
-        return datetime.now() - self.mate_start_date
 
 
 # 2.5 # Weaning
