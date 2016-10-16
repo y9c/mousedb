@@ -153,8 +153,8 @@ class Get_Phenotype(models.Model):
         verbose_name='get phenotype for mouse object')
 
     def __str__(self):
-        return str(self.date) + ': ' + ' / '.join(mouse.mouse_id
-                                             for mouse in self.to_mouse.all())
+        return str(self.date) + ': ' + ' / '.join(
+            mouse.mouse_id for mouse in self.to_mouse.all())
 
 
 class Get_Phenotype_Weight(models.Model):
@@ -168,8 +168,8 @@ class Get_Phenotype_Weight(models.Model):
         verbose_name='get phenotype weight for mouse object')
 
     def __str__(self):
-        return str(self.date) + ': ' + ' / '.join(mouse.mouse_id
-                                             for mouse in self.to_mouse.all())
+        return str(self.date) + ': ' + ' / '.join(
+            mouse.mouse_id for mouse in self.to_mouse.all())
 
 
 # 2.2 # Genotyping
@@ -177,13 +177,8 @@ class Get_Genotype(models.Model):
     check_point = models.DateField('check_point', unique=True)
     date = models.DateField('Genotyping Date')
     time = models.TimeField('Genotyping Time')
-    strain = models.CharField(max_length=50, default='C57BL/6')
-    line = models.CharField(max_length=50, default='WT')
-    locus = models.CharField(max_length=50, null=True)
-    sex = models.IntegerField(
-        choices=((0, 'M'),
-                 (1, 'F'),
-                 (2, '?'), ), default=2)
+
+    genotype = models.ForeignKey(Genotype, on_delete=models.CASCADE, null=True)
 
     to_mouse = models.ManyToManyField(
         Mouse,
@@ -191,8 +186,8 @@ class Get_Genotype(models.Model):
         verbose_name='get genotype for mouse object')
 
     def __str__(self):
-        return str(self.date) + ': ' + ' / '.join(mouse.mouse_id
-                                             for mouse in self.to_mouse.all())
+        return str(self.date) + ': ' + ' / '.join(
+            mouse.mouse_id for mouse in self.to_mouse.all())
 
 
 # 2.3 # Sack
@@ -311,3 +306,12 @@ class Do_InjectVirus(models.Model):
     def __str__(self):
         return self.category + ': ' + ' / '.join(
             mouse.mouse_id for mouse in self.to_mouse.all())
+
+
+# 3 # show
+# 3.1 # mouse details
+#class Show_MouseDetails(models.Model):
+#    id = Mouse.mouse_id
+#    mouse = Mouse.objects.get(mouse_id = id)
+#    genotype = mouse.genotype.all()
+

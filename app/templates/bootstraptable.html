@@ -18,6 +18,8 @@
         showRefresh: true,
         showColumns: true,
         pagination: true,
+        detailView: true,
+        detailFormatter: "detailFormatter",
 
         showExport: true,
         exportOptions:{
@@ -27,7 +29,7 @@
         onEditableSave: function (field, row, oldValue, $el) {
             $.ajax({
                 type: "post",
-                url: "/api/mouse_table_edit",
+                url: "/api/mouse-table-edit",
                 data: { strJson: JSON.stringify(row) },
                 success: function (data, status) {
                     if (status == "success") {
@@ -60,7 +62,7 @@
         },
 
         //数据
-        url: 'api/mouse_table_api',
+        url: 'api/mouse-table-api',
         columns: [{
             field: 'pk',
             title: 'PK',
@@ -86,4 +88,29 @@
     });
 </script>
 
+<script>
+    function detailFormatter(index, row) {
+        detail=JSON.parse(
+                $.ajax({
+                    url: 'api/mouse-' + row['pk'] + '-detail-api',
+                    global: false,
+                    async:false,
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(jqXHR+' + '+textStatus+' + '+ errorThrown)
+                    }
+                }).responseText
+                )[0]['fields'];
+
+        var html = [];
+        $.each(detail, function (key, value) {
+            html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+        });
+        return html.join('');
+    }
+</script>
+
+
+{% for i in mouse_genotype %}
+{{ i.sex }}
+{% endfor %}
 {% endblock %}

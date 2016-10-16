@@ -33,6 +33,7 @@ def blog(request):
 
 
 # api
+# 发出get的响应
 def mouse_count_api(request):
     mouse_count = {'mouse': Mouse.objects.count()}
     return HttpResponse(json.dumps(mouse_count))
@@ -45,8 +46,17 @@ def mouse_table_api(request):
     return HttpResponse(data)
 
 
+def mouse_detail_api(request, mouse_pk):
+    mouse = Mouse.objects.get(pk = mouse_pk)
+    genotype = mouse.genotype.all()[0:1]
+    genotype = serializers.serialize("json", genotype)
+    return HttpResponse(genotype)
+
+
 # 接收POST请求数据
 from .models import Choice, Question
+
+
 def mouse_table_edit(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -60,10 +70,9 @@ def mouse_table_edit(request, question_id):
     else:
         selected_choice.votes += 1
         selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+        return HttpResponseRedirect(
+            reverse(
+                'polls:results', args=(question.id, )))
 
 
 # statistic
@@ -89,8 +98,11 @@ def MateTableView(request):
     return render(request, "datatable.html", {'search_table': table})
 
 
-class BootstrapTableView(TemplateView):
-    template_name = 'bootstraptable.html'
+def BootstrapTableView(request):
+    return render(request, "bootstraptable.html")
+
+#class BootstrapTableView(TemplateView):
+#    template_name = 'bootstraptable.html'
 
 
 def mouse_profile(request, uid):
