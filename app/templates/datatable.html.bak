@@ -1,14 +1,18 @@
 {% extends "base.html" %}
 
+
 {% block content %}
 
 <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
 <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
 
+
+
 <div class="container" style="margin-top: 10px">
     <table id="table"></table>
 </div>
+
 
 <script>
     var table = $('#table').bootstrapTable({
@@ -26,23 +30,7 @@
             fileName: 'custom_file_name',
         },
 
-        onEditableSave: function (field, row, oldValue, $el) {
-            $.ajax({
-                type: "post",
-                url: "/api/mouse-table-edit",
-                data: { strJson: JSON.stringify(row) },
-                success: function (data, status) {
-                    if (status == "success") {
-                        alert("编辑成功");
-                    }
-                },
-                error: function () {
-                    alert("编辑失败");
-                },
-                complete: function () {
-                }
-            });
-        },
+        onEditableSave: "onEditableSave",
 
         //外观
         striped: true,
@@ -66,7 +54,6 @@
         columns: [{
             field: 'pk',
             title: 'PK',
-            editable: true,
         }, {
             field: 'fields.mouse_id',
             title: 'ID',
@@ -74,13 +61,33 @@
             editable: true,
 
         }, {
+            field: 'fields.name',
+            title: 'NAME',
+            sortable: true,
+            editable: true,
+        }, {
+            field: 'fields.source',
+            title: 'SOURCE',
+            sortable: true,
+            editable: true,
+        }, {
+            field: 'fields.status',
+            title: 'STATUS',
+            sortable: true,
+            editable: true,
+        }, {
             field: 'fields.dob',
-            title: 'DateofBirth',
+            title: 'BirthDate',
             sortable: true,
             editable: true,
         }, {
             field: 'fields.dod',
-            title: 'DateofDead',
+            title: 'DeadDate',
+            sortable: true,
+            editable: true,
+        }, {
+            field: 'field.note',
+            title: 'NOTE',
             sortable: true,
             editable: true,
         }],
@@ -88,6 +95,25 @@
     });
 </script>
 
+<script>
+    function onEditableSave(field, row, oldValue, $el) {
+        $.ajax({
+            type: "post",
+            url: "/api/mouse-table-edit",
+            data: { strJson: JSON.stringify(row) },
+            success: function (data, status) {
+                if (status == "success") {
+                    alert("编辑提交成功");
+                }
+            },
+            error: function () {
+                alert("编辑提交失败");
+            },
+            complete: function () {
+            }
+        });
+    },
+</script>
 <script>
     function detailFormatter(index, row) {
         detail=JSON.parse(
@@ -109,8 +135,4 @@
     }
 </script>
 
-
-{% for i in mouse_genotype %}
-{{ i.sex }}
-{% endfor %}
 {% endblock %}

@@ -27,22 +27,12 @@ urlpatterns = [
         views.mouse_detail_api, name='mouse_detail_api'),
 
 
-    # statistic mouse
+    #  show statistic
     url(r'^chart-exmaple/$', views.ChartView.as_view(), name='chart-demo'),
-    url(r'^statistic/', views.statistic),
+    url(r'^statistic/', views.StatisticView),
 
-    # show table
-    url(r'^datatable/genotype$',
-        views.GenotypeTableView, name='genotype_table'),
-    url(r'^datatable/mouse$', views.MouseTableView, name='mouse_table'),
-    url(r'^datatable/mate$', views.MateTableView, name='mate_table'),
-    # url(r'^datatable/api/$', views.MouseDataView.as_view(),
-    # name='ajax_source_api'),
-    url(r'^user/(\d+)/$', views.mouse_profile, name='mouse_profile'),
-    url(r'^table/', include('table.urls')),
-
-    #url(r'^bootstraptable$', views.BootstrapTableView.as_view(), name='bootstrap_table'),
-    url(r'^bootstraptable$', views.BootstrapTableView, name='bootstrap_table'),
+    # show datetable
+    url(r'^datatable$', views.BootstrapTableView, name='bootstrap_table'),
 
     # demos to learn
     url(r'^dynamic-exmaple/$', views.DynamicView.as_view(), name='dynamic'),
