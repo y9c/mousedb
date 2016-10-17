@@ -32,13 +32,14 @@ urlpatterns = [
 
 
     #  show statistic
+    url(r'^statistic/', views.StatisticView, name='statistic_page'),
     url(r'^chart-exmaple/$', views.ChartView.as_view(), name='chart-demo'),
-    url(r'^statistic/', views.StatisticView),
 
     # show datetable
-    url(r'^datatable$', views.BootstrapTableView, name='bootstrap_table'),
+    url(r'^datatable/$', views.DatatableView, name='datatable_page'),
 
-    # demos to learn
+    # show event
+    url(r'^event/$', views.EventView, name='event_page'),
     url(r'^dynamic-exmaple/$', views.DynamicView.as_view(), name='dynamic'),
     url(r'^media/(?P<path>.*)$', static.serve, {
         'document_root': settings.MEDIA_ROOT,

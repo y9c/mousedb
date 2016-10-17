@@ -87,5 +87,12 @@ def StatisticView(request):
 
 # datatable
 # use bootstraptable
-def BootstrapTableView(request):
+def DatatableView(request):
     return render(request, "datatable.html")
+
+
+# event
+# use form
+def EventView(request):
+    return render(request, "datatable.html")
+
