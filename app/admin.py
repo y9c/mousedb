@@ -1,8 +1,6 @@
 from django.contrib import admin
 
-# demo
-from .models import Question
-from .models import Choice
+# blog
 from .models import BlogsPost
 
 # objects
@@ -25,10 +23,9 @@ from .models import (
     Do_InjectVirus,
 )
 
-admin.site.register(Question)
-admin.site.register(Choice)
-admin.site.register(BlogsPost)
 
+# blog
+admin.site.register(BlogsPost)
 
 # objects
 admin.site.register([

@@ -1,9 +1,10 @@
 import json
 
-from django.shortcuts import render_to_response, get_object_or_404, render
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
+from django.shortcuts import render_to_response, get_object_or_404, render
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.urls import reverse
 from django.core import serializers
 
 from .models import BlogsPost
@@ -37,7 +38,7 @@ def server_info_api(request):
 
 
 def mouse_count_api(request):
-    mouse_count = {'mouse': Mouse.objects.filter(status = 0).count()}
+    mouse_count = {'mouse': Mouse.objects.filter(status=0).count()}
     return HttpResponse(json.dumps(mouse_count))
 
 
@@ -59,10 +60,8 @@ def mate_table_api(request):
     data = serializers.serialize("json", Mate.objects.all())
     return HttpResponse(data)
 
+
 # 接收POST请求数据
-from django.views.decorators.csrf import csrf_exempt
-
-
 @csrf_exempt
 def mouse_table_edit(request):
     if request.POST:
@@ -84,7 +83,6 @@ class DynamicView(TemplateView):
     template_name = 'dynamic_template.html'
 
 
-# chart demo
 class ChartView(TemplateView):
     template_name = 'chart_template.html'
 
@@ -100,11 +98,9 @@ def StatisticView(request):
 def DatatableView(request):
     return render(request, "datatable.html")
 
+
 # event
 # use form
-from django.http import JsonResponse
-
-
 def EventView(request):
     if request.method == 'POST':
         #POST goes here . is_ajax is must to capture ajax requests. Beginners pit.
@@ -113,5 +109,10 @@ def EventView(request):
             password = request.POST.get('password')
             data = {"email": email, "password": password}
             return JsonResponse(data)
-    #Get goes here
     return render(request, 'events.html')
+
+
+# render
+# use echarts
+class RenderView(TemplateView):
+    template_name = 'render.html'

@@ -30,16 +30,20 @@ urlpatterns = [
     url(r'^api/mate-table-api$',
         views.mate_table_api, name='mate_table_api'),
 
-
-    #  show statistic
-    url(r'^statistic/', views.StatisticView, name='statistic_page'),
-    url(r'^chart-exmaple/$', views.ChartView.as_view(), name='chart-demo'),
+    # show event
+    url(r'^event/$', views.EventView, name='event_page'),
 
     # show datetable
     url(r'^datatable/$', views.DatatableView, name='datatable_page'),
 
-    # show event
-    url(r'^event/$', views.EventView, name='event_page'),
+    #  show statistic
+    url(r'^statistic/$', views.StatisticView, name='statistic_page'),
+
+    # show render
+    url(r'^render/$', views.RenderView.as_view(), name='render_page'),
+
+
+    url(r'^chart-exmaple/$', views.ChartView.as_view(), name='chart-demo'),
     url(r'^dynamic-exmaple/$', views.DynamicView.as_view(), name='dynamic'),
     url(r'^media/(?P<path>.*)$', static.serve, {
         'document_root': settings.MEDIA_ROOT,

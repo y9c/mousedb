@@ -17,40 +17,6 @@ class BlogsPost(models.Model):
         return self.title
 
 
-# demo question and choice
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
-
-    def __str__(self):
-        return self.question_text
-
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
-
-
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.choice_text
-
-# demo country and person
-
-
-class Organization(models.Model):
-    name = models.CharField(verbose_name="NAME", max_length=100)
-
-
-class Person(models.Model):
-    name = models.CharField(verbose_name="full name", max_length=100)
-    organization = models.ForeignKey(
-        Organization, null=True, blank=True, on_delete=models.CASCADE)
-    married = models.BooleanField(verbose_name="married", default=False)
-
-
 # mouse management
 # 0 # mouse property
 # Phenotype
@@ -85,6 +51,12 @@ class Genotype(models.Model):
 
     def __str__(self):
         return "{}:{}:{}".format(self.strain, self.line, self.locus)
+
+# breed
+class Breed(models.Model):
+    strain = models.CharField(max_length=50, default='C57BL/6')
+    line = models.CharField(max_length=50, default='WT')
+    locus = models.CharField(max_length=50, null=True)
 
 
 # 1 # Individual
