@@ -6,7 +6,6 @@ from django.urls import reverse
 from django.views.generic.base import TemplateView
 from django.core import serializers
 
-
 from .models import BlogsPost
 from .models import Genotype
 from .models import Mouse
@@ -50,7 +49,7 @@ def mouse_table_api(request):
 
 
 def mouse_detail_api(request, mouse_pk):
-    mouse = Mouse.objects.get(pk = mouse_pk)
+    mouse = Mouse.objects.get(pk=mouse_pk)
     genotype = mouse.genotype.all()[0:1]
     genotype = serializers.serialize("json", genotype)
     return HttpResponse(genotype)
@@ -90,9 +89,18 @@ def StatisticView(request):
 def DatatableView(request):
     return render(request, "datatable.html")
 
-
 # event
 # use form
-def EventView(request):
-    return render(request, "datatable.html")
+from django.http import JsonResponse
 
+
+def EventView(request):
+    if request.method == 'POST':
+        #POST goes here . is_ajax is must to capture ajax requests. Beginners pit.
+        if request.is_ajax():
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            data = {"email": email, "password": password}
+            return JsonResponse(data)
+    #Get goes here
+    return render(request, 'events.html')
