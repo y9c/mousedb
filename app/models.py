@@ -94,7 +94,8 @@ class Mouse(models.Model):
     source = models.IntegerField(
         choices=((0, '饲养产生后代'),
                  (1, '广东省实验动物中心'),
-                 (2, '南京模式生物中心'), ),
+                 (2, '南京模式生物中心'),
+                 (9, 'unknown'), ),
         default=0)
 
     status = models.IntegerField(
@@ -102,10 +103,9 @@ class Mouse(models.Model):
                  (1, 'suckling'),
                  (2, 'mating'),
                  (3, 'lactating'),
-                 (4, 'dead'), ),
+                 (4, 'dead'),
+                 (9, 'unknown'), ),
         default=0, )
-
-
 
     dob = models.DateField('date of birth', blank=True, null=True)
     dod = models.DateField('date of death', blank=True, null=True)
@@ -144,19 +144,84 @@ class Mouse(models.Model):
 # 2.1 # Mating
 class Mate(models.Model):
     mate_id = models.CharField(max_length=20)
-    mate_start_date = models.DateTimeField('Mate Start Date')
-    mate_end_date = models.DateTimeField('Mate End Date')
 
-    paternal_id = models.ManyToManyField(
-        Mouse, related_name='paternal', verbose_name='paternal mouse object')
-    maternal_id = models.ManyToManyField(
-        Mouse, related_name='maternal', verbose_name='maternal mouse object')
+    to_mouse = models.ManyToManyField(
+        Mouse, related_name='mate', verbose_name='mate event to mouse object')
+
+    # paternal_id = models.ManyToManyField(
+    #     Mouse, related_name='paternal', verbose_name='paternal mouse object')
+    # maternal_id = models.ManyToManyField(
+    #     Mouse, related_name='maternal', verbose_name='maternal mouse object')
+
+    def days(self):
+        return datetime.now() - self.mate_start_date
 
     def __str__(self):
         return self.mate_id
 
+
+class Do_Start_Mate(models.Model):
+    to_mate = models.ManyToManyField(
+        Mate,
+        related_name='start_date',
+        verbose_name='start mate event to mate object')
+
+    def __str__(self):
+        return ' / '.join(mate.mate_id for mate in self.to_mate.all())
+
+
+class Do_End_Mate(models.Model):
+    to_mate = models.ManyToManyField(
+        Mate,
+        related_name='end_date',
+        verbose_name='end mate event to mate object')
+
+    def __str__(self):
+        return ' / '.join(mate.mate_id for mate in self.to_mate.all())
+
+
+class Do_Count_Pups(models.Model):
+    to_mate = models.ManyToManyField(
+        Mate,
+        related_name='pups_count',
+        verbose_name='count pups event to mate object')
+
+    def __str__(self):
+        return ' / '.join(mate.mate_id for mate in self.to_mate.all())
+
+
+# 2.2 # Weaning
+class Wean(models.Model):
+    weam_id = models.CharField(max_length=20)
+    to_mate = models.ManyToManyField(
+        Mouse, related_name='wean', verbose_name='wean event to mate object')
+
+    def __str__(self):
+        return self.wean_id
+
     def days(self):
-        return datetime.now() - self.mate_start_date
+        return ' / '.join(wean.wean_id for wean in self.to_wean.all())
+        return datetime.now() - self.ma_start_date
+
+
+class Do_Start_Wean(models.Model):
+    to_wean = models.ManyToManyField(
+        Wean,
+        related_name='start_date',
+        verbose_name='start wean event to wean object')
+
+    def __str__(self):
+        return ' / '.join(wean.wean_id for wean in self.to_wean.all())
+
+
+class Do_End_Wean(models.Model):
+    to_wean = models.ManyToManyField(
+        Wean,
+        related_name='end_date',
+        verbose_name='end wean event to wean object')
+
+    def __str__(self):
+        return ' / '.join(wean.wean_id for wean in self.to_wean.all())
 
 
 # 2.2 # Phenotyping
@@ -216,6 +281,18 @@ class Get_Genotype(models.Model):
             mouse.mouse_id for mouse in self.to_mouse.all())
 
 
+class Get_Genotype_Birth(models.Model):
+    date = models.DateField('Genotyping Date')
+    mate = Mate()
+    litter = models.IntegerField(null=True)
+
+
+class Get_Genotype_Individual(models.Model):
+    date = models.DateField('Genotyping Date')
+    mate = Mate()
+    litter = models.IntegerField(null=True)
+
+
 # 2.3 # Sack
 class Do_Sack(models.Model):
     date = models.DateField('Sacked Date')
@@ -231,24 +308,6 @@ class Do_Sack(models.Model):
     def __str__(self):
         return self.date + ': ' + ' / '.join(mouse.mouse_id
                                              for mouse in self.to_mouse.all())
-
-
-
-# 2.5 # Weaning
-class Wean(models.Model):
-    weam_id = models.CharField(max_length=20)
-    weam_start_date = models.DateTimeField('weam Start Date')
-    weam_end_date = models.DateTimeField('weam End Date')
-    litter = models.IntegerField(default=0)
-
-    to_mouse = models.ManyToManyField(
-        Mouse, related_name='wean', verbose_name='wean event to mouse object')
-
-    def __str__(self):
-        return self.mate_id
-
-    def days(self):
-        return datetime.now() - self.mate_start_date
 
 
 # 2.6 # Feeding
@@ -316,11 +375,9 @@ class Do_InjectVirus(models.Model):
         return self.category + ': ' + ' / '.join(
             mouse.mouse_id for mouse in self.to_mouse.all())
 
-
 # 3 # show
 # 3.1 # mouse details
 #class Show_MouseDetails(models.Model):
 #    id = Mouse.mouse_id
 #    mouse = Mouse.objects.get(mouse_id = id)
 #    genotype = mouse.genotype.all()
-

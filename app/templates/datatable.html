@@ -10,8 +10,13 @@
 
 
 <h1> mouse table </h1>
+
+
 <div class="container" style="margin-top: 10px">
-    <table id="mousetable"></table>
+    <table id="mousetable">
+
+        {% csrf_token %}
+    </table>
 </div>
 
 <h1> mate table </h1>
@@ -38,15 +43,14 @@
         },
 
         onEditableSave: function (field, row, oldValue, $el) {
-            console.log(row);
             $.ajax({
                 type: "post",
                 url: "/api/mouse-table-edit",
-                data: { strJson: JSON.stringify(row) },
+                data: {pk: row['pk'], field: field, edit: row[field]},
                 success: function (data, status) {
-                    if (status == "success") {
-                        alert("编辑提交成功");
-                    }
+               //     if (status == "success") {
+               //         alert("编辑提交成功");
+               //    }
                 },
                 error: function () {
                     alert("编辑提交失败");
@@ -104,6 +108,7 @@
                 {value:"0", text:"饲养产生后代"},
                 {value:"1", text:"广东省实验动物中心"},
                 {value:"2", text:"南京模式生物中心"},
+                {value:"9", text:"unknown"},
                 ],
             },
         }, {
@@ -119,6 +124,7 @@
                 {value:"2", text:"mating"},
                 {value:"3", text:"lactating"},
                 {value:"4", text:"dead"},
+                {value:"9", text:"unknown"},
                 ],
             },
         }, {
@@ -134,6 +140,10 @@
             title: 'NOTES',
             sortable: true,
             editable: true,
+        }, {
+            field: 'fields.genotype.date',
+            title: 'DGGGGG',
+            sortable: true,
         }],
 
     });
@@ -229,49 +239,8 @@
             editable: true,
 
         }, {
-            field: 'fields.name',
+            field: 'fields.mate_start_date',
             title: 'NAME',
-            sortable: true,
-            editable: true,
-        }, {
-            field: 'fields.source',
-            title: 'SOURCE',
-            sortable: true,
-            editable: {
-                type: 'select',
-                title: 'SOURCE',
-                source: [
-                {value:"0", text:"饲养产生后代"},
-                {value:"1", text:"广东省实验动物中心"},
-                {value:"2", text:"南京模式生物中心"},
-                ],
-            },
-        }, {
-            field: 'fields.status',
-            title: 'STATUS',
-            sortable: true,
-            editable: {
-                type: 'select',
-                title: 'STATUS',
-                source: [
-                {value:"0", text:"idle"},
-                {value:"1", text:"suckling"},
-                {value:"2", text:"mating"},
-                {value:"3", text:"lactating"},
-                {value:"4", text:"dead"},
-                ],
-            },
-        }, {
-            field: 'fields.dob',
-            title: 'BirthDate',
-            sortable: true,
-        }, {
-            field: 'fields.dod',
-            title: 'DeadDate',
-            sortable: true,
-        }, {
-            field: 'fields.notes',
-            title: 'NOTES',
             sortable: true,
             editable: true,
         }],
