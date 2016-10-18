@@ -73,6 +73,7 @@ def mouse_table_edit(request):
     return render(request, 'index.html')
 
 
+@csrf_exempt
 def mouse_event_submit(request):
     if request.POST:
         print(request.POST)
@@ -112,15 +113,19 @@ def DatatableView(request):
 
 # event
 # use form
+@csrf_exempt
 def EventView(request):
-    if request.method == 'POST':
-        #POST goes here . is_ajax is must to capture ajax requests. Beginners pit.
-        if request.is_ajax():
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-            data = {"email": email, "password": password}
-            return JsonResponse(data)
-        print(request)
+    if request.method == 'POST' and request.is_ajax():
+        mouse = Mouse.objects.get(pk=1)
+        details = {}
+
+        breedID = request.POST.get('breedID')
+
+        details["Line"] = mouse.genotype.line
+        details["Locus"] = mouse.genotype.locus
+        details["Age"] = mouse.age()
+        details = json.dumps(details)
+        return HttpResponse(details)
     return render(request, 'events.html')
 
 
