@@ -10,7 +10,6 @@ from django.core import serializers
 from .models import BlogsPost
 from .models import Genotype
 from .models import Mouse
-from .models import Mate
 
 # test form
 from .forms import NameForm
@@ -51,14 +50,12 @@ def mouse_table_api(request):
 
 def mouse_detail_api(request, mouse_pk):
     mouse = Mouse.objects.get(pk=mouse_pk)
-    genotype = mouse.genotype.all()[0:1]
-    genotype = serializers.serialize("json", genotype)
-    return HttpResponse(genotype)
-
-
-def mate_table_api(request):
-    data = serializers.serialize("json", Mate.objects.all())
-    return HttpResponse(data)
+    details = {}
+    details["Line"] = mouse.genotype.line
+    details["Locus"] = mouse.genotype.locus
+    details["Age"] = mouse.age()
+    details = json.dumps([details])
+    return HttpResponse(details)
 
 
 # 接收POST请求数据

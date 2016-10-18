@@ -9,20 +9,14 @@
 
 
 
-<h1> mouse table </h1>
 
-
+<p>  TODO：加入高级搜索功能-query </p>
 <div class="container" style="margin-top: 10px">
     <table id="mousetable">
-
         {% csrf_token %}
     </table>
 </div>
 
-<h1> mate table </h1>
-<div class="container" style="margin-top: 10px">
-    <table id="matetable"></table>
-</div>
 
 
 <script>
@@ -128,6 +122,10 @@
                 ],
             },
         }, {
+            field: 'fields.corpse',
+            title: 'Corpse',
+            sortable: true,
+        }, {
             field: 'fields.dob',
             title: 'BirthDate',
             sortable: true,
@@ -140,10 +138,6 @@
             title: 'NOTES',
             sortable: true,
             editable: true,
-        }, {
-            field: 'fields.genotype.date',
-            title: 'DGGGGG',
-            sortable: true,
         }],
 
     });
@@ -160,7 +154,7 @@
                         alert(jqXHR+' + '+textStatus+' + '+ errorThrown)
                     }
                 }).responseText
-                )[0]['fields'];
+                )[0];
 
         var html = [];
         $.each(detail, function (key, value) {
@@ -170,81 +164,4 @@
     }
 </script>
 
-<script>
-    var table = $('#matetable').bootstrapTable({
-        //功能
-        search: true,
-        showToggle: true,
-        showRefresh: true,
-        showColumns: true,
-        pagination: true,
-
-        detailView: true,
-        detailFormatter: "detailFormatter",
-
-        showExport: true,
-        exportOptions:{
-            fileName: 'custom_file_name',
-        },
-
-        onEditableSave: function (field, row, oldValue, $el) {
-            console.log(row);
-            $.ajax({
-                type: "post",
-                url: "/api/mate-table-edit",
-                data: { strJson: JSON.stringify(row) },
-                success: function (data, status) {
-                    if (status == "success") {
-                        alert("编辑提交成功");
-                    }
-                },
-                error: function () {
-                    alert("编辑提交失败");
-                },
-                complete: function () {
-                }
-            });
-        },
-
-        //外观
-        striped: true,
-        rowStyle: function (row, index) {
-            //这里有5个取值代表5中颜色['active', 'success', 'info', 'warning', 'danger'];
-            var strclass = "";
-            if (row.fields.status == "1") {
-                strclass = 'success';
-            }
-            else if (row.fields.status == "2") {
-                strclass = 'danger';
-            }
-            else if (row.fields.status == "3") {
-                strclass = 'warning';
-            }
-            else {
-                return {};
-            }
-            return { classes: strclass }
-        },
-
-        //数据
-        url: '/api/mate-table-api',
-        columns: [{
-            field: 'pk',
-            title: 'PK',
-            sortable: true,
-        }, {
-            field: 'fields.mate_id',
-            title: 'ID',
-            sortable: true,
-            editable: true,
-
-        }, {
-            field: 'fields.mate_start_date',
-            title: 'NAME',
-            sortable: true,
-            editable: true,
-        }],
-
-    });
-</script>
 {% endblock %}

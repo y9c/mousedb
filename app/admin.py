@@ -6,21 +6,13 @@ from .models import BlogsPost
 # objects
 from .models import (
     Mouse,
-    Genotype,
 )
 
-# events
+# property
 from .models import (
-    Get_Phenotype,
-    Get_Genotype,
-    Get_Phenotype_Weight,
-    Mate,
-    Wean,
-    Do_Sack,
-    Do_AddChow,
-    Do_AddDrink,
-    Do_AddBedding,
-    Do_InjectVirus,
+    Phenotype,
+    Genotype,
+    Breed,
 )
 
 
@@ -30,20 +22,12 @@ admin.site.register(BlogsPost)
 # objects
 admin.site.register([
     Mouse,
-    Genotype,
 ])
 
 
-# events
+# property
 admin.site.register([
-    Get_Phenotype,
-    Get_Genotype,
-    Get_Phenotype_Weight,
-    Mate,
-    Wean,
-    Do_Sack,
-    Do_AddChow,
-    Do_AddDrink,
-    Do_AddBedding,
-    Do_InjectVirus,
+    Phenotype,
+    Genotype,
+    Breed,
 ])
