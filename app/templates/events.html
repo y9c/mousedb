@@ -1,27 +1,42 @@
 {% extends "base.html" %} {% block content %}
 
 
-<div class="row">
-    <div class="col-xs-9">
-        <div id="hello_response"></div>
-    </div>
-    <div class="col-xs-3">
-    </div>
-</div>
 
 <div class="container">
 
     <form class="form-signin" method="POST">
         {% csrf_token %}
-        <h2 class="form-signin-heading">Enter Details</h2>
-
-        <label for="test" class="sr-only">Search</label>
-        <input type="search" id="test" class="form-control" placeholder="Search" required>
-
-        <button id="submit" class="btn btn-lg btn-primary btn-block" type="submit">Query~ Go!!</button>
+        <div class="row">
+            <div class="col-xs-9">
+                <h2 class="form-signin-heading">Do genotypeing for one breed</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3 col-md-offset-2">
+                <input type="number" id="test" class="form-control" placeholder="Please Select a breed ID" required>
+            </div>
+            <div class="col-xs-3 col-md-offset-1">
+                <input type="number" id="test" class="form-control" placeholder="Mouse of pups" required>
+            </div>
+            <div class="col-xs-3">
+                <button id="submit" class="btn btn-primary" type="submit">Go!!</button>
+            </div>
+        </div>
     </form>
 
 </div>
+
+<br></br>
+
+<div class="row">
+    <div class="col-xs-9">
+        <div id="hello_response"></div>
+    </div>
+    <div class="col-xs-3">
+        <p> hello empty</p>
+    </div>
+</div>
+
 
 <script>
     //For getting CSRF token
@@ -82,5 +97,7 @@
         });
     });
 </script>
+
+
 
 {% endblock %}
