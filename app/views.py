@@ -73,6 +73,20 @@ def mouse_table_edit(request):
     return render(request, 'index.html')
 
 
+def mouse_event_submit(request):
+    if request.POST:
+        print(request.POST)
+        mouse = Mouse.objects.get(pk=1)
+        details = {}
+        details["Line"] = mouse.genotype.line
+        details["Locus"] = mouse.genotype.locus
+        details["Age"] = mouse.age()
+        details = json.dumps(details)
+        return HttpResponse(details)
+    else:
+        print("no a post啊")
+
+
 # statistic
 # use echarts
 # dynamic chart example
@@ -106,6 +120,7 @@ def EventView(request):
             password = request.POST.get('password')
             data = {"email": email, "password": password}
             return JsonResponse(data)
+        print(request)
     return render(request, 'events.html')
 
 

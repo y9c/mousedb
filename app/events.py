@@ -8,9 +8,12 @@ import datetime
 import random
 import string
 
+from django import forms
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy
+from .models import Mouse
+from .models import Breed
 
 
 # 2 # Event
@@ -154,10 +157,21 @@ class Get_Genotype(models.Model):
             mouse.mouse_id for mouse in self.to_mouse.all())
 
 
-class Get_Genotype_Birth(models.Model):
-    date = models.DateField('Genotyping Date')
-    mate = Mate()
-    litter = models.IntegerField(null=True)
+def Get_Genotype_Birth():
+    pass
+
+
+
+class ChoiceForm(forms.ModelForm):
+    class Meta:
+        model = Breed
+
+
+class MouseForm(forms.ModelForm):
+    class Meta:
+        model = Mouse
+        exclude = ('breed',)
+
 
 
 class Get_Genotype_Individual(models.Model):

@@ -27,6 +27,8 @@ urlpatterns = [
         views.mouse_detail_api, name='mouse_detail_api'),
     url(r'^api/mouse-table-edit$',
         views.mouse_table_edit, name='mouse_table_edit'),
+    url(r'^api/mouse-event-submit$',
+        views.mouse_event_submit, name='mouse_event_submit'),
 
     # show event
     url(r'^event/$', views.EventView, name='event_page'),

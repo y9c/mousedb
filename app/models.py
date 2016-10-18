@@ -74,6 +74,7 @@ class Breed(models.Model):
         'date of wean start', blank=True, null=True)
     wean_end_date = models.DateField('date of wean end', blank=True, null=True)
     litter = models.IntegerField(null=True)
+    genotyped = models.BooleanField(default=False)
 
     # paternal_id = models.ManyToManyField(
     #     Mouse, related_name='paternal', verbose_name='paternal mouse object')
