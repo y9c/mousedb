@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.core import serializers
+from django.http import Http404
 
 from .models import BlogsPost
 from .models import Genotype
@@ -62,30 +63,38 @@ def mouse_detail_api(request, mouse_pk):
 @csrf_exempt
 def mouse_table_edit(request):
     if request.POST:
+        # show post request
         print(request.POST)
+
+        # render response
         selected_mouse = get_object_or_404(Mouse, pk=request.POST.get('pk'))
         setattr(selected_mouse, request.POST.get('field').split(".")[1],
                 request.POST.get('edit'))
         selected_mouse.save()
+        return HttpResponse("Edit Done!")
     else:
-        print("error 啊")
-
-    return render(request, 'index.html')
+        raise Http404
 
 
 @csrf_exempt
 def mouse_event_submit(request):
-    if request.POST:
+    if request.method == 'POST' and request.is_ajax():
+        # show post request
         print(request.POST)
-        mouse = Mouse.objects.get(pk=1)
         details = {}
+
+        # render response
+        details["breedID"] = request.POST.get('breedID')
+        details["breedCount"] = request.POST.get('breedCount')
+
+        mouse = Mouse.objects.get(pk=1)
         details["Line"] = mouse.genotype.line
         details["Locus"] = mouse.genotype.locus
         details["Age"] = mouse.age()
         details = json.dumps(details)
         return HttpResponse(details)
     else:
-        print("no a post啊")
+        raise Http404
 
 
 # statistic
@@ -113,19 +122,7 @@ def DatatableView(request):
 
 # event
 # use form
-@csrf_exempt
 def EventView(request):
-    if request.method == 'POST' and request.is_ajax():
-        mouse = Mouse.objects.get(pk=1)
-        details = {}
-
-        breedID = request.POST.get('breedID')
-
-        details["Line"] = mouse.genotype.line
-        details["Locus"] = mouse.genotype.locus
-        details["Age"] = mouse.age()
-        details = json.dumps(details)
-        return HttpResponse(details)
     return render(request, 'events.html')
 
 

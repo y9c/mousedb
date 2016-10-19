@@ -67,15 +67,18 @@
             type: "POST",
             data: {
                 csrfmiddlewaretoken: csrftoken,
-                breedID: breedID
-                breedCount: breedCount
+                breedID: breedID,
+                breedCount: breedCount,
             },
-            success: function(data) {
-                console.log(data);
+            success: function(response) {
+                console.log(response);
                 $('#hello_response').bootstrapTable({
-                    data: [JSON.parse(data)],
+                    data: [JSON.parse(response)],
                     columns: [{
                         checkbox: true
+                    }, {
+                        field: 'breedCount',
+                        title: 'breedCount'
                     }, {
                         field: 'Locus',
                         title: 'Locus'
