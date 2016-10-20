@@ -30,11 +30,14 @@ def blog(request):
 # 发出get的响应
 # demo
 def server_info_api(request):
-    server_info = {'cpu': 99,
-                   'memory': 30,
-                   'network': 44,
-                   'disk': 55, }
-    return HttpResponse(json.dumps(server_info))
+    if request.GET.get("hello") == "1":
+        return HttpResponse(json.dumps({"hello": 1}))
+    else:
+        server_info = {'cpu': 99,
+                       'memory': 30,
+                       'network': 44,
+                       'disk': 55, }
+        return HttpResponse(json.dumps(server_info))
 
 
 def mouse_count_api(request):
@@ -43,10 +46,29 @@ def mouse_count_api(request):
 
 
 def mouse_table_api(request):
-    data = serializers.serialize("json", Mouse.objects.all())
-    #struct = json.loads(data)
-    #data = json.dumps(struct)
-    return HttpResponse(data)
+    print(request)
+    if request.GET.get("condition") != '':
+        rule_params = request.GET.get("condition").split('&')
+        try:
+            rules = {p.split("=")[0] : p.split("=")[1] for p in rule_params}
+            print(rules)
+            try:
+                mouse = Mouse.objects.filter(**rules)
+                data = serializers.serialize("json", mouse)
+                return HttpResponse(data)
+            except:
+                print("null date")
+                return HttpResponse("null=date")
+        except:
+            print("得这么搞 XXX=YYY")
+            return HttpResponse("error format")
+    else:
+        #struct = json.loads(data)
+        #data = json.dumps(struct)
+        mouse = Mouse.objects.all()
+        data = serializers.serialize("json", mouse)
+        return HttpResponse(data)
+
 
 
 def mouse_detail_api(request, mouse_pk):

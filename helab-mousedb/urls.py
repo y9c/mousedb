@@ -15,6 +15,7 @@ urlpatterns = [
 
     # index page
     url(r'^index/', views.IndexView.as_view(), name='index'),
+    url(r'^blog/', views.blog, name='blog'),
 
     # api for posting data
     url(r'^api/server-info-api$',

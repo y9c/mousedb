@@ -1,37 +1,54 @@
 {% extends "base.html" %} {% block content %}
 
-<div class="container">
+<div class="container jumbotron">
+    <div class="row">
+        <div class="col-xs-9">
+            <h2 class="form-signin-heading">Do genotypeing for one breed</h2>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-xs-3 col-md-offset-2">
+            <input type="text" id="breedID" class="form-control" placeholder="Please Select a breed ID" required>
+        </div>
+        <div class="col-xs-3 col-md-offset-1">
+            <input type="number" id="breedCount" class="form-control" placeholder="Mouse of pups" required>
+        </div>
+        <div class="col-xs-3">
+            <input id="creat" class="btn btn-primary" type="button" onclick="createTable()" value="Create the table">
+        </div>
+    </div>
+</div>
+
+
+<div class="container card-block">
+    <div class="row">
+        <table id="myTable" class="table table-inverse text-center">
+        </table>
+    </div>
+</div>
+
+
+<div class="container card-block">
     <form class="form-signin" method="POST">
         {% csrf_token %}
         <div class="row">
-            <div class="col-xs-9">
-                <h2 class="form-signin-heading">Do genotypeing for one breed</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-3 col-md-offset-2">
-                <input type="number" id="breedID" class="form-control" placeholder="Please Select a breed ID" required>
-            </div>
-            <div class="col-xs-3 col-md-offset-1">
-                <input type="number" id="breedCount" class="form-control" placeholder="Mouse of pups" required>
-            </div>
-            <div class="col-xs-3">
-                <button id="submit" class="btn btn-primary" type="submit">Go!!</button>
+            <div class="col-xs-8 col-md-offset-2">
+                <button id="submit" class="btn btn-primary" type="submit">Submit Go!!</button>
             </div>
         </div>
     </form>
-
 </div>
+
 
 <br></br>
 
-<div class="row">
-    <div class="col-xs-9">
-        <div id="hello_response"></div>
-    </div>
-    <div class="col-xs-3">
-        <p> hello empty</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-9">
+            <div id="hello_response"></div>
+        </div>
     </div>
 </div>
 
@@ -53,12 +70,46 @@
         }
         return cookieValue;
     }
+
+    // Build a form
+    //$("#creat").click(function(e) {
+    function createTable() {
+        var breedID = $('#breedID').val();
+        var breedCount = $('#breedCount').val();
+        var form = [];
+        for (var r = 0; r < parseInt(breedCount, 10); r++) {
+            form.push({
+                'Breed': breedID,
+                'Pup': r + 1,
+                'Gen': "请选择基因型",
+                'keep': "True"
+            });
+        }
+        $('#myTable').bootstrapTable({
+            data: form,
+            columns: [{}, {
+                field: 'Breed',
+                title: 'Breed'
+            }, {
+                field: 'Pup',
+                title: 'Pup'
+            }, {
+                field: 'Gen',
+                title: 'Gen'
+            }, {
+                field: 'Keep',
+                title: 'Keep'
+            }, ]
+
+        });
+    };
+
     //For doing AJAX post
     $("#submit").click(function(e) {
         e.preventDefault();
         var csrftoken = getCookie('csrftoken');
         var breedID = $('#breedID').val();
-        var breedCount = $('#breedCount').val();
+        var breedCount = $('#myTable').val();
         //This is the Ajax post.Observe carefully. It is nothing but details of where_to_post,what_to_post
 
         $.ajax({

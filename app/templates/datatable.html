@@ -5,163 +5,324 @@
 
 <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+
 <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
 
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        小鼠查询系统 <small>表单筛选</small>
+    </h1>
+</section>
+
+
+<script>
+    console.log($("#hello").serializeArray())
+</script>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <form id="formSearch" class="form-horizontal">
+
+                        <div class="form-group" style="margin-top: 5px">
+                            <label class="control-label col-sm-1" for="txt_search_departmentname">
+                                RULE
+                            </label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="rule_query" placeholder="输入小鼠编号, 基因型等模糊查询">
+                            </div>
+
+                            <label class="control-label col-sm-1" for="txt_search_statu">
+                                SELECT1
+                            </label>
+                            <div class="col-sm-2">
+                                <select class="form-control" id="select_query_1">
+                                    <option value="">全部</option>
+                                </select>
+                            </div>
+
+                            <label class="control-label col-sm-1" for="txt_search_statu">
+                                SELECT2
+                            </label>
+                            <div class="col-sm-2">
+                                <select class="form-control" id="select_query_2">
+                                    <option value="">全部</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 5px">
+
+                            <label class="control-label col-sm-1" for="txt_search_statu">
+                                DATEITEM
+                            </label>
+                            <div class="col-sm-2">
+                                <select class="form-control" id="select_query_1">
+                                    <option value="">全部</option>
+                                </select>
+                            </div>
+
+                            <label class="control-label col-sm-1" for="txt_search_departmentname">
+                                DATE
+                            </label>
+                            <div class="col-sm-4">
+                                <div class="input-prepend input-group">
+                                    <span class="add-on input-group-addon">
+                                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                    </span>
+                                    <input type="hidden" id="purStartTime"/>
+                                    <input type="hidden" id="purEndTime"/>
+                                    <input type="text" id="purStartEndTime" class="form-control" value="" class="span4" readonly="readonly"/>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4" style="text-align: left;">
+                                <button type="button" id="btn_query" class="btn btn-primary">查询</button>
+                                <button type="button" id="btn_rest" class="btn btn-primary">重置</button>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 
 <p>  TODO：加入高级搜索功能-query </p>
-<div class="container" style="margin-top: 10px">
-    <table id="mousetable">
-        {% csrf_token %}
-    </table>
-</div>
 
+
+<table id="mousetable">
+    {% csrf_token %}
+</table>
 
 
 <script>
-    var table = $('#mousetable').bootstrapTable({
-        //功能
-        search: true,
-        showToggle: true,
-        showRefresh: true,
-        showColumns: true,
-        pagination: true,
+    var $table = $('#mousetable');
+    function initTable() {
+        $table.bootstrapTable({
+            //功能
+            showToggle: true,
+            showRefresh: true,
+            showColumns: true,
 
-        detailView: true,
-        detailFormatter: "detailFormatter",
+            toolbar: "#get",
+            search: true,
 
-        showExport: true,
-        exportOptions:{
-            fileName: 'custom_file_name',
-        },
+            pagination: true,
 
-        onEditableSave: function (field, row, oldValue, $el) {
-            $.ajax({
-                type: "post",
-                url: "/api/mouse-table-edit",
-                data: {pk: row['pk'], field: field, edit: row[field]},
-                success: function (data, status) {
-               //     if (status == "success") {
-               //         alert("编辑提交成功");
-               //    }
-                },
-                error: function () {
-                    alert("编辑提交失败");
-                },
-                complete: function () {
-                }
-            });
-        },
+            detailView: true,
+            detailFormatter: "detailFormatter",
 
-        //外观
-        striped: true,
-        rowStyle: function (row, index) {
-            //这里有5个取值代表5中颜色['active', 'success', 'info', 'warning', 'danger'];
-            var strclass = "";
-            if (row.fields.status == "1") {
-                strclass = 'success';
-            }
-            else if (row.fields.status == "2") {
-                strclass = 'danger';
-            }
-            else if (row.fields.status == "3") {
-                strclass = 'warning';
-            }
-            else {
-                return {};
-            }
-            return { classes: strclass }
-        },
-
-        //数据
-        url: '/api/mouse-table-api',
-        columns: [{
-            field: 'pk',
-            title: 'PK',
-            sortable: true,
-        }, {
-            field: 'fields.mouse_id',
-            title: 'ID',
-            sortable: true,
-            editable: true,
-
-        }, {
-            field: 'fields.name',
-            title: 'NAME',
-            sortable: true,
-            editable: true,
-        }, {
-            field: 'fields.source',
-            title: 'SOURCE',
-            sortable: true,
-            editable: {
-                type: 'select',
-                title: 'SOURCE',
-                source: [
-                {value:"0", text:"饲养产生后代"},
-                {value:"1", text:"广东省实验动物中心"},
-                {value:"2", text:"南京模式生物中心"},
-                {value:"9", text:"unknown"},
-                ],
+            showExport: true,
+            exportOptions:{
+                fileName: 'custom_file_name',
             },
-        }, {
-            field: 'fields.status',
-            title: 'STATUS',
-            sortable: true,
-            editable: {
-                type: 'select',
-                title: 'STATUS',
-                source: [
-                {value:"0", text:"idle"},
-                {value:"1", text:"suckling"},
-                {value:"2", text:"mating"},
-                {value:"3", text:"lactating"},
-                {value:"4", text:"dead"},
-                {value:"9", text:"unknown"},
-                ],
-            },
-        }, {
-            field: 'fields.corpse',
-            title: 'Corpse',
-            sortable: true,
-        }, {
-            field: 'fields.dob',
-            title: 'BirthDate',
-            sortable: true,
-        }, {
-            field: 'fields.dod',
-            title: 'DeadDate',
-            sortable: true,
-        }, {
-            field: 'fields.notes',
-            title: 'NOTES',
-            sortable: true,
-            editable: true,
-        }],
 
-    });
-</script>
+            queryParams: "queryParams",
 
-<script>
-    function detailFormatter(index, row) {
-        detail=JSON.parse(
+            onEditableSave: function (field, row, oldValue, $el) {
                 $.ajax({
-                    url: '/api/mouse-' + row['pk'] + '-detail-api',
-                    global: false,
-                    async:false,
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert(jqXHR+' + '+textStatus+' + '+ errorThrown)
+                    type: "post",
+                    url: "/api/mouse-table-edit",
+                    data: {pk: row['pk'], field: field, edit: row[field]},
+                    success: function (data, status) {
+                        //     if (status == "success") {
+                        //         alert("编辑提交成功");
+                        //    }
+                    },
+                    error: function () {
+                        alert("编辑提交失败");
+                    },
+                    complete: function () {
                     }
-                }).responseText
-                )[0];
+                });
+            },
 
-        var html = [];
-        $.each(detail, function (key, value) {
-            html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+            //外观
+            striped: true,
+            rowStyle: function (row, index) {
+                //这里有5个取值代表5中颜色['active', 'success', 'info', 'warning', 'danger'];
+                var strclass = "";
+                if (row.fields.status == "1") {
+                    strclass = 'success';
+                }
+                else if (row.fields.status == "2") {
+                    strclass = 'danger';
+                }
+                else if (row.fields.status == "3") {
+                    strclass = 'warning';
+                }
+                else {
+                    return {};
+                }
+                return { classes: strclass }
+            },
+
+            //数据
+            url: '/api/mouse-table-api',
+            columns: [{
+                field: 'pk',
+                title: 'PK',
+                sortable: true,
+            }, {
+                field: 'fields.mouse_id',
+                title: 'ID',
+                sortable: true,
+                editable: true,
+
+            }, {
+                field: 'fields.name',
+                title: 'NAME',
+                sortable: true,
+                editable: true,
+            }, {
+                field: 'fields.source',
+                title: 'SOURCE',
+                sortable: true,
+                editable: {
+                    type: 'select',
+                    title: 'SOURCE',
+                    source: [
+                    {value:"0", text:"饲养产生后代"},
+                    {value:"1", text:"广东省实验动物中心"},
+                    {value:"2", text:"南京模式生物中心"},
+                    {value:"9", text:"unknown"},
+                    ],
+                },
+            }, {
+                field: 'fields.status',
+                title: 'STATUS',
+                sortable: true,
+                editable: {
+                    type: 'select',
+                    title: 'STATUS',
+                    source: [
+                    {value:"0", text:"idle"},
+                    {value:"1", text:"suckling"},
+                    {value:"2", text:"mating"},
+                    {value:"3", text:"lactating"},
+                    {value:"4", text:"dead"},
+                    {value:"9", text:"unknown"},
+                    ],
+                },
+            }, {
+                field: 'fields.corpse',
+                title: 'Corpse',
+                sortable: true,
+            }, {
+                field: 'fields.dob',
+                title: 'BirthDate',
+                sortable: true,
+            }, {
+                field: 'fields.dod',
+                title: 'DeadDate',
+                sortable: true,
+            }, {
+                field: 'fields.notes',
+                title: 'NOTES',
+                sortable: true,
+                editable: true,
+            }],
+
         });
-        return html.join('');
     }
+
+
+//查询参数
+function queryParams(params) {
+    return {
+        //pageSize: params.limit,
+        //currentPage: params.offset/params.limit + 1,
+        condition: $("#rule_query").val(),
+        orderStatus: $("#order_status").val(),
+        fundChannel: $("#fund_channel").val(),
+        purStartTime: $("#purStartTime").val(),
+        purEndTime: $("#purEndTime").val()
+    };
+}
+
+
+//获取基金渠道下拉列表
+$.ajax({
+    url : "channel/fund/all?t="+(new Date()).valueOf(),
+    method : "POST",
+    dataType : "json",
+    async : false,
+    success : function(data) {
+        var templateHtml = $("#fundchannel_select_template").html();
+        var template = Handlebars.compile(templateHtml);
+        var html = template(data);
+        $("#fund_channel").append(html);
+    },
+});
+
+//获取详细信息
+function detailFormatter(index, row) {
+    detail=JSON.parse(
+            $.ajax({
+                url: '/api/mouse-' + row['pk'] + '-detail-api',
+                global: false,
+                async:false,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(jqXHR+' + '+textStatus+' + '+ errorThrown)
+                }
+            }).responseText
+            )[0];
+
+    var html = [];
+    $.each(detail, function (key, value) {
+        html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+    });
+    return html.join('');
+}
+$(function() {
+
+    //查询条件输入框-起止日期
+    $('#purStartEndTime').daterangepicker({
+        timePicker: true,
+        timePickerIncrement: 30,
+        format: 'MM/DD/YYYY'
+    }, function(start, end, label) {
+        $("#purStartTime").val(moment(start).format('YYYY-MM-DD'));
+        $("#purEndTime").val(moment(end).format('YYYY-MM-DD'));
+    });
+
+    //初始化表格
+    initTable();
+
+    //查询按钮点击事件
+    $("#btn_query").click(function(){
+        var queryParams = {}
+        queryParams.rule = $("#rule_query")[0].value
+        queryParams.select = $("#select_query_1")[0].value
+        console.log(queryParams)
+        //console.log($("#hello").serializeArray());
+        //var queryParams = JSON.stringify($("#formSearch"));
+        $table.bootstrapTable('refresh', queryParams);
+    });
+
+    //重置按钮点击事件
+    $("#btn_rest").click(function(){
+        $("#formSearch")[0].reset()
+            $("#purStartTime").val("");
+        $("#purEndTime").val("");
+    });
+
+});
 </script>
 
 {% endblock %}
