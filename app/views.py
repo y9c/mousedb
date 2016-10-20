@@ -40,6 +40,19 @@ def server_info_api(request):
         return HttpResponse(json.dumps(server_info))
 
 
+def getlist_genotype_locus(request):
+    try:
+        locus = Genotype.objects.filter(line=request.GET.get("line"))
+        #print(locus.locus.all())
+        data = serializers.serialize("json", locus)
+        return HttpResponse(data)
+    except:
+        data = {'S(XY)': 'S(XY)',
+                       'S(XX)': 'S(XX)',
+                       'S(??)': 'S(??)', }
+        return HttpResponse(json.dumps(data))
+
+
 def mouse_count_api(request):
     mouse_count = {'mouse': Mouse.objects.filter(status=0).count()}
     return HttpResponse(json.dumps(mouse_count))
@@ -47,10 +60,10 @@ def mouse_count_api(request):
 
 def mouse_table_api(request):
     print(request)
-    if request.GET.get("condition") != '':
-        rule_params = request.GET.get("condition").split('&')
+    if request.GET.get("rule_query") != '':
+        rule_params = request.GET.get("rule_query").split('&')
         try:
-            rules = {p.split("=")[0] : p.split("=")[1] for p in rule_params}
+            rules = {p.split("=")[0]: p.split("=")[1] for p in rule_params}
             print(rules)
             try:
                 mouse = Mouse.objects.filter(**rules)
@@ -68,7 +81,6 @@ def mouse_table_api(request):
         mouse = Mouse.objects.all()
         data = serializers.serialize("json", mouse)
         return HttpResponse(data)
-
 
 
 def mouse_detail_api(request, mouse_pk):
@@ -102,12 +114,15 @@ def mouse_table_edit(request):
 def mouse_event_submit(request):
     if request.method == 'POST' and request.is_ajax():
         # show post request
-        print(request.POST)
+        #print(request.POST)
         details = {}
-
         # render response
         details["breedID"] = request.POST.get('breedID')
-        details["breedCount"] = request.POST.get('breedCount')
+        #details["breedCount"] = request.POST.get('breedCount')
+
+        for pup in json.loads(request.POST.get('breedBirth')):
+            print(pup)
+            details["breedCount"] = pup["Gen"]
 
         mouse = Mouse.objects.get(pk=1)
         details["Line"] = mouse.genotype.line

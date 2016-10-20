@@ -22,9 +22,6 @@
 </section>
 
 
-<script>
-    console.log($("#hello").serializeArray())
-</script>
 
 <section class="content">
     <div class="row">
@@ -35,27 +32,31 @@
                     <form id="formSearch" class="form-horizontal">
 
                         <div class="form-group" style="margin-top: 5px">
-                            <label class="control-label col-sm-1" for="txt_search_departmentname">
-                                RULE
-                            </label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control" id="rule_query" placeholder="输入小鼠编号, 基因型等模糊查询">
-                            </div>
-
                             <label class="control-label col-sm-1" for="txt_search_statu">
-                                SELECT1
+                                LINE
                             </label>
                             <div class="col-sm-2">
-                                <select class="form-control" id="select_query_1">
+                                <select class="form-control" id="line_query">
                                     <option value="">全部</option>
+                                    <optgroup label="C57">
+                                        <option value="WT">WT</option>
+                                        <option value="R">rtTA</option>
+                                        <option value="M">Msh2</option>
+                                        <option value="T">TAH</option>
+                                    </optgroup>
+                                    <optgroup label="PWK">
+                                        <option value="PWK-WT">WT</option>
+                                    </optgroup>
+                                </select>
+
                                 </select>
                             </div>
 
                             <label class="control-label col-sm-1" for="txt_search_statu">
-                                SELECT2
+                                LOCUS
                             </label>
-                            <div class="col-sm-2">
-                                <select class="form-control" id="select_query_2">
+                            <div class="col-sm-4">
+                                <select class="form-control" id="locus_query">
                                     <option value="">全部</option>
                                 </select>
                             </div>
@@ -64,11 +65,13 @@
                         <div class="form-group" style="margin-top: 5px">
 
                             <label class="control-label col-sm-1" for="txt_search_statu">
-                                DATEITEM
+                                dITEM
                             </label>
                             <div class="col-sm-2">
-                                <select class="form-control" id="select_query_1">
+                                <select class="form-control" id="dateitem_query">
                                     <option value="">全部</option>
+                                    <option value="Born">Born Date</option>
+                                    <option value="Dead">Dead Date</option>
                                 </select>
                             </div>
 
@@ -80,18 +83,27 @@
                                     <span class="add-on input-group-addon">
                                         <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                                     </span>
-                                    <input type="hidden" id="purStartTime"/>
-                                    <input type="hidden" id="purEndTime"/>
-                                    <input type="text" id="purStartEndTime" class="form-control" value="" class="span4" readonly="readonly"/>
+                                    <input type="hidden" id="StartTime_query"/>
+                                    <input type="hidden" id="EndTime_query"/>
+                                    <input type="text" id="StartEndTime_query" class="form-control" value="" class="span4" readonly="readonly"/>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 5px">
+                            <label class="control-label col-sm-1" for="txt_search_departmentname">
+                                RULE
+                            </label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="rule_query" placeholder="输入小鼠编号, 基因型等模糊查询">
                             </div>
 
                             <div class="col-sm-4" style="text-align: left;">
                                 <button type="button" id="btn_query" class="btn btn-primary">查询</button>
                                 <button type="button" id="btn_rest" class="btn btn-primary">重置</button>
                             </div>
-
                         </div>
+
 
                     </form>
 
@@ -247,30 +259,36 @@ function queryParams(params) {
     return {
         //pageSize: params.limit,
         //currentPage: params.offset/params.limit + 1,
-        condition: $("#rule_query").val(),
-        orderStatus: $("#order_status").val(),
-        fundChannel: $("#fund_channel").val(),
-        purStartTime: $("#purStartTime").val(),
-        purEndTime: $("#purEndTime").val()
+        rule_query: $("#rule_query").val(),
+        line_query: $("#line_query").val(),
+        locus_query: $("#locus_query").val(),
+        StartTime_query: $("#StartTime_query").val(),
+        EndTime_query: $("#EndTime_query").val()
     };
 }
 
 
-//获取基金渠道下拉列表
-$.ajax({
-    url : "channel/fund/all?t="+(new Date()).valueOf(),
-    method : "POST",
-    dataType : "json",
-    async : false,
-    success : function(data) {
-        var templateHtml = $("#fundchannel_select_template").html();
-        var template = Handlebars.compile(templateHtml);
-        var html = template(data);
-        $("#fund_channel").append(html);
-    },
-});
+//点击获取下拉列表
+$("#line_query").change(function(){
+    $.ajax({
+        url : "/api/getlist-genotype-locus",
+        method : "GET",
+        data: {line: $(this).val()},
+        dataType : "json",
+        async : false,
+        success : function(data) {
+            console.log(data);
+            var $el = $("#locus_query");
+            $el.empty(); // remove old options
+            $.each(data, function(key,value) {
+                $el.append($("<option></option>option>")
+                        .attr("value", value).text(key));
+            });
+        },
+    });
+})
 
-//获取详细信息
+//获取表格某一行的详细信息
 function detailFormatter(index, row) {
     detail=JSON.parse(
             $.ajax({
@@ -289,16 +307,17 @@ function detailFormatter(index, row) {
     });
     return html.join('');
 }
-$(function() {
 
+//格式输入时间
+$(function() {
     //查询条件输入框-起止日期
-    $('#purStartEndTime').daterangepicker({
+    $('#StartEndTime_query').daterangepicker({
         timePicker: true,
         timePickerIncrement: 30,
         format: 'MM/DD/YYYY'
     }, function(start, end, label) {
-        $("#purStartTime").val(moment(start).format('YYYY-MM-DD'));
-        $("#purEndTime").val(moment(end).format('YYYY-MM-DD'));
+        $("#StartTime_query").val(moment(start).format('YYYY-MM-DD'));
+        $("#EndTime_query").val(moment(end).format('YYYY-MM-DD'));
     });
 
     //初始化表格
@@ -306,11 +325,14 @@ $(function() {
 
     //查询按钮点击事件
     $("#btn_query").click(function(){
-        var queryParams = {}
-        queryParams.rule = $("#rule_query")[0].value
-        queryParams.select = $("#select_query_1")[0].value
-        console.log(queryParams)
-        //console.log($("#hello").serializeArray());
+        var queryParams = {};
+        queryParams.rule_query = $("#rule_query").val();
+        queryParams.line_query = $("#line_query").val();
+        queryParams.locus_query = $("#locus_query").val(),
+        queryParams.dateitem_query = $("#dateitem_query").val(),
+        queryParams.StartTime_query = $("#StartTime_query").val(),
+        queryParams.EndTime_query = $("#EndTime_query").val()
+            console.log(queryParams);
         //var queryParams = JSON.stringify($("#formSearch"));
         $table.bootstrapTable('refresh', queryParams);
     });

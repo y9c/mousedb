@@ -17,15 +17,18 @@ urlpatterns = [
     url(r'^index/', views.IndexView.as_view(), name='index'),
     url(r'^blog/', views.blog, name='blog'),
 
-    # api for posting data
+    # api for get date
     url(r'^api/server-info-api$',
         views.server_info_api, name='server_info_api'),
+    url(r'^api/getlist-genotype-locus$',
+        views.getlist_genotype_locus, name='getlist_genotype_locus'),
     url(r'^api/mouse-count-api$',
         views.mouse_count_api, name='mouse_count_api'),
     url(r'^api/mouse-table-api$',
         views.mouse_table_api, name='mouse_table_api'),
     url(r'^api/mouse-(?P<mouse_pk>[0-9]+)-detail-api$',
         views.mouse_detail_api, name='mouse_detail_api'),
+    # api for posting data
     url(r'^api/mouse-table-edit$',
         views.mouse_table_edit, name='mouse_table_edit'),
     url(r'^api/mouse-event-submit$',
