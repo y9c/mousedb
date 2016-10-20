@@ -10,12 +10,12 @@
 
 
 <ul class="list-group">
-  <li class="list-group-item">Event: 观察到出生</li>
-  <li class="list-group-item">Event: 购买小鼠</li>
-  <li class="list-group-item">Event: 分笼</li>
-  <li class="list-group-item">Event: 称量体重</li>
-  <li class="list-group-item">Event: 加药饲料</li>
-  <li class="list-group-item">Event: 注射病毒</li>
+    <li class="list-group-item">Event: 观察到出生</li>
+    <li class="list-group-item">Event: 购买小鼠</li>
+    <li class="list-group-item">Event: 分笼</li>
+    <li class="list-group-item">Event: 称量体重</li>
+    <li class="list-group-item">Event: 加药饲料</li>
+    <li class="list-group-item">Event: 注射病毒</li>
 </ul>
 
 <div class="container jumbotron">
@@ -104,6 +104,7 @@
                 'Keep': "0"
             });
         }
+        $('#myTable').bootstrapTable('load', form)
         $('#myTable').bootstrapTable({
             data: form,
             columns: [{}, {
@@ -122,10 +123,13 @@
                     type: 'select',
                     title: 'Gen',
                     emptytext: '请选择基因型',
-                    source: [
-                    {value:"WT-X", text:"S(XX)"},
-                    {value:"WT-Y", text:"S(XY)"},
-                    ],
+                    source: [{
+                        value: "WT-X",
+                        text: "S(XX)"
+                    }, {
+                        value: "WT-Y",
+                        text: "S(XY)"
+                    }, ],
                 },
             }, {
                 field: 'Keep',
@@ -134,10 +138,13 @@
                 editable: {
                     type: 'select',
                     title: 'Keep',
-                    source: [
-                    {value:"0", text:"Discard"},
-                    {value:"1", text:"Keep"},
-                    ],
+                    source: [{
+                        value: "0",
+                        text: "Discard"
+                    }, {
+                        value: "1",
+                        text: "Keep"
+                    }, ],
                 },
             }, ]
 
@@ -182,6 +189,7 @@
                 breedBirth: JSON.stringify(myRows),
             },
             success: function(response) {
+                $('#hello_response').bootstrapTable('load', JSON.parse(response));
                 $('#hello_response').bootstrapTable({
                     data: [JSON.parse(response)],
                     columns: [{
@@ -201,8 +209,6 @@
                     }, ]
 
                 });
-
-                //$('#hello_response').html(data);
             },
             error: function(xhr, errmsg, err) {
                 //console.log(xhr.status + ": " + xhr.responseText);
