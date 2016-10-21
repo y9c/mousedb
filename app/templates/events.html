@@ -18,14 +18,14 @@
     <li class="list-group-item">Event: 注射病毒</li>
 </ul>
 
+<code>Do genotypeing for one breed</code>
+
 <div class="container jumbotron">
     <div class="row">
         <div class="col-xs-9 col-md-offset-1">
-            <h2 class="form-signin-heading">Do genotypeing for one breed</h2>
+            <h2 class="form-signin-heading">Create Form</h2>
         </div>
     </div>
-
-    <br>
 
     <div class="row">
         <div class="col-xs-3 col-md-offset-1">
@@ -41,27 +41,25 @@
 </div>
 
 
-<div class="container card-block">
+
+<div class="container">
+    <table id="myTable" class="table table-inverse text-center"></table>
+</div>
+
+<div class="container jumbotron">
     <div class="row">
-        <table id="myTable" class="table table-inverse text-center">
-        </table>
+        <div class="col-xs-9 col-md-offset-1">
+            <h2 class="form-signin-heading">Submit Form</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-2 col-md-offset-2">
+            <button id="submit" class="btn btn-primary" type="submit">Submit Go!!</button>
+        </div>
     </div>
 </div>
 
-
-<div class="container card-block">
-    <form class="form-signin" method="POST">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col-xs-8 col-md-offset-2">
-                <button id="submit" class="btn btn-primary btn-lg btn-block" type="submit">Submit Go!!</button>
-            </div>
-        </div>
-    </form>
-</div>
-
-
-<br></br>
 
 
 <div class="container">
@@ -107,6 +105,7 @@
         $('#myTable').bootstrapTable('load', form)
         $('#myTable').bootstrapTable({
             data: form,
+            search: true,
             columns: [{}, {
                 field: 'Breed',
                 title: 'Breed',
@@ -189,23 +188,22 @@
                 breedBirth: JSON.stringify(myRows),
             },
             success: function(response) {
-                $('#hello_response').bootstrapTable('load', JSON.parse(response));
+                console.log(response);
+                $('#hello_response').bootstrapTable('append', [JSON.parse(response)]);
                 $('#hello_response').bootstrapTable({
                     data: [JSON.parse(response)],
-                    columns: [{
-                        checkbox: true
-                    }, {
+                    columns: [{}, {
                         field: 'breedCount',
                         title: 'breedCount'
                     }, {
-                        field: 'Locus',
-                        title: 'Locus'
+                        field: 'mate_start_date',
+                        title: 'mate_start_date'
                     }, {
-                        field: 'Line',
-                        title: 'Line'
+                        field: 'mate_end_day',
+                        title: 'mate_end_day'
                     }, {
-                        field: 'Age',
-                        title: 'Age'
+                        field: 'born_date',
+                        title: 'born_date'
                     }, ]
 
                 });

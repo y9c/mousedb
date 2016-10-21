@@ -66,6 +66,7 @@ class Weight(models.Model):
 # breed
 class Breed(models.Model):
     id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50, null=True)
     mate_start_date = models.DateField(
         'date of mate start', blank=True, null=True)
     mate_end_date = models.DateField('date of mate end', blank=True, null=True)
@@ -85,7 +86,7 @@ class Breed(models.Model):
         return datetime.now() - self.mate_start_date
 
     def __str__(self):
-        return self.id
+        return self.name
 
 
 # feed(chow drink bedding)

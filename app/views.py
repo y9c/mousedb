@@ -11,6 +11,7 @@ from django.http import Http404
 from .models import BlogsPost
 from .models import Genotype
 from .models import Mouse
+from .models import Breed
 
 # test form
 from .forms import NameForm
@@ -48,8 +49,8 @@ def getlist_genotype_locus(request):
         return HttpResponse(data)
     except:
         data = {'S(XY)': 'S(XY)',
-                       'S(XX)': 'S(XX)',
-                       'S(??)': 'S(??)', }
+                'S(XX)': 'S(XX)',
+                'S(??)': 'S(??)', }
         return HttpResponse(json.dumps(data))
 
 
@@ -117,19 +118,18 @@ def mouse_event_submit(request):
         #print(request.POST)
         details = {}
         # render response
-        details["breedID"] = request.POST.get('breedID')
-        #details["breedCount"] = request.POST.get('breedCount')
-
-        for pup in json.loads(request.POST.get('breedBirth')):
-            print(pup)
-            details["breedCount"] = pup["Gen"]
-
-        mouse = Mouse.objects.get(pk=1)
-        details["Line"] = mouse.genotype.line
-        details["Locus"] = mouse.genotype.locus
-        details["Age"] = mouse.age()
-        details = json.dumps(details)
-        return HttpResponse(details)
+        try:
+            breed = Breed.objects.get(name=request.POST.get('breedID'))
+            details["breedID"] = request.POST.get('breedID')
+            details["breedCount"] = request.POST.get('breedCount')
+            print(breed.mate_start_date)
+            details["mate_start_date"] = str(breed.mate_start_date)
+            details["mate_end_date"] = str(breed.mate_end_date)
+            details["born_date"] = str(breed.born_date)
+            details = json.dumps(details)
+            return HttpResponse(details)
+        except:
+            raise Http404
     else:
         raise Http404
 
