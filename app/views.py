@@ -113,6 +113,7 @@ def mouse_table_edit(request):
 
 @csrf_exempt
 def mouse_event_submit(request):
+    print("hello")
     if request.method == 'POST' and request.is_ajax():
         # show post request
         #print(request.POST)

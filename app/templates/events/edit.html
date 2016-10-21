@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+{% block content %}
 
 <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
@@ -24,42 +25,89 @@
 </ul>
 
 
-<div class="container jumbotron">
-    <div class="row">
-        <div class="col-xs-9 col-md-offset-1">
-            <h2 class="form-signin-heading">Please select an Event</h2>
+<h2 class="form-signin-heading">Select a mouse</h2>
+
+
+<form id="formSearch" class="form-horizontal">
+
+    <div class="form-group" style="margin-top: 5px">
+        <label class="control-label col-sm-1" for="line_select">
+            LINE
+        </label>
+        <div class="col-sm-2">
+            <select class="form-control" id="line_select">
+                <option value="">未选取</option>
+                <optgroup label="C57">
+                    <option value="WT">WT</option>
+                    <option value="R">rtTA</option>
+                    <option value="M">Msh2</option>
+                    <option value="T">TAH</option>
+                </optgroup>
+                <optgroup label="PWK">
+                    <option value="PWK-WT">WT</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <label class="control-label col-sm-1" for="mouse_select">
+            MOUSE
+        </label>
+        <div class="col-sm-4">
+            <select class="form-control" id="mouse_select">
+                <option value="">未选取</option>
+            </select>
         </div>
     </div>
 
+</form>
+
+<div class="container">
     <div class="row">
-        <div class="col-xs-3 col-md-offset-1">
-            <input type="text" id="breedID" class="form-control" placeholder="Line" required>
-        </div>
-        <div class="col-xs-3 col-md-offset-1">
-            <input type="number" id="breedCount" class="form-control" placeholder="Locus" required>
+        <div class="col-xs-2 col-md-offset-2">
+            <input id="createTableWeight" class="btn btn-primary" type="button" onclick="createTableWeight()" value="秤体重">
         </div>
         <div class="col-xs-2 col-md-offset-2">
-            <input id="creat" class="btn btn-primary" type="button" onclick="createTable()" value="Create the table">
+            <input id="createTablePhenotype" class="btn btn-primary" type="button" onclick="createTablePhenotype()" value="记录表型">
+        </div>
+        <div class="col-xs-2 col-md-offset-2">
+            <input id="createTableFeed" class="btn btn-primary" type="button" onclick="createTableFeed()" value="添加饲料">
+        </div>
+        <div class="col-xs-2 col-md-offset-2">
+            <input id="createTableVirus" class="btn btn-primary" type="button" onclick="createTableVirus()" value="注射药物">
         </div>
     </div>
 </div>
 
+
+
+<div class="container" id="myTable">
+    <table id="weightTable" class="table table-inverse text-center"></table>
+    <table id="phenotypeTable" class="table table-inverse text-center"></table>
+    <table id="feedTable" class="table table-inverse text-center"></table>
+    <table id="virusTable" class="table table-inverse text-center"></table>
+</div>
 
 
 <div class="container">
-    <table id="myTable" class="table table-inverse text-center"></table>
-</div>
-
-<div class="container jumbotron">
-    <div class="row">
-        <div class="col-xs-9 col-md-offset-1">
-            <h2 class="form-signin-heading">Submit Form</h2>
-        </div>
-    </div>
+    {% csrf_token %}
 
     <div class="row">
         <div class="col-xs-2 col-md-offset-2">
-            <button id="submit" class="btn btn-primary" type="submit">Submit Go!!</button>
+            <input id="submitTableWeight" class="btn btn-success" type="button" onclick="submitTableWeight()" value="秤体重">
+        </div>
+        <div class="col-xs-2 col-md-offset-2">
+            <input id="submitTablePhenotype" class="btn btn-success" type="button" onclick="submitTablePhenotype()" value="记录表型">
+        </div>
+        <div class="col-xs-2 col-md-offset-2">
+            <input id="submitTableFeed" class="btn btn-success" type="button" onclick="submitTableFeed()" value="添加饲料">
+        </div>
+        <div class="col-xs-2 col-md-offset-2">
+            <input id="submitTableVirus" class="btn btn-success" type="button" onclick="submitTableVirus()" value="注射药物">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-8 col-md-offset-2">
+            <input id="submitTable" class="btn btn-block btn-success" type="button" onclick="submitTable()" value="提交全部">
         </div>
     </div>
 </div>
@@ -69,7 +117,7 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-9">
-            <div id="hello_response"></div>
+            <div id="submit_response"></div>
         </div>
     </div>
 </div>
@@ -94,107 +142,69 @@
     }
 
     // Build a form
-    function createTable() {
-        var breedID = $('#breedID').val();
-        var breedCount = $('#breedCount').val();
-        var form = [];
-        for (var r = 0; r < parseInt(breedCount, 10); r++) {
-            form.push({
-                'Breed': breedID,
-                'Pup': r + 1,
-                'Gen': "请选择基因型",
-                'Keep': "0"
-            });
-        }
-        $('#myTable').bootstrapTable('load', form)
-        $('#myTable').bootstrapTable({
+   function createTableWeight() {
+        var mouse = $('#mouse_select').val();
+        var form=[{
+            'MOUSE': mouse,
+            'DATE': new Date().toJSON().slice(0,10),
+            'WEIGHT': "20"
+        }];
+
+        $('#weightTable').bootstrapTable('append', form)
+        $('#weightTable').bootstrapTable({
             data: form,
             search: true,
             columns: [{}, {
-                field: 'Breed',
-                title: 'Breed',
+                field: 'MOUSE',
+                title: 'MOUSE',
                 sortable: true,
             }, {
-                field: 'Pup',
-                title: 'Pup',
+                field: 'DATE',
+                title: 'DATE',
                 sortable: true,
             }, {
-                field: 'Gen',
-                title: 'Gen',
+                field: 'WEIGHT',
+                title: 'WEIGHT',
                 sortable: true,
                 editable: {
                     type: 'select',
                     title: 'Gen',
-                    emptytext: '请选择基因型',
+                    emptytext: '请输入体重',
                     source: [{
-                        value: "WT-X",
-                        text: "S(XX)"
-                    }, {
-                        value: "WT-Y",
-                        text: "S(XY)"
-                    }, ],
-                },
-            }, {
-                field: 'Keep',
-                title: 'Keep',
-                sortable: true,
-                editable: {
-                    type: 'select',
-                    title: 'Keep',
-                    source: [{
-                        value: "0",
-                        text: "Discard"
-                    }, {
                         value: "1",
-                        text: "Keep"
+                        text: "1"
+                    }, {
+                        value: "2",
+                        text: "2"
                     }, ],
                 },
-            }, ]
-
+            }]
         });
     };
 
     //For doing AJAX post
-    $("#submit").click(function(e) {
-
-        e.preventDefault();
-
-        var myRows = [];
-        var headersText = [];
-        var $headers = $("#myTable th");
-
-        // Loop through grabbing everything
-        var $rows = $("#myTable tbody tr").each(function(index) {
-            $cells = $(this).find("td");
-            myRows[index] = {};
-            $cells.each(function(cellIndex) {
-                if (headersText[cellIndex] === undefined) {
-                    headersText[cellIndex] = $($headers[cellIndex]).text();
-                }
-                myRows[index][headersText[cellIndex]] = $(this).text();
-            });
-        });
-
+    function submitTable() {
+        var weightRows = $("#weightTable").bootstrapTable('getData');
+        var phenotypeRows = $("#phenotypeTable").bootstrapTable('getData');
+        var feedRows = $("#feedTable").bootstrapTable('getData');
+        var virusRows = $("#virusTable").bootstrapTable('getData');
 
         var csrftoken = getCookie('csrftoken');
-        var breedID = $('#breedID').val();
-        var breedCount = $('#breedCount').val();
+        var mouse = $('#mouse_select').val();
         //This is the Ajax post.Observe carefully. It is nothing but details of where_to_post,what_to_post
 
         $.ajax({
             url: "/api/mouse-event-submit",
-            // url: window.location.href,
             type: "POST",
             data: {
                 csrfmiddlewaretoken: csrftoken,
-                breedID: breedID,
-                breedCount: breedCount,
-                breedBirth: JSON.stringify(myRows),
+                mouse: mouse,
+                weightRows: JSON.stringify(weightRows),
             },
             success: function(response) {
                 console.log(response);
-                $('#hello_response').bootstrapTable('append', [JSON.parse(response)]);
-                $('#hello_response').bootstrapTable({
+                $('#submit_response').bootstrapTable('append', [JSON.parse(response)]);
+                $('#submit_response').bootstrapTable({
                     data: [JSON.parse(response)],
                     columns: [{}, {
                         field: 'breedCount',
@@ -212,11 +222,11 @@
 
                 });
             },
-            error: function(xhr, errmsg, err) {
-                //console.log(xhr.status + ": " + xhr.responseText);
+            error: function() {
+                console.log("提交数据失败");
             }
         });
-    });
+    };
 </script>
 
 

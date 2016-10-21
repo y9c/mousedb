@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-
 {% block content %}
 
 <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
@@ -8,19 +7,18 @@
 <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 
-<link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-
-
+<link rel="stylesheet"
+      href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
 
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        小鼠查询系统 <small>表单筛选</small>
+        小鼠查询系统
+        <small>表单筛选</small>
     </h1>
 </section>
-
 
 
 <section class="content">
@@ -32,7 +30,7 @@
                     <form id="formSearch" class="form-horizontal">
 
                         <div class="form-group" style="margin-top: 5px">
-                            <label class="control-label col-sm-1" for="txt_search_statu">
+                            <label class="control-label col-sm-1" for="line_query">
                                 LINE
                             </label>
                             <div class="col-sm-2">
@@ -52,7 +50,7 @@
                                 </select>
                             </div>
 
-                            <label class="control-label col-sm-1" for="txt_search_statu">
+                            <label class="control-label col-sm-1" for="locus_query">
                                 LOCUS
                             </label>
                             <div class="col-sm-4">
@@ -64,7 +62,7 @@
 
                         <div class="form-group" style="margin-top: 5px">
 
-                            <label class="control-label col-sm-1" for="txt_search_statu">
+                            <label class="control-label col-sm-1" for="dateitem_query">
                                 dITEM
                             </label>
                             <div class="col-sm-2">
@@ -75,7 +73,7 @@
                                 </select>
                             </div>
 
-                            <label class="control-label col-sm-1" for="txt_search_departmentname">
+                            <label class="control-label col-sm-1" for="StartEndTime_query">
                                 DATE
                             </label>
                             <div class="col-sm-4">
@@ -85,13 +83,13 @@
                                     </span>
                                     <input type="hidden" id="StartTime_query"/>
                                     <input type="hidden" id="EndTime_query"/>
-                                    <input type="text" id="StartEndTime_query" class="form-control" value="" class="span4" readonly="readonly"/>
+                                    <input type="text" id="StartEndTime_query" class="form-control span4" value="" readonly="readonly"/>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group" style="margin-top: 5px">
-                            <label class="control-label col-sm-1" for="txt_search_departmentname">
+                            <label class="control-label col-sm-1" for="rule_query">
                                 RULE
                             </label>
                             <div class="col-sm-7">
@@ -114,7 +112,7 @@
 </section>
 
 
-<p>  TODO：加入高级搜索功能-query </p>
+<p> TODO：加入高级搜索功能-query </p>
 
 
 <table id="mousetable">
@@ -125,7 +123,9 @@
 <script>
     var $table = $('#mousetable');
     function initTable() {
-        $table.bootstrapTable({
+        var exportOptions = {
+            fileName: 'custom_file_name',
+        };$table.bootstrapTable({
             //功能
             showToggle: true,
             showRefresh: true,
@@ -140,9 +140,7 @@
             detailFormatter: "detailFormatter",
 
             showExport: true,
-            exportOptions:{
-                fileName: 'custom_file_name',
-            },
+            exportOptions: exportOptions,
 
             queryParams: "queryParams",
 
@@ -152,9 +150,9 @@
                     url: "/api/mouse-table-edit",
                     data: {pk: row['pk'], field: field, edit: row[field]},
                     success: function (data, status) {
-                        //     if (status == "success") {
-                        //         alert("编辑提交成功");
-                        //    }
+                        if (status == "success") {
+                            console.log("编辑提交成功");
+                        }
                     },
                     error: function () {
                         alert("编辑提交失败");
@@ -181,7 +179,7 @@
                 else {
                     return {};
                 }
-                return { classes: strclass }
+                return {classes: strclass}
             },
 
             //数据
@@ -209,10 +207,10 @@
                     type: 'select',
                     title: 'SOURCE',
                     source: [
-                    {value:"0", text:"饲养产生后代"},
-                    {value:"1", text:"广东省实验动物中心"},
-                    {value:"2", text:"南京模式生物中心"},
-                    {value:"9", text:"unknown"},
+                        {value: "0", text: "饲养产生后代"},
+                        {value: "1", text: "广东省实验动物中心"},
+                        {value: "2", text: "南京模式生物中心"},
+                        {value: "9", text: "unknown"},
                     ],
                 },
             }, {
@@ -223,12 +221,12 @@
                     type: 'select',
                     title: 'STATUS',
                     source: [
-                    {value:"0", text:"idle"},
-                    {value:"1", text:"suckling"},
-                    {value:"2", text:"mating"},
-                    {value:"3", text:"lactating"},
-                    {value:"4", text:"dead"},
-                    {value:"9", text:"unknown"},
+                        {value: "0", text: "idle"},
+                        {value: "1", text: "suckling"},
+                        {value: "2", text: "mating"},
+                        {value: "3", text: "lactating"},
+                        {value: "4", text: "dead"},
+                        {value: "9", text: "unknown"},
                     ],
                 },
             }, {
@@ -254,97 +252,97 @@
     }
 
 
-//查询参数
-function queryParams(params) {
-    return {
-        //pageSize: params.limit,
-        //currentPage: params.offset/params.limit + 1,
-        rule_query: $("#rule_query").val(),
-        line_query: $("#line_query").val(),
-        locus_query: $("#locus_query").val(),
-        StartTime_query: $("#StartTime_query").val(),
-        EndTime_query: $("#EndTime_query").val()
-    };
-}
+    //查询参数
+    function queryParams(params) {
+        return {
+            //pageSize: params.limit,
+            //currentPage: params.offset/params.limit + 1,
+            rule_query: $("#rule_query").val(),
+            line_query: $("#line_query").val(),
+            locus_query: $("#locus_query").val(),
+            StartTime_query: $("#StartTime_query").val(),
+            EndTime_query: $("#EndTime_query").val()
+        };
+    }
 
 
-//点击获取下拉列表
-$("#line_query").change(function(){
-    $.ajax({
-        url : "/api/getlist-genotype-locus",
-        method : "GET",
-        data: {line: $(this).val()},
-        dataType : "json",
-        async : false,
-        success : function(data) {
-            console.log(data);
-            var $el = $("#locus_query");
-            $el.empty(); // remove old options
-            $.each(data, function(key,value) {
-                $el.append($("<option></option>option>")
-                        .attr("value", value).text(key));
-            });
-        },
-    });
-})
+    //点击获取下拉列表
+    $("#line_query").change(function () {
+        $.ajax({
+            url: "/api/getlist-genotype-locus",
+            method: "GET",
+            data: {line: $(this).val()},
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                console.log(data);
+                var $el = $("#locus_query");
+                $el.empty(); // remove old options
+                $.each(data, function (key, value) {
+                    $el.append($("<option></option>option>")
+                            .attr("value", value).text(key));
+                });
+            },
+        });
+    })
 
-//获取表格某一行的详细信息
-function detailFormatter(index, row) {
-    detail=JSON.parse(
-            $.ajax({
-                url: '/api/mouse-' + row['pk'] + '-detail-api',
-                global: false,
-                async:false,
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert(jqXHR+' + '+textStatus+' + '+ errorThrown)
-                }
-            }).responseText
-            )[0];
+    //获取表格某一行的详细信息
+    function detailFormatter(index, row) {
+        detail = JSON.parse(
+                $.ajax({
+                    url: '/api/mouse-' + row['pk'] + '-detail-api',
+                    global: false,
+                    async: false,
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(jqXHR + ' + ' + textStatus + ' + ' + errorThrown)
+                    }
+                }).responseText
+        )[0];
 
-    var html = [];
-    $.each(detail, function (key, value) {
-        html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-    });
-    return html.join('');
-}
+        var html = [];
+        $.each(detail, function (key, value) {
+            html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+        });
+        return html.join('');
+    }
 
-//格式输入时间
-$(function() {
-    //查询条件输入框-起止日期
-    $('#StartEndTime_query').daterangepicker({
-        timePicker: true,
-        timePickerIncrement: 30,
-        format: 'MM/DD/YYYY'
-    }, function(start, end, label) {
-        $("#StartTime_query").val(moment(start).format('YYYY-MM-DD'));
-        $("#EndTime_query").val(moment(end).format('YYYY-MM-DD'));
-    });
+    //格式输入时间
+    $(function () {
+        //查询条件输入框-起止日期
+        $('#StartEndTime_query').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            format: 'MM/DD/YYYY'
+        }, function (start, end, label) {
+            $("#StartTime_query").val(moment(start).format('YYYY-MM-DD'));
+            $("#EndTime_query").val(moment(end).format('YYYY-MM-DD'));
+        });
 
-    //初始化表格
-    initTable();
+        //初始化表格
+        initTable();
 
-    //查询按钮点击事件
-    $("#btn_query").click(function(){
-        var queryParams = {};
-        queryParams.rule_query = $("#rule_query").val();
-        queryParams.line_query = $("#line_query").val();
-        queryParams.locus_query = $("#locus_query").val(),
-        queryParams.dateitem_query = $("#dateitem_query").val(),
-        queryParams.StartTime_query = $("#StartTime_query").val(),
-        queryParams.EndTime_query = $("#EndTime_query").val()
+        //查询按钮点击事件
+        $("#btn_query").click(function () {
+            var queryParams = {};
+            queryParams.rule_query = $("#rule_query").val();
+            queryParams.line_query = $("#line_query").val();
+            queryParams.locus_query = $("#locus_query").val(),
+                    queryParams.dateitem_query = $("#dateitem_query").val(),
+                    queryParams.StartTime_query = $("#StartTime_query").val(),
+                    queryParams.EndTime_query = $("#EndTime_query").val()
             console.log(queryParams);
-        //var queryParams = JSON.stringify($("#formSearch"));
-        $table.bootstrapTable('refresh', queryParams);
-    });
+            //var queryParams = JSON.stringify($("#formSearch"));
+            $table.bootstrapTable('refresh', queryParams);
+        });
 
-    //重置按钮点击事件
-    $("#btn_rest").click(function(){
-        $("#formSearch")[0].reset()
+        //重置按钮点击事件
+        $("#btn_rest").click(function () {
+            $("#formSearch")[0].reset()
             $("#purStartTime").val("");
-        $("#purEndTime").val("");
-    });
+            $("#purEndTime").val("");
+        });
 
-});
+    });
 </script>
 
 {% endblock %}
