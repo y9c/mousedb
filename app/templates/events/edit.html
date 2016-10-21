@@ -10,29 +10,33 @@
 
 
 <ul class="list-group">
-    <li class="list-group-item">Event: 观察到出生</li>
     <li class="list-group-item">Event: 购买小鼠</li>
+    <li class="list-group-item">Event: 鉴定新出生小鼠并添加</li>
+
+    <li class="list-group-item">Event: 交配</li>
     <li class="list-group-item">Event: 分笼</li>
+
+    <li class="list-group-item">Event: 观察到出生</li>
+    <li class="list-group-item">Event: 记录表型</li>
     <li class="list-group-item">Event: 称量体重</li>
     <li class="list-group-item">Event: 加药饲料</li>
     <li class="list-group-item">Event: 注射病毒</li>
 </ul>
 
-<code>Do genotypeing for one breed</code>
 
 <div class="container jumbotron">
     <div class="row">
         <div class="col-xs-9 col-md-offset-1">
-            <h2 class="form-signin-heading">Create Form</h2>
+            <h2 class="form-signin-heading">Please select an Event</h2>
         </div>
     </div>
 
     <div class="row">
         <div class="col-xs-3 col-md-offset-1">
-            <input type="text" id="breedID" class="form-control" placeholder="Please Select a breed ID" required>
+            <input type="text" id="breedID" class="form-control" placeholder="Line" required>
         </div>
         <div class="col-xs-3 col-md-offset-1">
-            <input type="number" id="breedCount" class="form-control" placeholder="Mouse of pups" required>
+            <input type="number" id="breedCount" class="form-control" placeholder="Locus" required>
         </div>
         <div class="col-xs-2 col-md-offset-2">
             <input id="creat" class="btn btn-primary" type="button" onclick="createTable()" value="Create the table">

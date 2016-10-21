@@ -77,7 +77,7 @@ class Breed(models.Model):
     wean_start_date = models.DateField(
         'date of wean start', blank=True, null=True)
     wean_end_date = models.DateField('date of wean end', blank=True, null=True)
-    litter = models.IntegerField(null=True)
+    litter_count = models.IntegerField(null=True)
     genotyped = models.BooleanField(default=False)
 
     # paternal_id = models.ManyToManyField(
@@ -154,11 +154,16 @@ class Mouse(models.Model):
     # many-to-one
     genotype = models.ForeignKey(Genotype, blank=True, null=True)
     phenotype = models.ForeignKey(Phenotype, blank=True, null=True)
+    born = models.ManyToManyField(
+        Breed,
+        related_name='litter',
+        verbose_name='breed that this mouse engage',
+        blank=True)
 
     # many-to-many
     breed = models.ManyToManyField(
         Breed,
-        related_name='paternal',
+        related_name='parent',
         verbose_name='breed that this mouse engage',
         blank=True)
 

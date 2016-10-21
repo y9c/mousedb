@@ -163,6 +163,14 @@ def EventView(request):
     return render(request, 'events.html')
 
 
+def EventAddView(request):
+    return render(request, 'events/add.html')
+
+
+def EventEditView(request):
+    return render(request, 'events/edit.html')
+
+
 # render
 # use echarts
 class RenderView(TemplateView):
