@@ -1,0 +1,220 @@
+{% extends "base.html" %} {% block content %}
+
+<script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+<script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+
+<link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+
+<ul class="list-group">
+    <li class="list-group-item">Event: 观察到出生</li>
+    <li class="list-group-item">Event: 购买小鼠</li>
+    <li class="list-group-item">Event: 分笼</li>
+    <li class="list-group-item">Event: 称量体重</li>
+    <li class="list-group-item">Event: 加药饲料</li>
+    <li class="list-group-item">Event: 注射病毒</li>
+</ul>
+
+<code>Do genotypeing for one breed</code>
+
+<div class="container jumbotron">
+    <div class="row">
+        <div class="col-xs-9 col-md-offset-1">
+            <h2 class="form-signin-heading">Create Form</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-3 col-md-offset-1">
+            <input type="text" id="breedID" class="form-control" placeholder="Please Select a breed ID" required>
+        </div>
+        <div class="col-xs-3 col-md-offset-1">
+            <input type="number" id="breedCount" class="form-control" placeholder="Mouse of pups" required>
+        </div>
+        <div class="col-xs-2 col-md-offset-2">
+            <input id="creat" class="btn btn-primary" type="button" onclick="createTable()" value="Create the table">
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <table id="myTable" class="table table-inverse text-center"></table>
+</div>
+
+<div class="container jumbotron">
+    <div class="row">
+        <div class="col-xs-9 col-md-offset-1">
+            <h2 class="form-signin-heading">Submit Form</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-2 col-md-offset-2">
+            <button id="submit" class="btn btn-primary" type="submit">Submit Go!!</button>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-9">
+            <div id="hello_response"></div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    //For getting CSRF token
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Build a form
+    function createTable() {
+        var breedID = $('#breedID').val();
+        var breedCount = $('#breedCount').val();
+        var form = [];
+        for (var r = 0; r < parseInt(breedCount, 10); r++) {
+            form.push({
+                'Breed': breedID,
+                'Pup': r + 1,
+                'Gen': "请选择基因型",
+                'Keep': "0"
+            });
+        }
+        $('#myTable').bootstrapTable('load', form)
+        $('#myTable').bootstrapTable({
+            data: form,
+            search: true,
+            columns: [{}, {
+                field: 'Breed',
+                title: 'Breed',
+                sortable: true,
+            }, {
+                field: 'Pup',
+                title: 'Pup',
+                sortable: true,
+            }, {
+                field: 'Gen',
+                title: 'Gen',
+                sortable: true,
+                editable: {
+                    type: 'select',
+                    title: 'Gen',
+                    emptytext: '请选择基因型',
+                    source: [{
+                        value: "WT-X",
+                        text: "S(XX)"
+                    }, {
+                        value: "WT-Y",
+                        text: "S(XY)"
+                    }, ],
+                },
+            }, {
+                field: 'Keep',
+                title: 'Keep',
+                sortable: true,
+                editable: {
+                    type: 'select',
+                    title: 'Keep',
+                    source: [{
+                        value: "0",
+                        text: "Discard"
+                    }, {
+                        value: "1",
+                        text: "Keep"
+                    }, ],
+                },
+            }, ]
+
+        });
+    };
+
+    //For doing AJAX post
+    $("#submit").click(function(e) {
+
+        e.preventDefault();
+
+        var myRows = [];
+        var headersText = [];
+        var $headers = $("#myTable th");
+
+        // Loop through grabbing everything
+        var $rows = $("#myTable tbody tr").each(function(index) {
+            $cells = $(this).find("td");
+            myRows[index] = {};
+            $cells.each(function(cellIndex) {
+                if (headersText[cellIndex] === undefined) {
+                    headersText[cellIndex] = $($headers[cellIndex]).text();
+                }
+                myRows[index][headersText[cellIndex]] = $(this).text();
+            });
+        });
+
+
+        var csrftoken = getCookie('csrftoken');
+        var breedID = $('#breedID').val();
+        var breedCount = $('#breedCount').val();
+        //This is the Ajax post.Observe carefully. It is nothing but details of where_to_post,what_to_post
+
+        $.ajax({
+            url: "/api/mouse-event-submit",
+            // url: window.location.href,
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: csrftoken,
+                breedID: breedID,
+                breedCount: breedCount,
+                breedBirth: JSON.stringify(myRows),
+            },
+            success: function(response) {
+                console.log(response);
+                $('#hello_response').bootstrapTable('append', [JSON.parse(response)]);
+                $('#hello_response').bootstrapTable({
+                    data: [JSON.parse(response)],
+                    columns: [{}, {
+                        field: 'breedCount',
+                        title: 'breedCount'
+                    }, {
+                        field: 'mate_start_date',
+                        title: 'mate_start_date'
+                    }, {
+                        field: 'mate_end_day',
+                        title: 'mate_end_day'
+                    }, {
+                        field: 'born_date',
+                        title: 'born_date'
+                    }, ]
+
+                });
+            },
+            error: function(xhr, errmsg, err) {
+                //console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+</script>
+
+
+
+{% endblock %}
