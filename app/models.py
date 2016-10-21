@@ -22,18 +22,14 @@ class BlogsPost(models.Model):
 # 0 # mouse property
 # Phenotype group
 class Phenotype(models.Model):
-    date = models.DateField('Weighting Date')
-    time = models.TimeField('Weighting Time')
-    weight = models.FloatField('Weight')
-    health = models.CharField(max_length=50, null=True)
-
     color = models.IntegerField(
         choices=((0, 'Black'),
                  (1, 'White'),
                  (2, 'Nake'), ), default=0)
+    note = models.CharField(max_length=200, null=True)
 
-    #def __str__(self):
-    #    return "{}:{}".format(self.date, self.check_point)
+    def __str__(self):
+        return "{}:{}".format(self.note)
 
 
 # genotype group
@@ -54,13 +50,20 @@ class Genotype(models.Model):
         return "{}:{}:{}".format(self.strain, self.line, self.locus)
 
 
+class Health(models.Model):
+    date = models.DateField('Weighting Date')
+    health = models.CharField(max_length=50, null=True)
+
+    def __str__(self):
+        return "{}:{}:{}".format(self.date, self.health)
+
+
 class Weight(models.Model):
     date = models.DateField('Weighting Date')
-    time = models.TimeField('Weighting Time')
     weight = models.FloatField('Weight')
 
     def __str__(self):
-        return "{}:{}:{}".format(self.date, self.time, self.weight)
+        return "{}:{}:{}".format(self.date, self.weight)
 
 
 # breed
