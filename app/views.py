@@ -113,24 +113,21 @@ def mouse_table_edit(request):
 
 @csrf_exempt
 def mouse_event_submit(request):
-    print("hello")
     if request.method == 'POST' and request.is_ajax():
         # show post request
-        #print(request.POST)
+        print(request.POST)
         details = {}
-        # render response
-        try:
-            breed = Breed.objects.get(name=request.POST.get('breedID'))
+        if 'breedID' in request.POST:
             details["breedID"] = request.POST.get('breedID')
+        if 'breedIDCount' in request.POST:
             details["breedCount"] = request.POST.get('breedCount')
-            print(breed.mate_start_date)
-            details["mate_start_date"] = str(breed.mate_start_date)
-            details["mate_end_date"] = str(breed.mate_end_date)
-            details["born_date"] = str(breed.born_date)
-            details = json.dumps(details)
-            return HttpResponse(details)
-        except:
-            raise Http404
+        #    print(breed.mate_start_date)
+        #    details["mate_start_date"] = str(breed.mate_start_date)
+        #    details["mate_end_date"] = str(breed.mate_end_date)
+        #    details["born_date"] = str(breed.born_date)
+        #    details = json.dumps(details)
+        print(request.POST.get('weightRows'))
+        return HttpResponse(details)
     else:
         raise Http404
 
