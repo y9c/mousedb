@@ -151,6 +151,7 @@ function createTableWeight() {
     $('#weightTable').bootstrapTable('append', form);
     $('#weightTable').bootstrapTable({
         data: form,
+        height: 'auto',
         search: true,
         columns: [ {
             field: 'MOUSE',
@@ -160,6 +161,7 @@ function createTableWeight() {
             field: 'DATE',
             title: 'DATE',
             sortable: true,
+            editable: true,
         }, {
             field: 'WEIGHT',
             title: 'WEIGHT',
