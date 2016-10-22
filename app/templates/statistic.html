@@ -2,123 +2,108 @@
 
 {% block content %}
 
-<!-- hero unit -->
 
-<div class="container">
-    <h2>
-        Statistic page
-    </h2>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading clickable">
-                    <h3 class="panel-title">
-                        How many mouse Idel?
-                    </h3>
-                </div>
-                <div class="panel-body collapse">
-                    <p>There is <code id="mouse-count"></code> mouse idle!!!</p>
-                </div>
+
+
+    <div class="panel-group" id="accordion">
+        {#count idle mouse#}
+        <div class="panel panel-default">
+            <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"
+                 href="#collapse1">
+                <h4 class="panel-title" >
+                    How many mouse idle
+                </h4>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-success">
-                <div class="panel-heading clickable">
-                    <h3 class="panel-title">
-                        QUESTUIN2?
-                    </h3>
-                </div>
+            <div id="collapse1" class="panel-collapse collapse">
                 <div class="panel-body">
-                    There mouse ....
+                    <p> There is <code id="mouse-count"></code></p>
                 </div>
             </div>
         </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"
+                 href="#collapse2">
+                <h4 class="panel-title" >
+                    How many mouse totallllllll
+                </h4>
+            </div>
+            <div id="collapse2" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p> There is <code id="resp2"></code></p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="panel panel-info">
+            <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"
+                 href="#collapse3">
+                <h4 class="panel-title" >
+                    QQQ3
+                </h4>
+            </div>
+            <div id="collapse3" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p> A3</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"
+                 href="#collapse4">
+                <h4 class="panel-title" >
+                    QQQ4
+                </h4>
+            </div>
+            <div id="collapse4" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p> A4 </p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-info">
-                <div class="panel-heading clickable">
-                    <h3 class="panel-title">
-                        QUE 3
-                    </h3>
-                </div>
-                <div class="panel-body">
-                    Answer 3
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-warning">
-                <div class="panel-heading clickable">
-                    <h3 class="panel-title">
-                        Panel 4
-                    </h3>
-                </div>
-                <div class="panel-body">
-                    Ans 4
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
+    <script type="text/javascript">
 
-<script type="text/javascript">
+        $(function () {
+            $('#collapse1').on('show.bs.collapse', function () {
+                console.log("11111");
+                $.ajax({
+                    type:'GET',
+                    url:'/api/mouse-count-api',
+                    dataType:'json',
+                    success:function(response_json)
+                    {
+                        mouse_count = eval(response_json);
+                        console.log(response_json);
+                        document.getElementById("mouse-count").innerHTML = mouse_count.mouse;
+                    }
+                });
+            });
 
-    $(document).on('click', '.panel-heading span.clickable', function (e) {
-        var $this = $(this);
-        if (!$this.hasClass('panel-collapsed')) {
-            console.log("hellllllll");
-            $this.parents('.panel').find('.panel-body').slideUp();
-            $this.addClass('panel-collapsed');
-            $this.find('i').removeClass('glyphicon-minus').addClass('glyphicon-plus');
-        } else {
-            $this.parents('.panel').find('.panel-body').slideDown();
-            $this.removeClass('panel-collapsed');
-            $this.find('i').removeClass('glyphicon-plus').addClass('glyphicon-minus');
-        }
-    });
+            $('#collapse2').on('show.bs.collapse', function () {
+                console.log("22222");
+                $.ajax({
+                    type:'GET',
+                    url:'/api/mouse-count-api',
+                    dataType:'json',
+                    success:function(response_json)
+                    {
+                        mouse_count = eval(response_json);
+                        console.log(response_json);
+                        document.getElementById("resp2").innerHTML = mouse_count.mouse;
+                    }
+                });
+            });
 
-$(document).on('click', '.panel div.clickable', function (e) {
-    var $this = $(this);
-    if (!$this.hasClass('panel-collapsed')) {
-        $this.parents('.panel').find('.panel-body').slideUp();
-        $this.addClass('panel-collapsed');
-        $this.find('i').removeClass('glyphicon-minus').addClass('glyphicon-plus');
-    } else {
-        $this.parents('.panel').find('.panel-body').slideDown();
-        $this.removeClass('panel-collapsed');
-        $this.find('i').removeClass('glyphicon-plus').addClass('glyphicon-minus');
-    }
-});
+        });
 
-// load data on load
-$(document).ready(function () {
-    $('.panel-heading span.clickable').click();
-    $('.panel div.clickable').click();
-});
-
-
-$('#hello').on('click', function () {
-    // do ajaxy stuff…
-    $.ajax({
-        type:'GET',
-        url:'/api/mouse-count-api',
-        dataType:'json',
-        success:function(response_json)
-        {
-            console.log("dddddd");
-            mouse_count = eval(response_json);
-            console.log(response_json);
-            document.getElementById("mouse-count").innerHTML = mouse_count.mouse;
-        }
-    });
-});
-
-
-
-</script>
+    </script>
 
 
 
