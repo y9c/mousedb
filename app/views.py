@@ -53,9 +53,10 @@ def getlist_genotype_locus(request):
                 'S(??)': 'S(??)', }
         return HttpResponse(json.dumps(data))
 
-
+# statistic: count idle mouse
 def mouse_count_api(request):
-    mouse_count = {'mouse': Mouse.objects.filter(status=0).count()}
+    status = request.GET.get("status")
+    mouse_count = {'mouse': Mouse.objects.filter(status=status).count()}
     return HttpResponse(json.dumps(mouse_count))
 
 

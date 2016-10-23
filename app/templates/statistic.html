@@ -76,6 +76,7 @@
                 $.ajax({
                     type:'GET',
                     url:'/api/mouse-count-api',
+                    data: {status: 0},
                     dataType:'json',
                     success:function(response_json)
                     {
@@ -108,7 +109,3 @@
 
 
 {% endblock %}
-
-
-
-
