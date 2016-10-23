@@ -1,636 +1,745 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% load static %}
+    {% load static %}
 
 
-<script src="{% static 'js/tableExport.js' %}"></script>
-<script src="{% static 'js/bootstrap-editable.js' %}"></script>
-<script src="{% static 'js/moment.min.js' %}"></script>
-<script src="{% static 'js/daterangepicker.js' %}"></script>
+    <script src="{% static 'js/tableExport.js' %}"></script>
+    <script src="{% static 'js/bootstrap-editable.js' %}"></script>
+    <script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/daterangepicker.js' %}"></script>
 
-<link rel="stylesheet" href="{% static 'css/bootstrap-editable.css' %}">
-<link rel="stylesheet" href="{% static 'css/daterangepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-editable.css' %}">
+    <link rel="stylesheet" href="{% static 'css/daterangepicker.css' %}">
 
 
+    <div class="container">
+        <h2 class="page-header">Step 1: Where is the data?</h2>
+        <div class="row">
+            <div class="col-xs-12">
+                <p class="lead text-center bg-info btn text-info center-block">Is the data in the system?</p>
+                <div class="row">
+                    <div class="col-xs-6 text-center">
+                        <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span>
+                    </div>
+                    <div class="col-xs-6 text-center">
+                        <p class="btn">
+                            <span class="glyphicon glyphicon-arrow-down"></span></p>
+                    </div>
+                </div>
 
-<h2 class="form-signin-heading">What do you want to edit</h2>
-<div class="container">
-    <div class="row">
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableMate" class="btn btn-primary" type="button" onclick="createTableMate()" value="添加交配">
+            </div>
         </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableSeparate" class="btn btn-primary" type="button" onclick="createTableSeparate()" value="停止交配">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableBorn" class="btn btn-primary" type="button" onclick="createTableBorn()" value="观察到出生">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableAblactation" class="btn btn-primary" type="button" onclick="createTableAblactation()" value="小鼠断奶">
+        <div class="row">
+            <div class="col-xs-6 text-center">
+                <p class="center-block"><span class="btn btn-success btn-lg">Yes</span></p>
+                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+
+                <p class="bg-success text-success btn">Okay! Proceed to step 2.</p>
+            </div>
+            <div class="col-xs-6 text-center">
+                <p class="center-block"><span class="btn btn-danger btn-lg">No</span></p>
+                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                <p class="bg-info text-info btn">Are you willing to put the data into the system?</p>
+                <div class="row">
+                    <div class="col-xs-6 text-center">
+                        <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span>
+                    </div>
+                    <div class="col-xs-6 text-center">
+                        <p class="btn">
+                            <span class="glyphicon glyphicon-arrow-down"></span></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <p class="center-block"><span class="btn btn-success btn-lg">Yes</span></p>
+                        <p class="btn">
+                            <span class="glyphicon glyphicon-arrow-down"></span></p>
+                        <p class="bg-success text-success btn text-wrap">Okay! After the data is in the system, proceed to step 2.</p>
+
+                    </div>
+                    <div class="col-xs-6 text-center">
+                        <p class="center-block"><span class="btn btn-danger btn-lg">No</span></p>
+                        <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                        <p class="btn bg-danger text-danger text-wrap">The data must be in the system to use this service.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+    <div class="container">
+        <h2 class="page-header">Step 2: What type of email is it?</h2>
+        <div class="row">
+            <div class="col-xs-12">
+                <p class="lead text-center bg-info btn text-info center-block">What type of email do you want to send?</p>
+                <div class="row">
+                    <div class="col-xs-6 text-center">
+                        <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span>
+                    </div>
+                    <div class="col-xs-6 text-center">
+                        <p class="btn">
+                            <span class="glyphicon glyphicon-arrow-down"></span></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 text-center">
+                        <p class="center-block"><span class="btn btn-warning btn-lg">Newsletter</span></p>
+                        <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                        <p class="center-block bg-info text-info btn">Is it directly related to fundraising?</p>
+                        <div class="row">
+                            <div class="col-xs-6 text-center">
+                                <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span>
+                            </div>
+                            <div class="col-xs-6 text-center">
+                                <p class="btn">
+                                    <span class="glyphicon glyphicon-arrow-down"></span></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <p class="center-block"><span class="btn btn-success btn-lg">Yes</span></p>
+                                <p class="btn">
+                                    <span class="glyphicon glyphicon-arrow-down"></span></p>
+                                <p class="bg-success text-success btn text-wrap">Okay! You can proceed to step 3. </p>
 
+                            </div>
+                            <div class="col-xs-6 text-center">
+                                <p class="center-block"><span class="btn btn-danger btn-lg">No</span></p>
+                                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                                <p class="btn bg-danger text-danger text-wrap">Content must be directly related to fundraising to use this service.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 text-center">
+                        <p class="center-block"><span class="btn btn-success btn-lg">Solicitation</span></p>
+                        <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
 
+                        <p class="bg-success text-success btn">Okay! Proceed to step 3.</p>
+                    </div>
+                </div>
 
-<div class="container" id="myTable">
-    <table id="mateTable"></table>
-    <table id="separateTable"></table>
-    <table id="bornTable"></table>
-    <table id="ablactationTable"></table>
-</div>
-
-
-<div class="container">
-    <div class="row">
-        <div class="col-xs-8 col-md-offset-2">
-            <input id="submitTable" class="btn btn-block btn-success" type="button" onclick="submitTable()" value="提交全部">
+            </div>
         </div>
     </div>
-</div>
 
 
-
-<div class="container">
-    <div class="row">
-        <div class="col-xs-9">
-            <div id="submit_response"></div>
+    <h2 class="form-signin-heading">What do you want to edit</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-2 col-md-offset-2">
+                <input id="createTableMate" class="btn btn-primary" type="button" onclick="createTableMate()" value="添加交配">
+            </div>
+            <div class="col-xs-2 col-md-offset-2">
+                <input id="createTableSeparate" class="btn btn-primary" type="button" onclick="createTableSeparate()" value="停止交配">
+            </div>
+            <div class="col-xs-2 col-md-offset-2">
+                <input id="createTableBorn" class="btn btn-primary" type="button" onclick="createTableBorn()" value="观察到出生">
+            </div>
+            <div class="col-xs-2 col-md-offset-2">
+                <input id="createTableAblactation" class="btn btn-primary" type="button" onclick="createTableAblactation()" value="小鼠断奶">
+            </div>
         </div>
     </div>
-</div>
 
 
-<script>
-    //For getting CSRF token
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
+
+    <div class="container" id="myTable">
+        <table id="mateTable"></table>
+        <table id="separateTable"></table>
+        <table id="bornTable"></table>
+        <table id="ablactationTable"></table>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-8 col-md-offset-2">
+                <input id="submitTable" class="btn btn-block btn-success" type="button" onclick="submitTable()" value="提交全部">
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-9">
+                <div id="submit_response"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        //For getting CSRF token
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
                 }
             }
+            return cookieValue;
         }
-        return cookieValue;
-    }
 
-// Build the forms
-// build a mate form
-function createTableMate() {
+        // Build the forms
+        // build a mate form
+        function createTableMate() {
 
-    var form=[{
-        'EVENT': "mate",
-        'MOUSE-Pa': "",
-        'MOUSE-Ma': "",
-        'DATE': new Date().toJSON().slice(0,10),
-    }];
+            var form=[{
+                'EVENT': "mate",
+                'MOUSE-Pa': "",
+                'MOUSE-Ma': "",
+                'DATE': new Date().toJSON().slice(0,10),
+            }];
 
-    $('#mateTable').bootstrapTable('append', form);
-    $('#mateTable').bootstrapTable({
-        data: form,
-        columns: [
-        {
-            field: 'EVENT',
-            title: 'EVENT',
-        }, {
-            field: 'MOUSE-Pa',
-            title: 'MOUSE-Pa',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MOUSE(LX-000)',
-                mode: "inline",
-                emptytext: '请输入公鼠ID',
-                validate: function (v) {
-                    var re = re = /^L[0-9]{1}-[0-9]{3}$/;
-                    if (! re.test(v)) return '格式不对,像这样L1-001';
-                }
-            }
-        }, {
-            field: 'MOUSE-Ma',
-            title: 'MOUSE-Ma',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MOUSE(LX-000)',
-                mode: "inline",
-                emptytext: '请输入母鼠ID',
-                validate: function (v) {
-                    var re = re = /^L[0-9]{1}-[0-9]{3}$/;
-                    if (! re.test(v)) return '格式不对,像这样L1-001';
-                }
-            }
-        }, {
-            field: 'DATE',
-            title: 'DATE',
-            sortable: true,
-            editable: {
-                type: 'date'
-            }
-
-        }]
-    });
-
-};
-
-// build a separate form
-function createTableSeparate() {
-
-    var form=[{
-        'EVENT': "separate",
-        'MOUSE-Pa': "",
-        'MOUSE-Ma': "",
-        'MATE': "",
-        'DATE': new Date().toJSON().slice(0,10),
-    }];
-
-    $('#separateTable').bootstrapTable('append', form);
-    $('#separateTable').bootstrapTable({
-        data: form,
-        columns: [
-        {
-            field: 'EVENT',
-            title: 'EVENT',
-        }, {
-            field: 'MOUSE-Pa',
-            title: 'MOUSE-Pa',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MOUSE(LX-000)',
-                mode: "inline",
-                emptytext: '请输入公鼠ID',
-                validate: function (v) {
-                    var re = re = /^L[0-9]{1}-[0-9]{3}$/;
-                    if (! re.test(v)) return '格式不对,像这样L1-001';
-                }
-            }
-        }, {
-            field: 'MOUSE-Ma',
-            title: 'MOUSE-Ma',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MOUSE(LX-000)',
-                mode: "inline",
-                emptytext: '请输入母鼠ID',
-                validate: function (v) {
-                    var re = re = /^L[0-9]{1}-[0-9]{3}$/;
-                    if (! re.test(v)) return '格式不对,像这样L1-001';
-                }
-            }
-        }, {
-            field: 'MATE',
-            title: 'MATE',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MATE(M0000)',
-                mode: "inline",
-                emptytext: '请输入交配ID',
-                validate: function (v) {
-                    var re = re = /^M[0-9]{4}$/;
-                    if (! re.test(v)) return '格式不对,像这样M0001';
-                }
-            }
-        }, {
-            field: 'DATE',
-            title: 'DATE',
-            sortable: true,
-            editable: {
-                type: 'date'
-            }
-
-        }]
-    });
-
-};
-
-
-// build a born form
-function createTableBorn() {
-
-    var form=[{
-        'EVENT': "separate",
-        'MOUSE-Pa': "",
-        'MOUSE-Ma': "",
-        'MATE': "",
-        'DATE': new Date().toJSON().slice(0,10),
-    }];
-
-    $('#bornTable').bootstrapTable('append', form);
-    $('#bornTable').bootstrapTable({
-        data: form,
-        columns: [
-        {
-            field: 'EVENT',
-            title: 'EVENT',
-        }, {
-            field: 'MOUSE-Pa',
-            title: 'MOUSE-Pa',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MOUSE(LX-000)',
-                mode: "inline",
-                emptytext: '请输入公鼠ID',
-                validate: function (v) {
-                    var re = re = /^L[0-9]{1}-[0-9]{3}$/;
-                    if (! re.test(v)) return '格式不对,像这样L1-001';
-                }
-            }
-        }, {
-            field: 'MOUSE-Ma',
-            title: 'MOUSE-Ma',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MOUSE(LX-000)',
-                mode: "inline",
-                emptytext: '请输入母鼠ID',
-                validate: function (v) {
-                    var re = re = /^L[0-9]{1}-[0-9]{3}$/;
-                    if (! re.test(v)) return '格式不对,像这样L1-001';
-                }
-            }
-        }, {
-            field: 'MATE',
-            title: 'MATE',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MATE(M0000)',
-                mode: "inline",
-                emptytext: '请输入交配ID',
-                validate: function (v) {
-                    var re = re = /^M[0-9]{4}$/;
-                    if (! re.test(v)) return '格式不对,像这样M0001';
-                }
-            }
-        }, {
-            field: 'DATE',
-            title: 'DATE',
-            sortable: true,
-            editable: {
-                type: 'date'
-            }
-
-        }]
-    });
-
-};
-
-
-// build a ablactaion form
-function createTableAblactation() {
-
-    var form=[{
-        'EVENT': "separate",
-        'MOUSE-Pa': "",
-        'MOUSE-Ma': "",
-        'MATE': "",
-        'DATE': new Date().toJSON().slice(0,10),
-    }];
-
-    $('#bornTable').bootstrapTable('append', form);
-    $('#bornTable').bootstrapTable({
-        data: form,
-        columns: [
-        {
-            field: 'EVENT',
-            title: 'EVENT',
-        }, {
-            field: 'MOUSE-Pa',
-            title: 'MOUSE-Pa',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MOUSE(LX-000)',
-                mode: "inline",
-                emptytext: '请输入公鼠ID',
-                validate: function (v) {
-                    var re = re = /^L[0-9]{1}-[0-9]{3}$/;
-                    if (! re.test(v)) return '格式不对,像这样L1-001';
-                }
-            }
-        }, {
-            field: 'MOUSE-Ma',
-            title: 'MOUSE-Ma',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MOUSE(LX-000)',
-                mode: "inline",
-                emptytext: '请输入母鼠ID',
-                validate: function (v) {
-                    var re = re = /^L[0-9]{1}-[0-9]{3}$/;
-                    if (! re.test(v)) return '格式不对,像这样L1-001';
-                }
-            }
-        }, {
-            field: 'MATE',
-            title: 'MATE',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MATE(M0000)',
-                mode: "inline",
-                emptytext: '请输入交配ID',
-                validate: function (v) {
-                    var re = re = /^M[0-9]{4}$/;
-                    if (! re.test(v)) return '格式不对,像这样M0001';
-                }
-            }
-        }, {
-            field: 'DATE',
-            title: 'DATE',
-            sortable: true,
-            editable: {
-                type: 'date'
-            }
-
-        }]
-    });
-
-};
-
-// build a weight form
-function createTableWeight() {
-
-    var mouse = $('#mouse_select').val();
-    var form=[{
-        'MOUSE': mouse,
-        'DATE': new Date().toJSON().slice(0,10),
-        'WEIGHT': ""
-    }];
-
-    $('#weightTable').bootstrapTable('append', form);
-    $('#weightTable').bootstrapTable({
-        data: form,
-        columns: [ {
-            field: 'MOUSE',
-            title: 'MOUSE',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MOUSE(LX-000)',
-                mode: "inline",
-                emptytext: '请输入小鼠ID',
-                validate: function (v) {
-                    var re = re = /^L[0-9]{1}-[0-9]{3}$/;
-                    if (! re.test(v)) return '格式不对,像这样L1-001';
-                }
-            }
-        }, {
-            field: 'DATE',
-            title: 'DATE',
-            sortable: true,
-            editable: {
-                type: 'date'
-            }
-        }, {
-            field: 'WEIGHT',
-            title: 'WEIGHT (g)',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'WEIGHT',
-                mode: "inline",
-                emptytext: '请输入体重',
-                validate: function (v) {
-                    if (isNaN(v)) return '体重必须是数字（单位g）';
-                    var age = parseInt(v);
-                    if (age <= 0) return '体重必须是正整数（单位g）';
-                }
-            }
-
-        }]
-    });
-
-};
-
-
-function createTablePhenotype() {
-    var mouse = $('#mouse_select').val();
-    var form=[{
-        'MOUSE': mouse,
-        'DATE': new Date().toJSON().slice(0,10),
-        'WEIGHT': "20"
-    }];
-
-    $('#phenotypeTable').bootstrapTable('append', form)
-        $('#phenotypeTable').bootstrapTable({
-            data: form,
-            columns: [{
-                field: 'MOUSE',
-                title: 'MOUSE',
-                sortable: true
-            }, {
-                field: 'DATE',
-                title: 'DATE',
-                sortable: true,
-                editable: {
-                    type: 'date'
-                }
-            }, {
-                field: 'HEALTH',
-                title: 'HEALTH',
-                sortable: true,
-                editable: {
-                    type: 'select',
-                    title: 'HEALTH',
-                    emptytext: '请输入表型描述',
-                    source: [{
-                        value: "1",
-                        text: "1"
+            $('#mateTable').bootstrapTable('append', form);
+            $('#mateTable').bootstrapTable({
+                data: form,
+                columns: [
+                    {
+                        field: 'EVENT',
+                        title: 'EVENT',
                     }, {
-                        value: "2",
-                        text: "2"
-                    } ]
-                }
-            }, {
-                field: 'HEALTH',
-                title: 'HEALTH',
-                sortable: true,
-                editable: {
-                    type: 'select',
-                    title: 'HEALTH',
-                    emptytext: '请输入表型描述',
-                    source: [{
-                        value: "1",
-                        text: "1"
+                        field: 'MOUSE-Pa',
+                        title: 'MOUSE-Pa',
+                        sortable: true,
+                        editable: {
+                            type: 'text',
+                            title: 'MOUSE(LX-000)',
+                            mode: "inline",
+                            emptytext: '请输入公鼠ID',
+                            validate: function (v) {
+                                var re = re = /^L[0-9]{1}-[0-9]{3}$/;
+                                if (! re.test(v)) return '格式不对,像这样L1-001';
+                            }
+                        }
                     }, {
-                        value: "2",
-                        text: "2"
-                    } ]
-                }
-            }]
-        })
-}
-
-// create table feed
-function createTableFeed() {
-    var mouse = $('#mouse_select').val();
-    var form=[{
-        'MOUSE': mouse,
-        'DATE': new Date().toJSON().slice(0,10),
-        'TYPE': "",
-        'AMOUNT': ""
-    }];
-
-    $('#feedTable').bootstrapTable('append', form)
-        $('#feedTable').bootstrapTable({
-            data: form,
-            columns: [{}, {
-                field: 'MOUSE',
-                title: 'MOUSE',
-                sortable: true
-            }, {
-                field: 'DATE',
-                title: 'DATE',
-                sortable: true,
-                editable: {
-                    type: 'date'
-                }
-            }, {
-                field: 'TYPE',
-                title: 'TYPE',
-                sortable: true,
-                editable: {
-                    type: 'select',
-                    title: 'TYPE',
-                    emptytext: '请选择饲养类型',
-                    source: [{
-                        value: "normal_chow",
-                        text: "normal chow"
+                        field: 'MOUSE-Ma',
+                        title: 'MOUSE-Ma',
+                        sortable: true,
+                        editable: {
+                            type: 'text',
+                            title: 'MOUSE(LX-000)',
+                            mode: "inline",
+                            emptytext: '请输入母鼠ID',
+                            validate: function (v) {
+                                var re = re = /^L[0-9]{1}-[0-9]{3}$/;
+                                if (! re.test(v)) return '格式不对,像这样L1-001';
+                            }
+                        }
                     }, {
-                        value: "normal_drink",
-                        text: "normal drink"
-                    }, {
-                        value: "dox_chow",
-                        text: "dox chow"
-                    }, {
-                        value: "dox_drink",
-                        text: "dox drink"
-                    }, {
-                        value: "dox_gavage",
-                        text: "dox gavage"
-                    } ]
-                }
+                        field: 'DATE',
+                        title: 'DATE',
+                        sortable: true,
+                        editable: {
+                            type: 'date'
+                        }
 
-            }, {
-                field: 'AMOUNT',
-                title: 'AMOUNT',
-                sortable: true,
-                editable: {
-                    type: 'text',
-                    title: 'AMOUNT',
-                    emptytext: '请输入amount'
-                }
-            }]
-        })
-}
-
-// create table inject virus
-function createTableVirus() {
-    var mouse = $('#mouse_select').val();
-    var form=[{
-        'MOUSE': mouse,
-        'DATE': new Date().toJSON().slice(0,10),
-        'DRUG': ""
-    }];
-
-    $('#virusTable').bootstrapTable('append', form)
-        $('#virusTable').bootstrapTable({
-            data: form,
-            columns: [{}, {
-                field: 'MOUSE',
-                title: 'MOUSE',
-                sortable: true
-            }, {
-                field: 'DATE',
-                title: 'DATE',
-                sortable: true,
-                editable: {
-                    type: 'date'
-                }
-            }, {
-                field: 'DRUG',
-                title: 'DRUG',
-                sortable: true,
-                editable: {
-                    type: 'select',
-                    title: 'Gen',
-                    emptytext: '请输入drug',
-                    source: [{
-                        value: "1",
-                        text: "1"
-                    }, {
-                        value: "2",
-                        text: "2"
-                    } ]
-                }
-            }]
-        })
-}
-
-//For doing AJAX post
-function submitTable() {
-    var weightRows = $("#weightTable").bootstrapTable('getData');
-    var phenotypeRows = $("#phenotypeTable").bootstrapTable('getData');
-    var feedRows = $("#feedTable").bootstrapTable('getData');
-    var virusRows = $("#virusTable").bootstrapTable('getData');
-
-    var csrftoken = getCookie('csrftoken');
-    var mouse = $('#mouse_select').val();
-    //This is the Ajax post.Observe carefully. It is nothing but details of where_to_post,what_to_post
-
-    $.ajax({
-        url: "/api/mouse-event-submit",
-        type: "POST",
-        data: {
-            csrfmiddlewaretoken: csrftoken,
-            mouse: mouse,
-            weightRows: JSON.stringify(weightRows),
-            phenotypeRows: JSON.stringify(phenotypeRows),
-            feedRows: JSON.stringify(feedRows),
-            weightRows: JSON.stringify(weightRows)
-        },
-        success: function(response) {
-            console.log(response);
-            $('#submit_response').bootstrapTable('append', [JSON.parse(response)]);
-            $('#submit_response').bootstrapTable({
-                data: [JSON.parse(response)],
-                columns: [{}, {
-                    field: 'breedCount',
-                    title: 'breedCount'
-                }, {
-                    field: 'mate_start_date',
-                    title: 'mate_start_date'
-                }, {
-                    field: 'mate_end_day',
-                    title: 'mate_end_day'
-                }, {
-                    field: 'born_date',
-                    title: 'born_date'
-                } ]
-
+                    }]
             });
-        },
-        error: function() {
-            console.log("提交数据失败");
+
+        };
+
+        // build a separate form
+        function createTableSeparate() {
+
+            var form=[{
+                'EVENT': "separate",
+                'MOUSE-Pa': "",
+                'MOUSE-Ma': "",
+                'MATE': "",
+                'DATE': new Date().toJSON().slice(0,10),
+            }];
+
+            $('#separateTable').bootstrapTable('append', form);
+            $('#separateTable').bootstrapTable({
+                data: form,
+                columns: [
+                    {
+                        field: 'EVENT',
+                        title: 'EVENT',
+                    }, {
+                        field: 'MOUSE-Pa',
+                        title: 'MOUSE-Pa',
+                        sortable: true,
+                        editable: {
+                            type: 'text',
+                            title: 'MOUSE(LX-000)',
+                            mode: "inline",
+                            emptytext: '请输入公鼠ID',
+                            validate: function (v) {
+                                var re = re = /^L[0-9]{1}-[0-9]{3}$/;
+                                if (! re.test(v)) return '格式不对,像这样L1-001';
+                            }
+                        }
+                    }, {
+                        field: 'MOUSE-Ma',
+                        title: 'MOUSE-Ma',
+                        sortable: true,
+                        editable: {
+                            type: 'text',
+                            title: 'MOUSE(LX-000)',
+                            mode: "inline",
+                            emptytext: '请输入母鼠ID',
+                            validate: function (v) {
+                                var re = re = /^L[0-9]{1}-[0-9]{3}$/;
+                                if (! re.test(v)) return '格式不对,像这样L1-001';
+                            }
+                        }
+                    }, {
+                        field: 'MATE',
+                        title: 'MATE',
+                        sortable: true,
+                        editable: {
+                            type: 'text',
+                            title: 'MATE(M0000)',
+                            mode: "inline",
+                            emptytext: '请输入交配ID',
+                            validate: function (v) {
+                                var re = re = /^M[0-9]{4}$/;
+                                if (! re.test(v)) return '格式不对,像这样M0001';
+                            }
+                        }
+                    }, {
+                        field: 'DATE',
+                        title: 'DATE',
+                        sortable: true,
+                        editable: {
+                            type: 'date'
+                        }
+
+                    }]
+            });
+
+        };
+
+
+        // build a born form
+        function createTableBorn() {
+
+            var form=[{
+                'EVENT': "separate",
+                'MOUSE-Pa': "",
+                'MOUSE-Ma': "",
+                'MATE': "",
+                'DATE': new Date().toJSON().slice(0,10),
+            }];
+
+            $('#bornTable').bootstrapTable('append', form);
+            $('#bornTable').bootstrapTable({
+                data: form,
+                columns: [
+                    {
+                        field: 'EVENT',
+                        title: 'EVENT',
+                    }, {
+                        field: 'MOUSE-Pa',
+                        title: 'MOUSE-Pa',
+                        sortable: true,
+                        editable: {
+                            type: 'text',
+                            title: 'MOUSE(LX-000)',
+                            mode: "inline",
+                            emptytext: '请输入公鼠ID',
+                            validate: function (v) {
+                                var re = re = /^L[0-9]{1}-[0-9]{3}$/;
+                                if (! re.test(v)) return '格式不对,像这样L1-001';
+                            }
+                        }
+                    }, {
+                        field: 'MOUSE-Ma',
+                        title: 'MOUSE-Ma',
+                        sortable: true,
+                        editable: {
+                            type: 'text',
+                            title: 'MOUSE(LX-000)',
+                            mode: "inline",
+                            emptytext: '请输入母鼠ID',
+                            validate: function (v) {
+                                var re = re = /^L[0-9]{1}-[0-9]{3}$/;
+                                if (! re.test(v)) return '格式不对,像这样L1-001';
+                            }
+                        }
+                    }, {
+                        field: 'MATE',
+                        title: 'MATE',
+                        sortable: true,
+                        editable: {
+                            type: 'text',
+                            title: 'MATE(M0000)',
+                            mode: "inline",
+                            emptytext: '请输入交配ID',
+                            validate: function (v) {
+                                var re = re = /^M[0-9]{4}$/;
+                                if (! re.test(v)) return '格式不对,像这样M0001';
+                            }
+                        }
+                    }, {
+                        field: 'DATE',
+                        title: 'DATE',
+                        sortable: true,
+                        editable: {
+                            type: 'date'
+                        }
+
+                    }]
+            });
+
+        };
+
+
+        // build a ablactaion form
+        function createTableAblactation() {
+
+            var form=[{
+                'EVENT': "separate",
+                'MOUSE-Pa': "",
+                'MOUSE-Ma': "",
+                'MATE': "",
+                'DATE': new Date().toJSON().slice(0,10),
+            }];
+
+            $('#bornTable').bootstrapTable('append', form);
+            $('#bornTable').bootstrapTable({
+                data: form,
+                columns: [
+                    {
+                        field: 'EVENT',
+                        title: 'EVENT',
+                    }, {
+                        field: 'MOUSE-Pa',
+                        title: 'MOUSE-Pa',
+                        sortable: true,
+                        editable: {
+                            type: 'text',
+                            title: 'MOUSE(LX-000)',
+                            mode: "inline",
+                            emptytext: '请输入公鼠ID',
+                            validate: function (v) {
+                                var re = re = /^L[0-9]{1}-[0-9]{3}$/;
+                                if (! re.test(v)) return '格式不对,像这样L1-001';
+                            }
+                        }
+                    }, {
+                        field: 'MOUSE-Ma',
+                        title: 'MOUSE-Ma',
+                        sortable: true,
+                        editable: {
+                            type: 'text',
+                            title: 'MOUSE(LX-000)',
+                            mode: "inline",
+                            emptytext: '请输入母鼠ID',
+                            validate: function (v) {
+                                var re = re = /^L[0-9]{1}-[0-9]{3}$/;
+                                if (! re.test(v)) return '格式不对,像这样L1-001';
+                            }
+                        }
+                    }, {
+                        field: 'MATE',
+                        title: 'MATE',
+                        sortable: true,
+                        editable: {
+                            type: 'text',
+                            title: 'MATE(M0000)',
+                            mode: "inline",
+                            emptytext: '请输入交配ID',
+                            validate: function (v) {
+                                var re = re = /^M[0-9]{4}$/;
+                                if (! re.test(v)) return '格式不对,像这样M0001';
+                            }
+                        }
+                    }, {
+                        field: 'DATE',
+                        title: 'DATE',
+                        sortable: true,
+                        editable: {
+                            type: 'date'
+                        }
+
+                    }]
+            });
+
+        };
+
+        // build a weight form
+        function createTableWeight() {
+
+            var mouse = $('#mouse_select').val();
+            var form=[{
+                'MOUSE': mouse,
+                'DATE': new Date().toJSON().slice(0,10),
+                'WEIGHT': ""
+            }];
+
+            $('#weightTable').bootstrapTable('append', form);
+            $('#weightTable').bootstrapTable({
+                data: form,
+                columns: [ {
+                    field: 'MOUSE',
+                    title: 'MOUSE',
+                    sortable: true,
+                    editable: {
+                        type: 'text',
+                        title: 'MOUSE(LX-000)',
+                        mode: "inline",
+                        emptytext: '请输入小鼠ID',
+                        validate: function (v) {
+                            var re = re = /^L[0-9]{1}-[0-9]{3}$/;
+                            if (! re.test(v)) return '格式不对,像这样L1-001';
+                        }
+                    }
+                }, {
+                    field: 'DATE',
+                    title: 'DATE',
+                    sortable: true,
+                    editable: {
+                        type: 'date'
+                    }
+                }, {
+                    field: 'WEIGHT',
+                    title: 'WEIGHT (g)',
+                    sortable: true,
+                    editable: {
+                        type: 'text',
+                        title: 'WEIGHT',
+                        mode: "inline",
+                        emptytext: '请输入体重',
+                        validate: function (v) {
+                            if (isNaN(v)) return '体重必须是数字（单位g）';
+                            var age = parseInt(v);
+                            if (age <= 0) return '体重必须是正整数（单位g）';
+                        }
+                    }
+
+                }]
+            });
+
+        };
+
+
+        function createTablePhenotype() {
+            var mouse = $('#mouse_select').val();
+            var form=[{
+                'MOUSE': mouse,
+                'DATE': new Date().toJSON().slice(0,10),
+                'WEIGHT': "20"
+            }];
+
+            $('#phenotypeTable').bootstrapTable('append', form)
+            $('#phenotypeTable').bootstrapTable({
+                data: form,
+                columns: [{
+                    field: 'MOUSE',
+                    title: 'MOUSE',
+                    sortable: true
+                }, {
+                    field: 'DATE',
+                    title: 'DATE',
+                    sortable: true,
+                    editable: {
+                        type: 'date'
+                    }
+                }, {
+                    field: 'HEALTH',
+                    title: 'HEALTH',
+                    sortable: true,
+                    editable: {
+                        type: 'select',
+                        title: 'HEALTH',
+                        emptytext: '请输入表型描述',
+                        source: [{
+                            value: "1",
+                            text: "1"
+                        }, {
+                            value: "2",
+                            text: "2"
+                        } ]
+                    }
+                }, {
+                    field: 'HEALTH',
+                    title: 'HEALTH',
+                    sortable: true,
+                    editable: {
+                        type: 'select',
+                        title: 'HEALTH',
+                        emptytext: '请输入表型描述',
+                        source: [{
+                            value: "1",
+                            text: "1"
+                        }, {
+                            value: "2",
+                            text: "2"
+                        } ]
+                    }
+                }]
+            })
         }
-    });
-}
+
+        // create table feed
+        function createTableFeed() {
+            var mouse = $('#mouse_select').val();
+            var form=[{
+                'MOUSE': mouse,
+                'DATE': new Date().toJSON().slice(0,10),
+                'TYPE': "",
+                'AMOUNT': ""
+            }];
+
+            $('#feedTable').bootstrapTable('append', form)
+            $('#feedTable').bootstrapTable({
+                data: form,
+                columns: [{}, {
+                    field: 'MOUSE',
+                    title: 'MOUSE',
+                    sortable: true
+                }, {
+                    field: 'DATE',
+                    title: 'DATE',
+                    sortable: true,
+                    editable: {
+                        type: 'date'
+                    }
+                }, {
+                    field: 'TYPE',
+                    title: 'TYPE',
+                    sortable: true,
+                    editable: {
+                        type: 'select',
+                        title: 'TYPE',
+                        emptytext: '请选择饲养类型',
+                        source: [{
+                            value: "normal_chow",
+                            text: "normal chow"
+                        }, {
+                            value: "normal_drink",
+                            text: "normal drink"
+                        }, {
+                            value: "dox_chow",
+                            text: "dox chow"
+                        }, {
+                            value: "dox_drink",
+                            text: "dox drink"
+                        }, {
+                            value: "dox_gavage",
+                            text: "dox gavage"
+                        } ]
+                    }
+
+                }, {
+                    field: 'AMOUNT',
+                    title: 'AMOUNT',
+                    sortable: true,
+                    editable: {
+                        type: 'text',
+                        title: 'AMOUNT',
+                        emptytext: '请输入amount'
+                    }
+                }]
+            })
+        }
+
+        // create table inject virus
+        function createTableVirus() {
+            var mouse = $('#mouse_select').val();
+            var form=[{
+                'MOUSE': mouse,
+                'DATE': new Date().toJSON().slice(0,10),
+                'DRUG': ""
+            }];
+
+            $('#virusTable').bootstrapTable('append', form)
+            $('#virusTable').bootstrapTable({
+                data: form,
+                columns: [{}, {
+                    field: 'MOUSE',
+                    title: 'MOUSE',
+                    sortable: true
+                }, {
+                    field: 'DATE',
+                    title: 'DATE',
+                    sortable: true,
+                    editable: {
+                        type: 'date'
+                    }
+                }, {
+                    field: 'DRUG',
+                    title: 'DRUG',
+                    sortable: true,
+                    editable: {
+                        type: 'select',
+                        title: 'Gen',
+                        emptytext: '请输入drug',
+                        source: [{
+                            value: "1",
+                            text: "1"
+                        }, {
+                            value: "2",
+                            text: "2"
+                        } ]
+                    }
+                }]
+            })
+        }
+
+        //For doing AJAX post
+        function submitTable() {
+            var weightRows = $("#weightTable").bootstrapTable('getData');
+            var phenotypeRows = $("#phenotypeTable").bootstrapTable('getData');
+            var feedRows = $("#feedTable").bootstrapTable('getData');
+            var virusRows = $("#virusTable").bootstrapTable('getData');
+
+            var csrftoken = getCookie('csrftoken');
+            var mouse = $('#mouse_select').val();
+            //This is the Ajax post.Observe carefully. It is nothing but details of where_to_post,what_to_post
+
+            $.ajax({
+                url: "/api/mouse-event-submit",
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: csrftoken,
+                    mouse: mouse,
+                    weightRows: JSON.stringify(weightRows),
+                    phenotypeRows: JSON.stringify(phenotypeRows),
+                    feedRows: JSON.stringify(feedRows),
+                    weightRows: JSON.stringify(weightRows)
+                },
+                success: function(response) {
+                    console.log(response);
+                    $('#submit_response').bootstrapTable('append', [JSON.parse(response)]);
+                    $('#submit_response').bootstrapTable({
+                        data: [JSON.parse(response)],
+                        columns: [{}, {
+                            field: 'breedCount',
+                            title: 'breedCount'
+                        }, {
+                            field: 'mate_start_date',
+                            title: 'mate_start_date'
+                        }, {
+                            field: 'mate_end_day',
+                            title: 'mate_end_day'
+                        }, {
+                            field: 'born_date',
+                            title: 'born_date'
+                        } ]
+
+                    });
+                },
+                error: function() {
+                    console.log("提交数据失败");
+                }
+            });
+        }
 
 
 
-</script>
+    </script>
 
 
 
