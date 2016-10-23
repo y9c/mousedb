@@ -36,8 +36,9 @@ urlpatterns = [
 
     # show event
     url(r'^event/$', views.EventView, name='event_page'),
-    url(r'^event/add$', views.EventAddView, name='event_page'),
-    url(r'^event/edit$', views.EventEditView, name='event_page'),
+    url(r'^event/add$', views.EventAddView, name='event_add_page'),
+    url(r'^event/edit$', views.EventEditView, name='event_edit_page'),
+    url(r'^event/breed$', views.EventBreedView, name='event_breed_page'),
 
     # show datetable
     url(r'^datatable/$', views.DatatableView, name='datatable_page'),

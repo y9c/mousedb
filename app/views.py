@@ -170,6 +170,10 @@ def EventEditView(request):
     return render(request, 'events/edit.html')
 
 
+def EventBreedView(request):
+    return render(request, 'events/breed.html')
+
+
 # render
 # use echarts
 class RenderView(TemplateView):

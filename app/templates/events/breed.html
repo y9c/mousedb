@@ -14,42 +14,6 @@
 
 
 
-<h2 class="form-signin-heading">Select a mouse</h2>
-
-
-<form id="formSearch" class="form-horizontal">
-
-    <div class="form-group" style="margin-top: 5px">
-        <label class="control-label col-sm-1" for="line_select">
-            LINE
-        </label>
-        <div class="col-sm-2">
-            <select class="form-control" id="line_select">
-                <option value="">未选取</option>
-                <optgroup label="C57">
-                    <option value="WT">WT</option>
-                    <option value="R">rtTA</option>
-                    <option value="M">Msh2</option>
-                    <option value="T">TAH</option>
-                </optgroup>
-                <optgroup label="PWK">
-                    <option value="PWK-WT">WT</option>
-                </optgroup>
-            </select>
-        </div>
-
-        <label class="control-label col-sm-1" for="mouse_select">
-            MOUSE
-        </label>
-        <div class="col-sm-4">
-            <select class="form-control" id="mouse_select">
-                <option value="">未选取</option>
-            </select>
-        </div>
-    </div>
-
-</form>
-
 <h2 class="form-signin-heading">What do you want to edit</h2>
 <div class="container">
     <div class="row">
@@ -66,20 +30,6 @@
             <input id="createTableAblactation" class="btn btn-primary" type="button" onclick="createTableAblactation()" value="小鼠断奶">
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableWeight" class="btn btn-primary" type="button" onclick="createTableWeight()" value="秤体重">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTablePhenotype" class="btn btn-primary" type="button" onclick="createTablePhenotype()" value="记录表型">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableFeed" class="btn btn-primary" type="button" onclick="createTableFeed()" value="添加饲料">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableDrug" class="btn btn-primary" type="button" onclick="createTableDrug()" value="注射药物">
-        </div>
-    </div>
 </div>
 
 
@@ -89,29 +39,10 @@
     <table id="separateTable"></table>
     <table id="bornTable"></table>
     <table id="ablactationTable"></table>
-
-    <table id="weightTable"></table>
-    <table id="phenotypeTable"></table>
-    <table id="feedTable"></table>
-    <table id="drugTable"></table>
 </div>
 
 
 <div class="container">
-    <div class="row">
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="submitTableWeight" class="btn btn-success" type="button" onclick="submitTableWeight()" value="秤体重">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="submitTablePhenotype" class="btn btn-success" type="button" onclick="submitTablePhenotype()" value="记录表型">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="submitTableFeed" class="btn btn-success" type="button" onclick="submitTableFeed()" value="添加饲料">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="submitTableDrug" class="btn btn-success" type="button" onclick="submitTableDrug()" value="注射药物">
-        </div>
-    </div>
     <div class="row">
         <div class="col-xs-8 col-md-offset-2">
             <input id="submitTable" class="btn btn-block btn-success" type="button" onclick="submitTable()" value="提交全部">
