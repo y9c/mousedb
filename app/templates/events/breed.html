@@ -13,112 +13,170 @@
     <link rel="stylesheet" href="{% static 'css/daterangepicker.css' %}">
 
 
-    <div class="container">
-        <h2 class="page-header">Mouse edit breed</h2>
-        <div class="row">
-            <div class="col-xs-4 col-xs-offset-4">
-                <input id="createTableMate" class="btn btn-block btn-warning" type="button" onclick="createTableMate()" value="添加交配">
-            </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            STEP 0: Creat a breed event <span class="label label-info">optional</span>
         </div>
 
-        <div class="row">
-            <div class="col-xs-12 text-center">
-                <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span></p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-4 col-xs-offset-4">
-                <input id="createTableSeparate" class="btn btn-block btn-warning" type="button" onclick="createTableSeparate()" value="停止交配">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-12 text-center">
-                <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span></p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-                <input id="createTablePregnant" class="btn btn-block btn-danger" type="button" onclick="createTablePregnant()" value="是否怀孕">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-4  col-xs-offset-1 text-center">
-                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
-                <p class="bg-success text-success btn">YES</p>
-                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
-                <input id="createTableBorn" class="btn btn-block btn-warning" type="button" onclick="createTableBorn()" value="小鼠出生">
-                <input id="createTableBorn" class="btn btn-block btn-warning" type="button" onclick="createTableBorn()" value="开始哺乳">
-                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
-                <input id="createTableInfanticide" class="btn btn-block btn-danger" type="button" onclick="createTableInfanticide()" value="是否吃仔">
-
-                <div class="row">
-                    <div class="col-xs-6 text-center">
-                        <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span>
+        <div class="panel-body">
+            <form id="formSearch" class="form-horizontal">
+                <div class="form-group" style="margin-top: 5px">
+                    <label class="control-label col-sm-1" for="line_select">
+                        M
+                    </label>
+                    <div class="col-sm-2">
+                        <select class="form-control" id="line_select">
+                        </select>
                     </div>
-                    <div class="col-xs-6 text-center">
-                        <p class="btn">
-                            <span class="glyphicon glyphicon-arrow-down"></span></p>
+                    <label class="control-label col-sm-1" for="mouse_select">
+                        F
+                    </label>
+                    <div class="col-sm-4">
+                        <select class="form-control" id="mouse_select">
+                            <option value="">未选取</option>
+                        </select>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <p class="bg-success text-success btn">YES</p>
-                        <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
-                        <input id="createTableAblactation" class="btn btn-block btn-warning" type="button" onclick="createTableAblactation()" value="小鼠断奶">
+            </form>
+        </div>
+    </div>
 
-                    </div>
-                    <div class="col-xs-6 text-center">
-                        <p class="bg-danger text-danger btn">NO</p>
-                        <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
-                        <p class="bg text-success btn">结束，吃仔</p>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            STEP 1: Select a breed
+        </div>
+
+        <div class="panel-body">
+            <form id="formSearch" class="form-horizontal">
+                <div class="form-group" style="margin-top: 5px">
+                    <label class="control-label col-sm-1" for="line_select">
+                        BREED
+                    </label>
+                    <div class="col-sm-2">
+                        <select class="form-control" id="line_select">
+                        </select>
                     </div>
                 </div>
+            </form>
+        </div>
+    </div>
 
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            STEP 2: Editable FlowChart
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-4 col-xs-offset-4">
+                    <input id="createTableMate" class="btn btn-block" type="button" onclick="createTableMate()" value="添加交配">
+                </div>
             </div>
-            <div class="col-xs-6 col-xs-offset-1 text-center">
-                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
-                <p class="bg-danger text-danger btn">NO</p>
-                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
-                <p class="bg text-success btn">结束，未怀孕</p>
 
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-4 col-xs-offset-4">
+                    <input id="createTableSeparate" class="btn btn-block btn-warning" type="button" onclick="createTableSeparate()" value="停止交配">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-8 col-xs-offset-2">
+                    <input id="createTablePregnant" class="btn btn-block btn-danger" type="button" onclick="createTablePregnant()" value="是否怀孕">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-4  col-xs-offset-1 text-center">
+                    <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                    <p class="bg-success text-success btn">YES</p>
+                    <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                    <input id="createTableBorn" class="btn btn-block btn-warning" type="button" onclick="createTableBorn()" value="小鼠出生">
+                    <input id="createTableBorn" class="btn btn-block btn-warning" type="button" onclick="createTableBorn()" value="开始哺乳">
+                    <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                    <input id="createTableInfanticide" class="btn btn-block btn-danger" type="button" onclick="createTableInfanticide()" value="是否吃仔">
+
+                    <div class="row">
+                        <div class="col-xs-6 text-center">
+                            <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span>
+                        </div>
+                        <div class="col-xs-6 text-center">
+                            <p class="btn">
+                                <span class="glyphicon glyphicon-arrow-down"></span></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <p class="bg-success text-success btn">YES</p>
+                            <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                            <input id="createTableAblactation" class="btn btn-block btn-warning" type="button" onclick="createTableAblactation()" value="小鼠断奶">
+
+                        </div>
+                        <div class="col-xs-6 text-center">
+                            <p class="bg-danger text-danger btn">NO</p>
+                            <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                            <p class="bg text-success btn">结束，吃仔</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-xs-6 col-xs-offset-1 text-center">
+                    <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                    <p class="bg-danger text-danger btn">NO</p>
+                    <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                    <p class="bg text-success btn">结束，未怀孕</p>
+
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-9 col-xs-offset-1">
+                        <input id="submitTable" class="btn btn-block btn-success" type="button" onclick="submitTable()" value="提交全部">
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            STEP 3: REsponse
+        </div>
+
+        <div class="panel-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-9">
+                        <div id="submit_response"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
 
 
-
-    <div class="container" id="myTable">
-        <h2 class="page-header">Form to edit</h2>
-
-        <table id="mateTable"></table>
-        <table id="separateTable"></table>
-        <table id="bornTable"></table>
-        <table id="ablactationTable"></table>
-    </div>
-
-
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-8 col-md-offset-2">
-                <input id="submitTable" class="btn btn-block btn-success" type="button" onclick="submitTable()" value="提交全部">
-            </div>
-        </div>
-    </div>
-
-
-
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-9">
-                <div id="submit_response"></div>
-            </div>
-        </div>
-    </div>
 
 
     <script>

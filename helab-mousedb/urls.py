@@ -22,6 +22,8 @@ urlpatterns = [
         views.server_info_api, name='server_info_api'),
     url(r'^api/getlist-genotype-locus$',
         views.getlist_genotype_locus, name='getlist_genotype_locus'),
+    url(r'^api/getlist-breed$',
+        views.getlist_breed, name='getlist_breed'),
     url(r'^api/mouse-count-api$',
         views.mouse_count_api, name='mouse_count_api'),
     url(r'^api/mouse-table-api$',

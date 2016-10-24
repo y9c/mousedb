@@ -46,8 +46,8 @@ def server_info_api(request):
 def getlist_genotype_locus(request):
     try:
         locus = Genotype.objects.filter(line=request.GET.get("line"))
-        #print(locus.locus.all())
-        data = serializers.serialize("json", locus)
+        #data = serializers.serialize("json", locus)
+        data = locus.values('locus')
         return HttpResponse(data)
     except:
         data = {'S(XY)': 'S(XY)',
@@ -55,6 +55,17 @@ def getlist_genotype_locus(request):
                 'S(??)': 'S(??)', }
         return HttpResponse(json.dumps(data))
 
+def getlist_breed(request):
+    try:
+        breed = Breed.objects.all()
+        data_list = breed.values_list('name',flat=True)
+        data_dict = {i:i for i in data_list}
+        return HttpResponse(json.dumps(data_dict))
+    except:
+        data = {'S(XY)': 'S(XY)',
+                'S(XX)': 'S(XX)',
+                'S(??)': 'S(??)', }
+        return HttpResponse(json.dumps(data))
 
 # statistic: count idle mouse
 def mouse_count_api(request):
