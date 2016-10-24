@@ -14,7 +14,7 @@
 
 
 
-    <div class="panel panel-default">
+    <div class="panel panel-success">
         <div class="panel-heading">
             STEP 1: Select breed or mouse source
         </div>
@@ -33,7 +33,7 @@
                     <input type="number" id="breedCount" class="form-control" placeholder="NUM" required>
                 </div>
                 <div class="col-sm-2 col-sm-offset-1">
-                    <input id="creat" class="btn btn-primary" type="button" onclick="createTable()" value="Create the table">
+                    <input id="creat" class="btn btn-primary" type="button" onclick="createTableGenotyping()" value="Genotyping">
                 </div>
             </div>
 
@@ -48,45 +48,42 @@
                     </select>
                 </div>
                 <div class="col-sm-2 col-sm-offset-1">
-                    <input type="number" id="xxxx" class="form-control" placeholder="NUM" required>
+                    <input type="number" id="mouseSource" class="form-control" placeholder="NUM" required>
                 </div>
                 <div class="col-sm-2 col-sm-offset-1">
-                    <input id="creat" class="btn btn-primary" type="button" onclick="createTable()" value="Create the table">
+                    <input id="creat" class="btn btn-primary" type="button" onclick="createTableInduct()" value="Inducting">
                 </div>
             </div>
         </div>
     </div>
 
 
-
-
-    <div class="container">
-        <table id="myTable" class="table table-inverse text-center"></table>
-    </div>
-
-    <div class="container jumbotron">
-        <div class="row">
-            <div class="col-xs-9 col-md-offset-1">
-                <h2 class="form-signin-heading">Submit Form</h2>
-            </div>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            STEP 2: Edit Form
         </div>
 
-        <div class="row">
-            <div class="col-xs-2 col-md-offset-2">
-                <button id="submit" class="btn btn-primary" type="submit">Submit Go!!</button>
-            </div>
+        <div class="panel-body">
+            <table id="genotypingTable" class="table table-inverse text-center"></table>
         </div>
     </div>
 
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            STEP 3: Submit Date
+        </div>
 
-
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-9">
-                <div id="hello_response"></div>
+        <div class="panel-body">
+            <button id="submit" class="btn btn-block btn-primary" type="submit">Submit Go!!</button>
+            <hr>
+            <div class="row">
+                <div class="col-xs-9">
+                    <div id="responseTable"></div>
+                </div>
             </div>
         </div>
     </div>
+
 
 
     <script>
@@ -131,7 +128,7 @@
 
 
         // Build a form
-        function createTable() {
+        function createTableGenotyping() {
             var breedID = $('#breedID').val();
             var breedCount = $('#breedCount').val();
             var form = [];
@@ -143,8 +140,8 @@
                     'Keep': "0"
                 });
             }
-            $('#myTable').bootstrapTable('load', form)
-            $('#myTable').bootstrapTable({
+            $('#genotypingTable').bootstrapTable('load', form)
+            $('#genotypingTable').bootstrapTable({
                 data: form,
                 search: true,
                 columns: [ {
@@ -195,57 +192,30 @@
         $("#submit").click(function(e) {
 
             e.preventDefault();
-
-            var myRows = [];
-            var headersText = [];
-            var $headers = $("#myTable th");
-
-            // Loop through grabbing everything
-            var $rows = $("#myTable tbody tr").each(function(index) {
-                $cells = $(this).find("td");
-                myRows[index] = {};
-                $cells.each(function(cellIndex) {
-                    if (headersText[cellIndex] === undefined) {
-                        headersText[cellIndex] = $($headers[cellIndex]).text();
-                    }
-                    myRows[index][headersText[cellIndex]] = $(this).text();
-                });
-            });
-
-
             var csrftoken = getCookie('csrftoken');
+
+            var genotypingRows = $("#genotypingTable").bootstrapTable('getData');
             var breedID = $('#breedID').val();
             var breedCount = $('#breedCount').val();
-            //This is the Ajax post.Observe carefully. It is nothing but details of where_to_post,what_to_post
 
             $.ajax({
                 url: "/api/mouse-event-submit",
-                // url: window.location.href,
                 type: "POST",
                 data: {
                     csrfmiddlewaretoken: csrftoken,
                     breedID: breedID,
                     breedCount: breedCount,
-                    breedBirth: JSON.stringify(myRows),
+                    //breedBirth: JSON.stringify(genotypingRows),
                 },
                 success: function(response) {
                     console.log(response);
-                    $('#hello_response').bootstrapTable('append', [JSON.parse(response)]);
-                    $('#hello_response').bootstrapTable({
+                    $('#responseTable').bootstrapTable('append', [JSON.parse(response)]);
+                    $('#responseTable').bootstrapTable({
                         data: [JSON.parse(response)],
-                        columns: [{}, {
+                        columns: [{
                             field: 'breedCount',
                             title: 'breedCount'
-                        }, {
-                            field: 'mate_start_date',
-                            title: 'mate_start_date'
-                        }, {
-                            field: 'mate_end_day',
-                            title: 'mate_end_day'
-                        }, {
-                            field: 'born_date',
-                            title: 'born_date'
-                        }, ]
+                        } ]
 
                     });
                 },

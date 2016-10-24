@@ -133,43 +133,42 @@ def mouse_event_submit(request):
 
         details = {}
         # mate
-        mateList = json.loads(request.POST.get("mateRows"))
-        if type(mateList) == list:
-            for row in mateList:
-                print("##########################")
-                print(row)
-                try:
-                    mouse_pa = Mouse.objects.get(mouse_id=row["MOUSE-Pa"])
-                    mouse_ma = Mouse.objects.get(mouse_id=row["MOUSE-Ma"])
-                    if mouse_pa.genotype.sex() == "Male" and mouse_ma.genotype.sex() == "Female":
-                        mate_start_date = datetime.strptime(row["DATE"],"%Y-%m-%d")
-                        if Breed.objects.filter(parent=mouse_pa).filter(parent=mouse_ma).filter(mate_start_date=mate_start_date).count() == 0:
-                            # create breed and write to models
-                            print("hello")
-                            print(mate_start_date)
-                        else:
-                            print("ERROR: breed already exist")
-                    else:
-                        print("ERROR: wrong sex combination, you many input the wrong mouse id")
+        #mateList = json.loads(request.POST.get("mateRows"))
+        #if type(mateList) == list:
+        #    for row in mateList:
+        #        print("##########################")
+        #        print(row)
+        #        try:
+        #            mouse_pa = Mouse.objects.get(mouse_id=row["MOUSE-Pa"])
+        #            mouse_ma = Mouse.objects.get(mouse_id=row["MOUSE-Ma"])
+        #            if mouse_pa.genotype.sex() == "Male" and mouse_ma.genotype.sex() == "Female":
+        #                mate_start_date = datetime.strptime(row["DATE"],"%Y-%m-%d")
+        #                if Breed.objects.filter(parent=mouse_pa).filter(parent=mouse_ma).filter(mate_start_date=mate_start_date).count() == 0:
+        #                    # create breed and write to models
+        #                    print("hello")
+        #                    print(mate_start_date)
+        #                else:
+        #                    print("ERROR: breed already exist")
+        #            else:
+        #                print("ERROR: wrong sex combination, you many input the wrong mouse id")
 
-                except:
-                    print("ERROR: the mouse not exsit")
+        #        except:
+        #            print("ERROR: the mouse not exsit")
 
-        # separate
-        separateList = json.loads(request.POST.get("separateRows"))
-        if type(separateList) == list:
-            for row in separateList:
-                print("----------------------------")
-                print(row)
-                try:
-                    breed = Breed.objects.get(name=row["MATE"])
-                    mate_end_date = datetime.strptime(row["DATE"],"%Y-%m-%d")
-                    print("hello")
-                    print(breed)
-                    print(mate_end_date)
-                except:
-                    print("ERROR: mate name dose not exsit!!")
-
+        ## separate
+        #separateList = json.loads(request.POST.get("separateRows"))
+        #if type(separateList) == list:
+        #    for row in separateList:
+        #        print("----------------------------")
+        #        print(row)
+        #        try:
+        #            breed = Breed.objects.get(name=row["MATE"])
+        #            mate_end_date = datetime.strptime(row["DATE"],"%Y-%m-%d")
+        #            print("hello")
+        #            print(breed)
+        #            print(mate_end_date)
+        #        except:
+        #            print("ERROR: mate name dose not exsit!!")
 
         # born
         # ablactation
@@ -183,7 +182,7 @@ def mouse_event_submit(request):
         #    details["mate_end_date"] = str(breed.mate_end_date)
         #    details["born_date"] = str(breed.born_date)
         #    details = json.dumps(details)
-        details["breedID"] = 10000
+        details["breedCount"] = 10000
         details["status"] = "success"
         return HttpResponse(json.dumps(details))
     else:
