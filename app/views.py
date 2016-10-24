@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
@@ -7,6 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.core import serializers
 from django.http import Http404
+from django.db.models import Q
 
 from .models import BlogsPost
 from .models import Genotype
@@ -53,6 +55,7 @@ def getlist_genotype_locus(request):
                 'S(??)': 'S(??)', }
         return HttpResponse(json.dumps(data))
 
+
 # statistic: count idle mouse
 def mouse_count_api(request):
     status = request.GET.get("status")
@@ -76,7 +79,7 @@ def mouse_table_api(request):
                 return HttpResponse("null=date")
         except:
             print("得这么搞 XXX=YYY")
-            return HttpResponse("error format")
+        return HttpResponse("error format")
     else:
         #struct = json.loads(data)
         #data = json.dumps(struct)
@@ -115,20 +118,62 @@ def mouse_table_edit(request):
 @csrf_exempt
 def mouse_event_submit(request):
     if request.method == 'POST' and request.is_ajax():
-        # show post request
         print(request.POST)
+
         details = {}
-        details["breedCount"] =10000000
-        if 'breedID' in request.POST:
-            details["breedID"] = request.POST.get('breedID')
-        if 'breedIDCount' in request.POST:
-            details["breedCount"] = request.POST.get('breedCount')
+        # mate
+        mateList = json.loads(request.POST.get("mateRows"))
+        if type(mateList) == list:
+            for row in mateList:
+                print("##########################")
+                print(row)
+                try:
+                    mouse_pa = Mouse.objects.get(mouse_id=row["MOUSE-Pa"])
+                    mouse_ma = Mouse.objects.get(mouse_id=row["MOUSE-Ma"])
+                    if mouse_pa.genotype.sex() == "Male" and mouse_ma.genotype.sex() == "Female":
+                        mate_start_date = datetime.strptime(row["DATE"],"%Y-%m-%d")
+                        if Breed.objects.filter(parent=mouse_pa).filter(parent=mouse_ma).filter(mate_start_date=mate_start_date).count() == 0:
+                            # create breed and write to models
+                            print("hello")
+                            print(mate_start_date)
+                        else:
+                            print("ERROR: breed already exist")
+                    else:
+                        print("ERROR: wrong sex combination, you many input the wrong mouse id")
+
+                except:
+                    print("ERROR: the mouse not exsit")
+
+        # separate
+        separateList = json.loads(request.POST.get("separateRows"))
+        if type(separateList) == list:
+            for row in separateList:
+                print("----------------------------")
+                print(row)
+                try:
+                    breed = Breed.objects.get(name=row["MATE"])
+                    mate_end_date = datetime.strptime(row["DATE"],"%Y-%m-%d")
+                    print("hello")
+                    print(breed)
+                    print(mate_end_date)
+                except:
+                    print("ERROR: mate name dose not exsit!!")
+
+
+        # born
+        # ablactation
+        # weighting
+        # phenotyping
+        # feed
+        # drug
+
         #    print(breed.mate_start_date)
         #    details["mate_start_date"] = str(breed.mate_start_date)
         #    details["mate_end_date"] = str(breed.mate_end_date)
         #    details["born_date"] = str(breed.born_date)
         #    details = json.dumps(details)
-        print("\n",details)
+        details["breedID"] = 10000
+        details["status"] = "success"
         return HttpResponse(json.dumps(details))
     else:
         raise Http404

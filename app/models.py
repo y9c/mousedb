@@ -40,9 +40,9 @@ class Genotype(models.Model):
 
     def sex(self):
         if "S(XY)" in self.locus.upper().strip():
-            return "Female"
-        if "S(XX)" in self.locus.upper().strip():
             return "Male"
+        if "S(XX)" in self.locus.upper().strip():
+            return "Female"
         else:
             return "Unknow"
 
@@ -69,13 +69,13 @@ class Weight(models.Model):
 # breed
 class Breed(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50, null=True)
-    mate_start_date = models.DateField(
-        'date of mate start', blank=True, null=True)
+    name = models.CharField(max_length=50, unique=True)
+    mate_start_date = models.DateField('date of mate start', blank=False, null=False)
     mate_end_date = models.DateField('date of mate end', blank=True, null=True)
-    born_date = models.DateField('date of born', null=True)
-    wean_start_date = models.DateField(
-        'date of wean start', blank=True, null=True)
+    pregnant = models.NullBooleanField(default=None)
+    infanticide = models.NullBooleanField(default=None)
+    born_date = models.DateField('date of born', blank=False, null=True)
+    wean_start_date = models.DateField('date of wean start', blank=True, null=True)
     wean_end_date = models.DateField('date of wean end', blank=True, null=True)
     litter_count = models.IntegerField(null=True)
     genotyped = models.BooleanField(default=False)
@@ -84,6 +84,25 @@ class Breed(models.Model):
     #     Mouse, related_name='paternal', verbose_name='paternal mouse object')
     # maternal_id = models.ManyToManyField(
     #     Mouse, related_name='maternal', verbose_name='maternal mouse object')
+    def status(self):
+        if self.mate_end_date is None:
+            return "mating"
+        elif self.pregnant is None:
+            return "observing"
+        elif self.pregnant is False:
+            # 未怀孕
+            return "unpregnant"
+        elif self.born_date is None:
+            return "pregnanting"
+        elif self.infanticide is True:
+            # 吃仔
+            return "infanticided"
+        elif self.wean_end_date is None:
+            return "weaning"
+        else:
+            # 断奶
+            return "finish"
+
 
     def mate_days(self):
         return datetime.now() - self.mate_start_date
@@ -157,7 +176,7 @@ class Mouse(models.Model):
     born = models.ManyToManyField(
         Breed,
         related_name='litter',
-        verbose_name='breed that this mouse engage',
+        verbose_name='born breed',
         blank=True)
 
     # many-to-many

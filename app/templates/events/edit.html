@@ -61,16 +61,22 @@
     <div class="panel-body">
         <div class="container">
             <div class="row">
-                <div class="col-xs-2 col-md-offset-1">
+                <div class="col-xs-2">
                     <input id="createTableMate" class="btn btn-warning" type="button" onclick="createTableMate()" value="添加交配">
                 </div>
-                <div class="col-xs-2 col-md-offset-1">
+                <div class="col-xs-2">
                     <input id="createTableSeparate" class="btn btn-warning" type="button" onclick="createTableSeparate()" value="停止交配">
                 </div>
-                <div class="col-xs-2 col-md-offset-1">
+                <div class="col-xs-2">
+                    <input id="createTablePregnant" class="btn btn-warning" type="button" onclick="createTablePregnant()" value="是否怀孕">
+                </div>
+                <div class="col-xs-2">
                     <input id="createTableBorn" class="btn btn-warning" type="button" onclick="createTableBorn()" value="小鼠出生">
                 </div>
-                <div class="col-xs-2 col-md-offset-1">
+                <div class="col-xs-2">
+                    <input id="createTableInfanticide" class="btn btn-warning" type="button" onclick="createTableInfanticide()" value="是否吃仔">
+                </div>
+                <div class="col-xs-2">
                     <input id="createTableAblactation" class="btn btn-warning" type="button" onclick="createTableAblactation()" value="小鼠断奶">
                 </div>
             </div>
@@ -717,10 +723,9 @@ function submitTable() {
             $('#submit_response').bootstrapTable('append', [JSON.parse(response)]);
             $('#submit_response').bootstrapTable({
                 data: [JSON.parse(response)],
-                //data: [{'breedCount': '10032134'}],
                 columns: [ {
-                    field: 'breedCount',
-                    title: 'breedCount'
+                    field: 'breedID',
+                    title: 'breedID'
                 } ]
 
             });
