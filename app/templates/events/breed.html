@@ -14,33 +14,47 @@
 
 
     <div class="container">
-        <h2 class="page-header">Step 1: Where is the data?</h2>
+        <h2 class="page-header">Mouse edit breed</h2>
         <div class="row">
             <div class="col-xs-12">
-                <p class="lead text-center bg-info btn text-info center-block">Is the data in the system?</p>
-                <div class="row">
-                    <div class="col-xs-6 text-center">
-                        <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span>
-                    </div>
-                    <div class="col-xs-6 text-center">
-                        <p class="btn">
-                            <span class="glyphicon glyphicon-arrow-down"></span></p>
-                    </div>
-                </div>
-
+                <input id="createTableMate" class="btn btn-block btn-warning" type="button" onclick="createTableMate()" value="添加交配">
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <input id="createTableSeparate" class="btn btn-block btn-warning" type="button" onclick="createTableSeparate()" value="停止交配">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <input id="createTablePregnant" class="btn btn-block btn-danger" type="button" onclick="createTablePregnant()" value="是否怀孕">
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-xs-6 text-center">
-                <p class="center-block"><span class="btn btn-success btn-lg">Yes</span></p>
                 <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                <p class="bg-success text-success btn">YES</p>
+                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                <input id="createTableBorn" class="btn btn-block btn-warning" type="button" onclick="createTableBorn()" value="小鼠出生">
+                <input id="createTableBorn" class="btn btn-block btn-warning" type="button" onclick="createTableBorn()" value="开始哺乳">
+                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                <input id="createTableInfanticide" class="btn btn-block btn-warning" type="button" onclick="createTableInfanticide()" value="是否吃仔">
 
-                <p class="bg-success text-success btn">Okay! Proceed to step 2.</p>
-            </div>
-            <div class="col-xs-6 text-center">
-                <p class="center-block"><span class="btn btn-danger btn-lg">No</span></p>
-                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
-                <p class="bg-info text-info btn">Are you willing to put the data into the system?</p>
                 <div class="row">
                     <div class="col-xs-6 text-center">
                         <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span>
@@ -52,75 +66,29 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-6">
-                        <p class="center-block"><span class="btn btn-success btn-lg">Yes</span></p>
-                        <p class="btn">
-                            <span class="glyphicon glyphicon-arrow-down"></span></p>
-                        <p class="bg-success text-success btn text-wrap">Okay! After the data is in the system, proceed to step 2.</p>
+                        <p class="bg-success text-success btn">YES</p>
+                        <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                        <input id="createTableAblactation" class="btn btn-block btn-warning" type="button" onclick="createTableAblactation()" value="小鼠断奶">
 
                     </div>
                     <div class="col-xs-6 text-center">
-                        <p class="center-block"><span class="btn btn-danger btn-lg">No</span></p>
+                        <p class="bg-danger text-danger btn">NO</p>
                         <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
-                        <p class="btn bg-danger text-danger text-wrap">The data must be in the system to use this service.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <h2 class="page-header">Step 2: What type of email is it?</h2>
-        <div class="row">
-            <div class="col-xs-12">
-                <p class="lead text-center bg-info btn text-info center-block">What type of email do you want to send?</p>
-                <div class="row">
-                    <div class="col-xs-6 text-center">
-                        <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span>
-                    </div>
-                    <div class="col-xs-6 text-center">
-                        <p class="btn">
-                            <span class="glyphicon glyphicon-arrow-down"></span></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6 text-center">
-                        <p class="center-block"><span class="btn btn-warning btn-lg">Newsletter</span></p>
-                        <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
-                        <p class="center-block bg-info text-info btn">Is it directly related to fundraising?</p>
-                        <div class="row">
-                            <div class="col-xs-6 text-center">
-                                <p class="btn"><span class="glyphicon glyphicon-arrow-down"></span>
-                            </div>
-                            <div class="col-xs-6 text-center">
-                                <p class="btn">
-                                    <span class="glyphicon glyphicon-arrow-down"></span></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <p class="center-block"><span class="btn btn-success btn-lg">Yes</span></p>
-                                <p class="btn">
-                                    <span class="glyphicon glyphicon-arrow-down"></span></p>
-                                <p class="bg-success text-success btn text-wrap">Okay! You can proceed to step 3. </p>
-
-                            </div>
-                            <div class="col-xs-6 text-center">
-                                <p class="center-block"><span class="btn btn-danger btn-lg">No</span></p>
-                                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
-                                <p class="btn bg-danger text-danger text-wrap">Content must be directly related to fundraising to use this service.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 text-center">
-                        <p class="center-block"><span class="btn btn-success btn-lg">Solicitation</span></p>
-                        <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
-
-                        <p class="bg-success text-success btn">Okay! Proceed to step 3.</p>
+                        <p class="bg text-success btn">结束，吃仔</p>
                     </div>
                 </div>
 
             </div>
+            <div class="col-xs-6 text-center">
+                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                <p class="bg-danger text-danger btn">NO</p>
+                <p class="btn center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+                <p class="bg text-success btn">结束，未怀孕</p>
+
+            </div>
         </div>
     </div>
+
 
 
     <h2 class="form-signin-heading">What do you want to edit</h2>
