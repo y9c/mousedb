@@ -118,6 +118,7 @@ def mouse_event_submit(request):
         # show post request
         print(request.POST)
         details = {}
+        details["breedCount"] =10000000
         if 'breedID' in request.POST:
             details["breedID"] = request.POST.get('breedID')
         if 'breedIDCount' in request.POST:
@@ -127,8 +128,8 @@ def mouse_event_submit(request):
         #    details["mate_end_date"] = str(breed.mate_end_date)
         #    details["born_date"] = str(breed.born_date)
         #    details = json.dumps(details)
-        print(request.POST.get('weightRows'))
-        return HttpResponse(details)
+        print("\n",details)
+        return HttpResponse(json.dumps(details))
     else:
         raise Http404
 

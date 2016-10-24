@@ -14,120 +14,137 @@
 
 
 
-<h2 class="form-signin-heading">Select a mouse</h2>
-
-
-<form id="formSearch" class="form-horizontal">
-
-    <div class="form-group" style="margin-top: 5px">
-        <label class="control-label col-sm-1" for="line_select">
-            LINE
-        </label>
-        <div class="col-sm-2">
-            <select class="form-control" id="line_select">
-                <option value="">未选取</option>
-                <optgroup label="C57">
-                    <option value="WT">WT</option>
-                    <option value="R">rtTA</option>
-                    <option value="M">Msh2</option>
-                    <option value="T">TAH</option>
-                </optgroup>
-                <optgroup label="PWK">
-                    <option value="PWK-WT">WT</option>
-                </optgroup>
-            </select>
-        </div>
-
-        <label class="control-label col-sm-1" for="mouse_select">
-            MOUSE
-        </label>
-        <div class="col-sm-4">
-            <select class="form-control" id="mouse_select">
-                <option value="">未选取</option>
-            </select>
-        </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        STEP 0: Select a mouse <span class="label label-info">optional</span>
     </div>
 
-</form>
-
-<h2 class="form-signin-heading">What do you want to edit</h2>
-<div class="container">
-    <div class="row">
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableMate" class="btn btn-primary" type="button" onclick="createTableMate()" value="添加交配">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableSeparate" class="btn btn-primary" type="button" onclick="createTableSeparate()" value="停止交配">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableBorn" class="btn btn-primary" type="button" onclick="createTableBorn()" value="观察到出生">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableAblactation" class="btn btn-primary" type="button" onclick="createTableAblactation()" value="小鼠断奶">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableWeight" class="btn btn-primary" type="button" onclick="createTableWeight()" value="秤体重">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTablePhenotype" class="btn btn-primary" type="button" onclick="createTablePhenotype()" value="记录表型">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableFeed" class="btn btn-primary" type="button" onclick="createTableFeed()" value="添加饲料">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="createTableDrug" class="btn btn-primary" type="button" onclick="createTableDrug()" value="注射药物">
-        </div>
+    <div class="panel-body">
+        <form id="formSearch" class="form-horizontal">
+            <div class="form-group" style="margin-top: 5px">
+                <label class="control-label col-sm-1" for="line_select">
+                    LINE
+                </label>
+                <div class="col-sm-2">
+                    <select class="form-control" id="line_select">
+                        <option value="">未选取</option>
+                        <optgroup label="C57">
+                            <option value="WT">WT</option>
+                            <option value="R">rtTA</option>
+                            <option value="M">Msh2</option>
+                            <option value="T">TAH</option>
+                        </optgroup>
+                        <optgroup label="PWK">
+                            <option value="PWK-WT">WT</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <label class="control-label col-sm-1" for="mouse_select">
+                    MOUSE
+                </label>
+                <div class="col-sm-4">
+                    <select class="form-control" id="mouse_select">
+                        <option value="">未选取</option>
+                    </select>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
 
+<div class="panel panel-default">
+    <div class="panel-heading">
+        STEP1: What do you want to edit
+    </div>
 
-<div class="container" id="myTable">
-    <table id="mateTable"></table>
-    <table id="separateTable"></table>
-    <table id="bornTable"></table>
-    <table id="ablactationTable"></table>
+    <div class="panel-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-2 col-md-offset-1">
+                    <input id="createTableMate" class="btn btn-warning" type="button" onclick="createTableMate()" value="添加交配">
+                </div>
+                <div class="col-xs-2 col-md-offset-1">
+                    <input id="createTableSeparate" class="btn btn-warning" type="button" onclick="createTableSeparate()" value="停止交配">
+                </div>
+                <div class="col-xs-2 col-md-offset-1">
+                    <input id="createTableBorn" class="btn btn-warning" type="button" onclick="createTableBorn()" value="小鼠出生">
+                </div>
+                <div class="col-xs-2 col-md-offset-1">
+                    <input id="createTableAblactation" class="btn btn-warning" type="button" onclick="createTableAblactation()" value="小鼠断奶">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-2 col-md-offset-1">
+                    <input id="createTableWeight" class="btn btn-primary" type="button" onclick="createTableWeight()" value="秤量体重">
+                </div>
+                <div class="col-xs-2 col-md-offset-1">
+                    <input id="createTablePhenotype" class="btn btn-primary" type="button" onclick="createTablePhenotype()" value="记录表型">
+                </div>
+                <div class="col-xs-2 col-md-offset-1">
+                    <input id="createTableFeed" class="btn btn-primary" type="button" onclick="createTableFeed()" value="添加饲料">
+                </div>
+                <div class="col-xs-2 col-md-offset-1">
+                    <input id="createTableDrug" class="btn btn-primary" type="button" onclick="createTableDrug()" value="注射药物">
+                </div>
+            </div>
+        </div>
 
-    <table id="weightTable"></table>
-    <table id="phenotypeTable"></table>
-    <table id="feedTable"></table>
-    <table id="drugTable"></table>
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        STEP3: Fill and submit the form
+    </div>
+
+    <div class="panel-body">
+        <div class="container" id="myTable">
+            <table id="mateTable"></table>
+            <table id="separateTable"></table>
+            <table id="bornTable"></table>
+            <table id="ablactationTable"></table>
+
+            <table id="weightTable"></table>
+            <table id="phenotypeTable"></table>
+            <table id="feedTable"></table>
+            <table id="drugTable"></table>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-md-offset-0">
+                    <input id="submitTable" class="btn btn-block btn-success" type="button" onclick="submitTable()" value="提交全部">
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 
-<div class="container">
-    <div class="row">
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="submitTableWeight" class="btn btn-success" type="button" onclick="submitTableWeight()" value="秤体重">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="submitTablePhenotype" class="btn btn-success" type="button" onclick="submitTablePhenotype()" value="记录表型">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="submitTableFeed" class="btn btn-success" type="button" onclick="submitTableFeed()" value="添加饲料">
-        </div>
-        <div class="col-xs-2 col-md-offset-2">
-            <input id="submitTableDrug" class="btn btn-success" type="button" onclick="submitTableDrug()" value="注射药物">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        STEP4: Show response
+    </div>
+
+    <div class="panel-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-9">
+                    <div id="submit_response"></div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-8 col-md-offset-2">
-            <input id="submitTable" class="btn btn-block btn-success" type="button" onclick="submitTable()" value="提交全部">
-        </div>
-    </div>
+
 </div>
 
 
 
-<div class="container">
-    <div class="row">
-        <div class="col-xs-9">
-            <div id="submit_response"></div>
-        </div>
-    </div>
-</div>
+
 
 
 <script>
@@ -285,7 +302,7 @@ function createTableSeparate() {
 function createTableBorn() {
 
     var form=[{
-        'EVENT': "separate",
+        'EVENT': "born",
         'MOUSE-Pa': "",
         'MOUSE-Ma': "",
         'MATE': "",
@@ -299,20 +316,6 @@ function createTableBorn() {
         {
             field: 'EVENT',
             title: 'EVENT',
-        }, {
-            field: 'MOUSE-Pa',
-            title: 'MOUSE-Pa',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MOUSE(LX-000)',
-                mode: "inline",
-                emptytext: '请输入公鼠ID',
-                validate: function (v) {
-                    var re = re = /^L[0-9]{1}-[0-9]{3}$/;
-                    if (! re.test(v)) return '格式不对,像这样L1-001';
-                }
-            }
         }, {
             field: 'MOUSE-Ma',
             title: 'MOUSE-Ma',
@@ -359,34 +362,19 @@ function createTableBorn() {
 function createTableAblactation() {
 
     var form=[{
-        'EVENT': "separate",
-        'MOUSE-Pa': "",
+        'EVENT': "ablactaion",
         'MOUSE-Ma': "",
         'MATE': "",
         'DATE': new Date().toJSON().slice(0,10),
     }];
 
-    $('#bornTable').bootstrapTable('append', form);
-    $('#bornTable').bootstrapTable({
+    $('#ablactationTable').bootstrapTable('append', form);
+    $('#ablactationTable').bootstrapTable({
         data: form,
         columns: [
         {
             field: 'EVENT',
             title: 'EVENT',
-        }, {
-            field: 'MOUSE-Pa',
-            title: 'MOUSE-Pa',
-            sortable: true,
-            editable: {
-                type: 'text',
-                title: 'MOUSE(LX-000)',
-                mode: "inline",
-                emptytext: '请输入公鼠ID',
-                validate: function (v) {
-                    var re = re = /^L[0-9]{1}-[0-9]{3}$/;
-                    if (! re.test(v)) return '格式不对,像这样L1-001';
-                }
-            }
         }, {
             field: 'MOUSE-Ma',
             title: 'MOUSE-Ma',
@@ -433,6 +421,7 @@ function createTableWeight() {
 
     var mouse = $('#mouse_select').val();
     var form=[{
+        'EVENT': "weighting",
         'MOUSE': mouse,
         'DATE': new Date().toJSON().slice(0,10),
         'WEIGHT': ""
@@ -441,7 +430,11 @@ function createTableWeight() {
     $('#weightTable').bootstrapTable('append', form);
     $('#weightTable').bootstrapTable({
         data: form,
-        columns: [ {
+        columns: [
+        {
+            field: 'EVENT',
+            title: 'EVENT',
+        }, {
             field: 'MOUSE',
             title: 'MOUSE',
             sortable: true,
@@ -487,18 +480,33 @@ function createTableWeight() {
 function createTablePhenotype() {
     var mouse = $('#mouse_select').val();
     var form=[{
+        'EVENT': "phenotyping",
         'MOUSE': mouse,
         'DATE': new Date().toJSON().slice(0,10),
-        'WEIGHT': "20"
+        'COLOUR': "",
+        'HEALTH': ""
     }];
 
     $('#phenotypeTable').bootstrapTable('append', form)
         $('#phenotypeTable').bootstrapTable({
             data: form,
             columns: [{
+                field: 'EVENT',
+                title: 'EVENT',
+            }, {
                 field: 'MOUSE',
                 title: 'MOUSE',
-                sortable: true
+                sortable: true,
+                editable: {
+                    type: 'text',
+                    title: 'MOUSE(LX-000)',
+                    mode: "inline",
+                    emptytext: '请输入小鼠ID',
+                    validate: function (v) {
+                        var re = re = /^L[0-9]{1}-[0-9]{3}$/;
+                        if (! re.test(v)) return '格式不对,像这样L1-001';
+                    }
+                }
             }, {
                 field: 'DATE',
                 title: 'DATE',
@@ -507,19 +515,19 @@ function createTablePhenotype() {
                     type: 'date'
                 }
             }, {
-                field: 'HEALTH',
-                title: 'HEALTH',
+                field: 'COLOUR',
+                title: 'COLOUR',
                 sortable: true,
                 editable: {
                     type: 'select',
                     title: 'HEALTH',
-                    emptytext: '请输入表型描述',
+                    emptytext: '请输入颜色描述',
                     source: [{
-                        value: "1",
-                        text: "1"
+                        value: "black",
+                        text: "black"
                     }, {
-                        value: "2",
-                        text: "2"
+                        value: "white",
+                        text: "white"
                     } ]
                 }
             }, {
@@ -527,9 +535,9 @@ function createTablePhenotype() {
                 title: 'HEALTH',
                 sortable: true,
                 editable: {
-                    type: 'select',
+                    type: 'text',
                     title: 'HEALTH',
-                    emptytext: '请输入表型描述',
+                    emptytext: '请输入健康描述',
                     source: [{
                         value: "1",
                         text: "1"
@@ -546,6 +554,7 @@ function createTablePhenotype() {
 function createTableFeed() {
     var mouse = $('#mouse_select').val();
     var form=[{
+        'EVENT': "feed",
         'MOUSE': mouse,
         'DATE': new Date().toJSON().slice(0,10),
         'TYPE': "",
@@ -555,10 +564,23 @@ function createTableFeed() {
     $('#feedTable').bootstrapTable('append', form)
         $('#feedTable').bootstrapTable({
             data: form,
-            columns: [{}, {
+            columns: [ {
+                field: 'EVENT',
+                title: 'EVENT',
+            }, {
                 field: 'MOUSE',
                 title: 'MOUSE',
-                sortable: true
+                sortable: true,
+                editable: {
+                    type: 'text',
+                    title: 'MOUSE(LX-000)',
+                    mode: "inline",
+                    emptytext: '请输入小鼠ID',
+                    validate: function (v) {
+                        var re = re = /^L[0-9]{1}-[0-9]{3}$/;
+                        if (! re.test(v)) return '格式不对,像这样L1-001';
+                    }
+                }
             }, {
                 field: 'DATE',
                 title: 'DATE',
@@ -605,22 +627,36 @@ function createTableFeed() {
         })
 }
 
-// create table inject virus
-function createTableVirus() {
+// create table inject drug
+function createTableDrug() {
     var mouse = $('#mouse_select').val();
     var form=[{
+        'EVENT': "drug",
         'MOUSE': mouse,
         'DATE': new Date().toJSON().slice(0,10),
         'DRUG': ""
     }];
 
-    $('#virusTable').bootstrapTable('append', form)
-        $('#virusTable').bootstrapTable({
+    $('#drugTable').bootstrapTable('append', form)
+        $('#drugTable').bootstrapTable({
             data: form,
-            columns: [{}, {
+            columns: [ {
+                field: 'EVENT',
+                title: 'EVENT',
+            }, {
                 field: 'MOUSE',
                 title: 'MOUSE',
-                sortable: true
+                sortable: true,
+                editable: {
+                    type: 'text',
+                    title: 'MOUSE(LX-000)',
+                    mode: "inline",
+                    emptytext: '请输入小鼠ID',
+                    validate: function (v) {
+                        var re = re = /^L[0-9]{1}-[0-9]{3}$/;
+                        if (! re.test(v)) return '格式不对,像这样L1-001';
+                    }
+                }
             }, {
                 field: 'DATE',
                 title: 'DATE',
@@ -635,7 +671,7 @@ function createTableVirus() {
                 editable: {
                     type: 'select',
                     title: 'Gen',
-                    emptytext: '请输入drug',
+                    emptytext: '请选择drug',
                     source: [{
                         value: "1",
                         text: "1"
@@ -650,10 +686,14 @@ function createTableVirus() {
 
 //For doing AJAX post
 function submitTable() {
+    var mateRows = $("#mateTable").bootstrapTable('getData');
+    var separateRows = $("#separateTable").bootstrapTable('getData');
+    var bornRows = $("#bornTable").bootstrapTable('getData');
+    var ablactationRows = $("#ablactationTable").bootstrapTable('getData');
     var weightRows = $("#weightTable").bootstrapTable('getData');
     var phenotypeRows = $("#phenotypeTable").bootstrapTable('getData');
     var feedRows = $("#feedTable").bootstrapTable('getData');
-    var virusRows = $("#virusTable").bootstrapTable('getData');
+    var drugRows = $("#drugTable").bootstrapTable('getData');
 
     var csrftoken = getCookie('csrftoken');
     var mouse = $('#mouse_select').val();
@@ -664,29 +704,23 @@ function submitTable() {
         type: "POST",
         data: {
             csrfmiddlewaretoken: csrftoken,
-            mouse: mouse,
+            mateRows: JSON.stringify(mateRows),
+            separateRows: JSON.stringify(separateRows),
+            bornRows: JSON.stringify(bornRows),
+            ablactationRows: JSON.stringify(ablactationRows),
             weightRows: JSON.stringify(weightRows),
             phenotypeRows: JSON.stringify(phenotypeRows),
             feedRows: JSON.stringify(feedRows),
-            weightRows: JSON.stringify(weightRows)
+            drugRows: JSON.stringify(drugRows)
         },
         success: function(response) {
-            console.log(response);
             $('#submit_response').bootstrapTable('append', [JSON.parse(response)]);
             $('#submit_response').bootstrapTable({
                 data: [JSON.parse(response)],
-                columns: [{}, {
+                //data: [{'breedCount': '10032134'}],
+                columns: [ {
                     field: 'breedCount',
                     title: 'breedCount'
-                }, {
-                    field: 'mate_start_date',
-                    title: 'mate_start_date'
-                }, {
-                    field: 'mate_end_day',
-                    title: 'mate_end_day'
-                }, {
-                    field: 'born_date',
-                    title: 'born_date'
                 } ]
 
             });
