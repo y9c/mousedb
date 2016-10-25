@@ -30,7 +30,7 @@ class Mate(models.Model):
     #     Mouse, related_name='maternal', verbose_name='maternal mouse object')
 
     def days(self):
-        return datetime.now() - self.mate_start_date
+        return datetime.datetime.now() - self.mate_start_date
 
     def __str__(self):
         return self.mate_id

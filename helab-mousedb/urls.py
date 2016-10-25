@@ -39,16 +39,16 @@ urlpatterns = [
         views.mouse_event_submit, name='mouse_event_submit'),
 
     # show event
-    url(r'^event/$', views.EventView, name='event_page'),
-    url(r'^event/add$', views.EventAddView, name='event_add_page'),
-    url(r'^event/edit$', views.EventEditView, name='event_edit_page'),
-    url(r'^event/breed$', views.EventBreedView, name='event_breed_page'),
+    url(r'^event/$', views.event_view, name='event_page'),
+    url(r'^event/add$', views.event_add_view, name='event_add_page'),
+    url(r'^event/edit$', views.event_edit_view, name='event_edit_page'),
+    url(r'^event/breed$', views.event_breed_view, name='event_breed_page'),
 
     # show datetable
-    url(r'^datatable/$', views.DatatableView, name='datatable_page'),
+    url(r'^datatable/$', views.datatable_view, name='datatable_page'),
 
     #  show statistic
-    url(r'^statistic/$', views.StatisticView, name='statistic_page'),
+    url(r'^statistic/$', views.statistic_view, name='statistic_page'),
 
     # show render
     url(r'^render/$', views.RenderView.as_view(), name='render_page'),

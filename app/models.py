@@ -1,11 +1,7 @@
 # Create your models here.
 import datetime
-import random
-import string
 
 from django.db import models
-from django.utils import timezone
-from django.utils.translation import ugettext_lazy
 
 
 class BlogsPost(models.Model):
@@ -25,7 +21,7 @@ class Phenotype(models.Model):
     color = models.CharField(max_length=50, default='black',
                              choices=(('Black', 'Black'),
                                       ('White', 'White'),
-                                      ('Nake', 'Nake') )
+                                      ('Nake', 'Nake'))
                              )
     note = models.CharField(max_length=200, null=True)
 
@@ -105,7 +101,7 @@ class Breed(models.Model):
             return "finish"
 
     def mate_days(self):
-        return datetime.now() - self.mate_start_date
+        return datetime.datetime.now() - self.mate_start_date
 
     def __str__(self):
         return self.name
@@ -169,14 +165,22 @@ class Mouse(models.Model):
                                        ('实验', '实验'),
                                        ('送出', '送出'), ))
 
+    born_order = models.IntegerField(null=True)
+
     # many-to-one
-    genotype = models.ForeignKey(Genotype, blank=True, null=True)
-    phenotype = models.ForeignKey(Phenotype, blank=True, null=True)
-    born = models.ManyToManyField(
+    genotype = models.ForeignKey(Genotype,
+                                 related_name='mouse',
+                                 verbose_name='phenotype that this mouse is',
+                                 blank=True, null=True)
+    phenotype = models.ForeignKey(Phenotype,
+                                  related_name='mouse',
+                                  verbose_name='phenotype that this mouse is',
+                                  blank=True, null=True)
+    born = models.ForeignKey(
         Breed,
         related_name='litter',
         verbose_name='born breed',
-        blank=True)
+        blank=True, null=True)
 
     # many-to-many
     breed = models.ManyToManyField(
@@ -220,7 +224,7 @@ class Mouse(models.Model):
 
 # 3 # show
 # 3.1 # mouse details
-#class Show_MouseDetails(models.Model):
+# class Show_MouseDetails(models.Model):
 #    id = Mouse.mouse_id
 #    mouse = Mouse.objects.get(mouse_id = id)
 #    genotype = mouse.genotype.all()

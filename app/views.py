@@ -1,22 +1,17 @@
 import json
 from datetime import datetime
 
-from django.views.decorators.csrf import csrf_exempt
-from django.views.generic.base import TemplateView
-from django.shortcuts import render_to_response, get_object_or_404, render
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.urls import reverse
 from django.core import serializers
 from django.http import Http404
-from django.db.models import Q
+from django.http import HttpResponse
+from django.shortcuts import render_to_response, get_object_or_404, render
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import TemplateView
 
 from .models import BlogsPost
+from .models import Breed
 from .models import Genotype
 from .models import Mouse
-from .models import Breed
-
-# test form
-from .forms import NameForm
 
 
 class IndexView(TemplateView):
@@ -43,10 +38,9 @@ def server_info_api(request):
         return HttpResponse(json.dumps(server_info))
 
 
-
 def getlist_genotype(request):
     field = request.GET.get("field")
-    param = request.GET.get("param")
+    # param = request.GET.get("param")
     strain = request.GET.get("strain")
     line = request.GET.get("line")
     locus = request.GET.get("locus")
@@ -57,22 +51,21 @@ def getlist_genotype(request):
         data = data.filter(line=line)
     if line is not None:
         data = data.filter(locus=locus)
-    response_data = {i:i for i in data.values_list(field, flat=True)}
+    response_data = {i: i for i in data.values_list(field, flat=True)}
     return HttpResponse(json.dumps(response_data))
 
 
 def getlist_breed(request):
     try:
         breed = Breed.objects.all()
-        data_list = breed.values_list('name',flat=True)
-        data_dict = {i:i for i in data_list}
+        data_list = breed.values_list('name', flat=True)
+        data_dict = {i: i for i in data_list}
         return HttpResponse(json.dumps(data_dict))
     except:
         data = {'S(XY)': 'S(XY)',
                 'S(XX)': 'S(XX)',
                 'S(??)': 'S(??)', }
         return HttpResponse(json.dumps(data))
-
 
 
 # datatable
@@ -94,8 +87,8 @@ def mouse_table_api(request):
             print("得这么搞 XXX=YYY")
         return HttpResponse("error format")
     else:
-        #struct = json.loads(data)
-        #data = json.dumps(struct)
+        # struct = json.loads(data)
+        # data = json.dumps(struct)
         mouse = Mouse.objects.all()
         data = serializers.serialize("json", mouse)
         return HttpResponse(data)
@@ -118,14 +111,10 @@ def getlist_mouse_field(request):
         return HttpResponse("field should be assign")
 
 
-
 # details
 def mouse_detail_api(request, mouse_pk):
     mouse = Mouse.objects.get(pk=mouse_pk)
-    details = {}
-    details["Line"] = mouse.genotype.line
-    details["Locus"] = mouse.genotype.locus
-    details["Age"] = mouse.age()
+    details = {"Line": mouse.genotype.line, "Locus": mouse.genotype.locus, "Age": mouse.age()}
     details = json.dumps([details])
     return HttpResponse(details)
 
@@ -159,50 +148,46 @@ def mouse_event_submit(request):
     if request.method == 'POST' and request.is_ajax():
         print(request.POST)
 
-        details = {}
-        details["status"] = "success"
-        details["mouse_add"] = 0
+        details = {"status": "success", "mouse_add": 0}
 
         # !!!!! add mouse
-        # indution
-        inductList = json.loads(request.POST.get("inductRows", "{}"))
-        print(inductList)
-        if type(inductList) == list:
-            for row in inductList:
+        # induction
+        induct_list = json.loads(request.POST.get("inductRows", "{}"))
+        print(induct_list)
+        if type(induct_list) == list:
+            for row in induct_list:
                 print("aaaaaaaaaaaaaaa")
                 print(row)
                 details["mouse_add"] += 1
 
         # genotyping
-        genotypingList = json.loads(request.POST.get("genotypingRows", "{}"))
-        print(genotypingList)
-        if type(genotypingList) == list:
-            for row in genotypingList:
+        genotyping_list = json.loads(request.POST.get("genotypingRows", "{}"))
+        print(genotyping_list)
+        if type(genotyping_list) == list:
+            for row in genotyping_list:
                 print("bbbbbbbbbbbbbbb")
                 print(row)
                 details["mouse_add"] += 1
-
 
         # !!!!! edit mouse
         # weighting
         # phenotyping
         # feed
         # drug
-
-
         # !!!!! add and edit breed
         # mate
-        mateList = json.loads(request.POST.get("mateRows", "{}"))
-        if type(mateList) == list:
-            for row in mateList:
+        mate_list = json.loads(request.POST.get("mateRows", "{}"))
+        if type(mate_list) == list:
+            for row in mate_list:
                 print("ccccccccccccccccccc")
                 print(row)
                 try:
                     mouse_pa = Mouse.objects.get(mouse_id=row["MOUSE-Pa"])
                     mouse_ma = Mouse.objects.get(mouse_id=row["MOUSE-Ma"])
                     if mouse_pa.genotype.sex() == "Male" and mouse_ma.genotype.sex() == "Female":
-                        mate_start_date = datetime.strptime(row["DATE"],"%Y-%m-%d")
-                        if Breed.objects.filter(parent=mouse_pa).filter(parent=mouse_ma).filter(mate_start_date=mate_start_date).count() == 0:
+                        mate_start_date = datetime.strptime(row["DATE"], "%Y-%m-%d")
+                        if Breed.objects.filter(parent=mouse_pa).filter(parent=mouse_ma).filter(
+                                mate_start_date=mate_start_date).count() == 0:
                             # create breed and write to models
                             print("hello")
                             print(mate_start_date)
@@ -214,20 +199,20 @@ def mouse_event_submit(request):
                 except:
                     print("ERROR: the mouse not exsit")
 
-        ## separate
-        separateList = json.loads(request.POST.get("separateRows", "{}"))
-        if type(separateList) == list:
-            for row in separateList:
+        # separate
+        separate_list = json.loads(request.POST.get("separateRows", "{}"))
+        if type(separate_list) == list:
+            for row in separate_list:
                 print("dddddddddddddddddddddd")
                 print(row)
                 try:
                     breed = Breed.objects.get(name=row["MATE"])
-                    mate_end_date = datetime.strptime(row["DATE"],"%Y-%m-%d")
+                    mate_end_date = datetime.strptime(row["DATE"], "%Y-%m-%d")
                     print("hello")
                     print(breed)
                     print(mate_end_date)
                 except:
-                    print("ERROR: mate name dose not exsit!!")
+                    print("ERROR: mate name dose not exist!!")
 
         # born
         # ablactation
@@ -253,7 +238,7 @@ class ChartView(TemplateView):
     template_name = 'chart_template.html'
 
 
-def StatisticView(request):
+def statistic_view(request):
     statistic_list = BlogsPost.objects.all()
     return render_to_response('statistic.html',
                               {'statistic_list': statistic_list})
@@ -261,25 +246,25 @@ def StatisticView(request):
 
 # datatable
 # use bootstraptable
-def DatatableView(request):
+def datatable_view(request):
     return render(request, "datatable.html")
 
 
 # event
 # use form
-def EventView(request):
+def event_view(request):
     return render(request, 'events.html')
 
 
-def EventAddView(request):
+def event_add_view(request):
     return render(request, 'events/add.html')
 
 
-def EventEditView(request):
+def event_edit_view(request):
     return render(request, 'events/edit.html')
 
 
-def EventBreedView(request):
+def event_breed_view(request):
     return render(request, 'events/breed.html')
 
 

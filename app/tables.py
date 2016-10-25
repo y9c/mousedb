@@ -1,24 +1,12 @@
 # coding: utf-8
 
-from datetime import date
-
-from django.urls import reverse_lazy
-
-
-from table.columns import Column
-from table.columns.calendarcolumn import CalendarColumn
-from table.columns.sequencecolumn import SequenceColumn
-from table.columns.imagecolumn import ImageColumn
-from table.columns.linkcolumn import LinkColumn, Link, ImageLink
-from table.columns.checkboxcolumn import CheckboxColumn
+from table.columns.linkcolumn import Column , LinkColumn , ImageLink
 from table import Table
 from table.utils import A
 
-from .models import Person
 from .models import Genotype
 from .models import Mouse
-from .models import Mate
-
+from .models import Breed
 
 # mouse example
 
@@ -63,10 +51,11 @@ class MateTable(Table):
     maid = Column(field='maternal_id', header=u'MA_ID')
     avatar = LinkColumn(header=u'AVATAR', links=[
         ImageLink(viewname='mouse_profile', args=(A('id'),), image=image_url, image_title='avatar')])
+
     # logo = ImageColumn(field='logo.url', header=u'Logo Image',
     # image_title='logo')
 
     class Meta:
-        model = Mate
+        model = Breed
         # ajax = True
         # ajax_source = reverse_lazy('ajax_source_api')
