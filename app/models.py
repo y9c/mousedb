@@ -35,6 +35,13 @@ class Genotype(models.Model):
     line = models.CharField(max_length=50, default='WT')
     locus = models.CharField(max_length=50, null=True)
 
+    def line_id(self):
+        mapper = {"WT": 1, "CRE": 2, "C": 2, "MSH2": 3, "MSH": 3, "M": 3, "RTTA": 4, "R": 4,
+                  "T": 7 , "A": 7 , "MC": 5 , "MR": 6 , "TAH": 7 , "TR": 8 , "TRM": 9 ,
+                  "MSH2+CRE": 5 , "MSH2+RTTA": 6 , "TAH+RTTA": 8 , "TAH+RTTA+MSH2": 9 ,
+                  "A,R": 8 , "A,R,M": 9 , "M,C": 5 , "M,R": 6}
+        return mapper[self.line]
+
     def sex(self):
         if "S(XY)" in self.locus.upper().strip():
             return "Male"
@@ -137,7 +144,7 @@ class InjectVirus(models.Model):
 
 class Mouse(models.Model):
     mouse_id = models.CharField(max_length=50, unique=True)
-    name = models.CharField(max_length=50, default='?')
+    name = models.CharField(max_length=50, blank=True, null=True)
 
     # property
     # one-to-one
@@ -165,12 +172,12 @@ class Mouse(models.Model):
                                        ('实验', '实验'),
                                        ('送出', '送出'), ))
 
-    born_order = models.IntegerField(null=True)
+    born_order = models.IntegerField('the order in Breed', blank=True, null=True)
 
     # many-to-one
     genotype = models.ForeignKey(Genotype,
                                  related_name='mouse',
-                                 verbose_name='phenotype that this mouse is',
+                                 verbose_name='genotype that this mouse is',
                                  blank=True, null=True)
     phenotype = models.ForeignKey(Phenotype,
                                   related_name='mouse',

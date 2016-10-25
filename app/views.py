@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+import datetime
 
 from django.core import serializers
 from django.http import Http404
@@ -87,8 +87,6 @@ def mouse_table_api(request):
             print("得这么搞 XXX=YYY")
         return HttpResponse("error format")
     else:
-        # struct = json.loads(data)
-        # data = json.dumps(struct)
         mouse = Mouse.objects.all()
         data = serializers.serialize("json", mouse)
         return HttpResponse(data)
@@ -156,8 +154,19 @@ def mouse_event_submit(request):
         print(induct_list)
         if type(induct_list) == list:
             for row in induct_list:
-                print("aaaaaaaaaaaaaaa")
-                print(row)
+                m = Mouse()
+                # genotype = row["Gen"]
+                genotype = "C57BL/6:CRE:C(II)S(XY)"
+                strain, line, locus = genotype.split(":")
+                genotype_set = Genotype.objects.filter(strain=strain)
+                mouse_set = Mouse.objects.filter(genotype__in=genotype_set)
+                mouse_id_set = mouse_set.values_list('mouse_id', flat=True)
+                mouse_id = "L{}-{0:03d}".format(
+                    genotype_set[0].line_id(), max([int(i.split("-")[1]) for i in mouse_id_set])+1
+                )
+                print(mouse_id)
+                print(row["inductSource"])
+                print(datetime.datetime.strptime(row["inductDate"] , "%Y-%m-%d") - datetime.timedelta(days=row["Age"]*7))
                 details["mouse_add"] += 1
 
         # genotyping
@@ -185,7 +194,7 @@ def mouse_event_submit(request):
                     mouse_pa = Mouse.objects.get(mouse_id=row["MOUSE-Pa"])
                     mouse_ma = Mouse.objects.get(mouse_id=row["MOUSE-Ma"])
                     if mouse_pa.genotype.sex() == "Male" and mouse_ma.genotype.sex() == "Female":
-                        mate_start_date = datetime.strptime(row["DATE"], "%Y-%m-%d")
+                        mate_start_date = datetime.datetime.strptime(row["DATE"] , "%Y-%m-%d")
                         if Breed.objects.filter(parent=mouse_pa).filter(parent=mouse_ma).filter(
                                 mate_start_date=mate_start_date).count() == 0:
                             # create breed and write to models
@@ -207,7 +216,7 @@ def mouse_event_submit(request):
                 print(row)
                 try:
                     breed = Breed.objects.get(name=row["MATE"])
-                    mate_end_date = datetime.strptime(row["DATE"], "%Y-%m-%d")
+                    mate_end_date = datetime.datetime.strptime(row["DATE"] , "%Y-%m-%d")
                     print("hello")
                     print(breed)
                     print(mate_end_date)
