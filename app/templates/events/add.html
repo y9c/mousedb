@@ -20,6 +20,27 @@
         </div>
 
         <div class="panel-body">
+
+
+            <div class="row">
+                <label class="control-label col-sm-2" for="line_query">
+                    购买小鼠
+                </label>
+                <div class="col-sm-3">
+                    <select class="form-control" id="inductSource">
+                        <option value="">购买来源</option>
+                    </select>
+                </div>
+                <div class="col-sm-2 col-sm-offset-1">
+                    <input type="number" id="inductCount" class="form-control" placeholder="NUM" required>
+                </div>
+                <div class="col-sm-2 col-sm-offset-1">
+                    <input id="creat" class="btn btn-primary" type="button" onclick="createTableInduct()" value="Inducting">
+                </div>
+            </div>
+
+            <hr>
+
             <div class="row">
                 <label class="control-label col-sm-2" for="line_query">
                     自交后代
@@ -37,23 +58,6 @@
                 </div>
             </div>
 
-            <hr>
-            <div class="row">
-                <label class="control-label col-sm-2" for="line_query">
-                    购买小鼠
-                </label>
-                <div class="col-sm-3">
-                    <select class="form-control" id="xxxx">
-                        <option value="">购买来源</option>
-                    </select>
-                </div>
-                <div class="col-sm-2 col-sm-offset-1">
-                    <input type="number" id="mouseSource" class="form-control" placeholder="NUM" required>
-                </div>
-                <div class="col-sm-2 col-sm-offset-1">
-                    <input id="creat" class="btn btn-primary" type="button" onclick="createTableInduct()" value="Inducting">
-                </div>
-            </div>
         </div>
     </div>
 
@@ -61,6 +65,10 @@
     <div class="panel panel-success">
         <div class="panel-heading">
             STEP 2: Edit Form
+        </div>
+
+        <div class="panel-body">
+            <table id="inductTable" class="table table-inverse text-center"></table>
         </div>
 
         <div class="panel-body">
@@ -87,7 +95,6 @@
 
 
     <script>
-
         //获取下拉列表
         $(document).ready(function () {
             $.ajax({
@@ -106,7 +113,39 @@
                     });
                 },
             });
+
+            $.ajax({
+                url: "/api/getlist-mouse-field",
+                method: "GET",
+                data: {field: "source", param: "choices"},
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    console.log(data);
+                    var $el = $("#inductSource");
+                    $el.empty(); // remove old options
+                    $.each(data, function (key, value) {
+                        $el.append($("<option></option>")
+                                .attr("value", value).text(value));
+                    });
+                },
+            });
+
+
+            $.ajax({
+                url: "/api/getlist-genotype",
+                method: "GET",
+                data: {field: "locus"},
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    console.log(data);
+                    locusList = data;
+                },
+            });
+
         })
+
 
 
         //For getting CSRF token
@@ -160,13 +199,7 @@
                         type: 'select',
                         title: 'Gen',
                         emptytext: '请选择基因型',
-                        source: [{
-                            value: "WT-X",
-                            text: "S(XX)"
-                        }, {
-                            value: "WT-Y",
-                            text: "S(XY)"
-                        }, ],
+                        source: locusList,
                     },
                 }, {
                     field: 'Keep',
@@ -188,6 +221,65 @@
             });
         };
 
+
+        function createTableInduct() {
+            var inductSource = $('#inductSource').val();
+            var inductCount = $('#inductCount').val();
+            var form = [];
+            for (var r = 0; r < parseInt(inductCount, 10); r++) {
+                form.push({
+                    'inductSource': inductSource,
+                    'Order': r + 1,
+                    'Gen': "请选择基因型",
+                    'inductDate': new Date().toJSON().slice(0,10),
+                    'Age': 4,
+                });
+            }
+            $('#inductTable').bootstrapTable('load', form)
+            $('#inductTable').bootstrapTable({
+                data: form,
+                search: true,
+                columns: [ {
+                    field: 'inductSource',
+                    title: 'inductSource',
+                    sortable: true,
+                }, {
+                    field: 'Order',
+                    title: 'Order',
+                    sortable: true,
+                }, {
+                    field: 'Gen',
+                    title: 'Gen',
+                    sortable: true,
+                    editable: {
+                        type: 'select',
+                        title: 'Gen',
+                        emptytext: '请选择基因型',
+                        source: locusList
+                    }
+                }, {
+                    field: 'inductDate',
+                    title: 'inductDate',
+                    sortable: true,
+                    editable: {
+                        type: 'date',
+                        title: 'inductDate',
+                    }
+                }, {
+                    field: 'Age',
+                    title: 'Age',
+                    sortable: true,
+                    editable: {
+                        type: 'number',
+                        mode: 'inline',
+                        title: 'Age',
+                    }
+                } ]
+
+            });
+        };
+
+
         //For doing AJAX post
         $("#submit").click(function(e) {
 
@@ -195,6 +287,8 @@
             var csrftoken = getCookie('csrftoken');
 
             var genotypingRows = $("#genotypingTable").bootstrapTable('getData');
+            var inductRows = $("#inductTable").bootstrapTable('getData');
+
             var breedID = $('#breedID').val();
             var breedCount = $('#breedCount').val();
 
@@ -205,6 +299,7 @@
                     csrfmiddlewaretoken: csrftoken,
                     breedCount: breedCount,
                     genotypingRows: JSON.stringify(genotypingRows),
+                    inductRows: JSON.stringify(inductRows),
                 },
                 success: function(response) {
                     console.log(response);
@@ -212,8 +307,8 @@
                     $('#responseTable').bootstrapTable({
                         data: [JSON.parse(response)],
                         columns: [{
-                            field: 'breedCount',
-                            title: 'breedCount'
+                            field: 'mouse_add',
+                            title: 'mouse_add'
                         } ]
 
                     });
