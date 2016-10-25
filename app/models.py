@@ -22,14 +22,15 @@ class BlogsPost(models.Model):
 # 0 # mouse property
 # Phenotype group
 class Phenotype(models.Model):
-    color = models.IntegerField(
-        choices=((0, 'Black'),
-                 (1, 'White'),
-                 (2, 'Nake'), ), default=0)
+    color = models.CharField(max_length=50, default='black',
+                             choices=(('Black', 'Black'),
+                                      ('White', 'White'),
+                                      ('Nake', 'Nake') )
+                             )
     note = models.CharField(max_length=200, null=True)
 
     def __str__(self):
-        return "{}:{}".format(self.note)
+        return "{}:{}".format(self.color, self.note)
 
 
 # genotype group
@@ -55,7 +56,7 @@ class Health(models.Model):
     health = models.CharField(max_length=50, null=True)
 
     def __str__(self):
-        return "{}:{}:{}".format(self.date, self.health)
+        return "{}:{}".format(self.date, self.health)
 
 
 class Weight(models.Model):
@@ -63,7 +64,7 @@ class Weight(models.Model):
     weight = models.FloatField('Weight')
 
     def __str__(self):
-        return "{}:{}:{}".format(self.date, self.weight)
+        return "{}:{}".format(self.date, self.weight)
 
 
 # breed
@@ -103,7 +104,6 @@ class Breed(models.Model):
             # 断奶
             return "finish"
 
-
     def mate_days(self):
         return datetime.now() - self.mate_start_date
 
@@ -114,14 +114,13 @@ class Breed(models.Model):
 # feed(chow drink bedding)
 class Feed(models.Model):
     date = models.DateField('Chow Added Date')
-    time = models.TimeField('Chow Added Time')
     chow = models.CharField(max_length=200, default="Normal")
     drink = models.CharField(max_length=200, default="Normal")
     amount = models.FloatField('Chow Added Amount')
 
     def __str__(self):
-        return self.category + ': ' + ' / '.join(
-            mouse.mouse_id for mouse in self.to_mouse.all())
+        return str(self.date) + ': ' + ' / '.join(
+            mouse.mouse_id for mouse in self.mouse.all())
 
 
 # experiment
@@ -133,7 +132,7 @@ class InjectVirus(models.Model):
 
     def __str__(self):
         return self.category + ': ' + ' / '.join(
-            mouse.mouse_id for mouse in self.to_mouse.all())
+            mouse.mouse_id for mouse in self.mouse.all())
 
 # # # # # # # #
 # 1 # Individual
@@ -146,29 +145,29 @@ class Mouse(models.Model):
 
     # property
     # one-to-one
-    source = models.IntegerField(
-        choices=((0, '饲养产生后代'),
-                 (1, '广东省实验动物中心'),
-                 (2, '南京模式生物中心'),
-                 (9, 'unknown'), ),
-        default=0)
+    source = models.CharField(max_length=50, default='饲养产生后代',
+                              choices=(('饲养产生后代', '饲养产生后代'),
+                                       ('广东省实验动物中心', '广东省实验动物中心'),
+                                       ('南京模式生物中心', '南京模式生物中心'),
+                                       ('unknown', 'unknown'), )
+                              )
 
-    status = models.IntegerField(
-        choices=((0, 'idle'),
-                 (1, 'suckling'),
-                 (2, 'mating'),
-                 (3, 'lactating'),
-                 (4, 'dead'),
-                 (9, 'unknown'), ),
-        default=0, )
+    status = models.CharField(max_length=50, default='idle',
+                              choices=(('idle', 'idle'),
+                                       ('suckling', 'suckling'),
+                                       ('mating', 'mating'),
+                                       ('lactating', 'lactating'),
+                                       ('dead', 'dead'),
+                                       ('unknown', 'unknown'), ),
+                              )
 
     dob = models.DateField('date of birth', blank=True, null=True)
     dod = models.DateField('date of death', blank=True, null=True)
     notes = models.CharField(max_length=200, null=True, blank=True)
-    corpse = models.IntegerField(
-        choices=((0, '丢弃'),
-                 (1, '实验'),
-                 (2, '送出'), ), default=0)
+    corpse = models.CharField(max_length=50, default='丢弃',
+                              choices=(('丢弃', '丢弃'),
+                                       ('实验', '实验'),
+                                       ('送出', '送出'), ))
 
     # many-to-one
     genotype = models.ForeignKey(Genotype, blank=True, null=True)

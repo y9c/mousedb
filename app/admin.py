@@ -12,7 +12,11 @@ from .models import (
 from .models import (
     Phenotype,
     Genotype,
+    Health,
+    Weight,
     Breed,
+    Feed,
+    InjectVirus,
 )
 
 
@@ -29,5 +33,9 @@ admin.site.register([
 admin.site.register([
     Phenotype,
     Genotype,
+    Health,
+    Weight,
     Breed,
+    Feed,
+    InjectVirus,
 ])
