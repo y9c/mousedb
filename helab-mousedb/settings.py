@@ -18,7 +18,7 @@ FILE_CHARSET = 'utf-8'
 DEFAULT_CHARSET = 'utf-8'
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'fo4uovra-$68!7glu5)7uio57)=4$wz+u8_!dn8aix3_&9&y0^'
@@ -33,10 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'app',
-    #'table',
-    #'import_export',
     'django.contrib.admin',
-    'django.contrib.admindocs.urls',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -82,7 +79,7 @@ WSGI_APPLICATION = 'helab-mousedb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         # 'ENGINE': 'django.db.backends.mysql',
         # 'NAME': 'bi_test_snswin_brand',
         # 'USER': 'root',
@@ -94,21 +91,21 @@ DATABASES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
-    #{
-    #    'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    #},
-    #{
-    #    'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    #},
-    #{
-    #    'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    #},
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    #  },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
 ]
 
 
@@ -130,6 +127,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-#SITE_ROOT = os.path.dirname(os.path.abspath(__file__))
-#SITE_ROOT = os.path.abspath(os.path.join(SITE_ROOT, '../'))
-#STATIC_ROOT = STATIC_ROOT = os.path.join(SITE_ROOT,"static")
+# SITE_ROOT = os.path.dirname(os.path.abspath(__file__))
+# SITE_ROOT = os.path.abspath(os.path.join(SITE_ROOT, '../'))
+# STATIC_ROOT = STATIC_ROOT = os.path.join(SITE_ROOT,"static")
