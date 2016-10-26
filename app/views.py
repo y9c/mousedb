@@ -26,6 +26,19 @@ def blog(request):
 
 # api
 # 发出get的响应
+# restful demo
+from rest_framework import viewsets
+from .serializers import MouseSerializer
+
+
+class MouseViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Mouse.objects.all()
+    serializer_class = MouseSerializer
+
+
 # demo
 def server_info_api(request):
     if request.GET.get("hello") == "1":

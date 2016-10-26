@@ -1,13 +1,16 @@
 from django.conf.urls import url, include
 from django.contrib import admin
-
 from django.conf import settings
 from django.views import static
+
+from rest_framework import routers
 
 from app import views
 
 
-# admin.autodiscover()
+router = routers.DefaultRouter()
+router.register(r'mouse', views.MouseViewSet)
+
 urlpatterns = [
     # admin page for manage
     url(r'^admin/', include(admin.site.urls)),
@@ -15,6 +18,10 @@ urlpatterns = [
     # index page
     url(r'^index/', views.IndexView.as_view(), name='index'),
     url(r'^blog/', views.blog, name='blog'),
+
+    # Restful
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^rest/', include(router.urls)),
 
     # api for get date
     url(r'^api/server-info-api$',
@@ -58,5 +65,4 @@ urlpatterns = [
     url(r'^media/(?P<path>.*)$', static.serve, {
         'document_root': settings.MEDIA_ROOT,
     }),
-
 ]

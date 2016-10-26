@@ -81,7 +81,9 @@ class Breed(models.Model):
     born_date = models.DateField('date of born', blank=False, null=True)
     wean_start_date = models.DateField('date of wean start', blank=True, null=True)
     wean_end_date = models.DateField('date of wean end', blank=True, null=True)
-    litter_count = models.IntegerField(null=True)
+    litter_count = models.IntegerField('total number of pups', blank=True, null=True)
+    litter_alive = models.IntegerField('number of pups alive', blank=True, null=True)
+    litter_dead = models.IntegerField('number of pups dead', blank=True, null=True)
     genotyped = models.BooleanField(default=False)
 
     # paternal_id = models.ManyToManyField(
