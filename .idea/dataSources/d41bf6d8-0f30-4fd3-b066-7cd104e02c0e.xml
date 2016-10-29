@@ -109,17 +109,17 @@
       <mandatory>1</mandatory>
       <data-type>DATE(0,-1)|12</data-type>
     </column>
-    <column id="48" parent="4" name="amount">
+    <column id="48" parent="4" name="chow">
+      <mandatory>1</mandatory>
+      <data-type>VARCHAR(200)(0,-1)|12</data-type>
+    </column>
+    <column id="49" parent="4" name="drink">
+      <mandatory>1</mandatory>
+      <data-type>VARCHAR(200)(0,-1)|12</data-type>
+    </column>
+    <column id="50" parent="4" name="amount">
       <mandatory>1</mandatory>
       <data-type>REAL(0,-1)|6</data-type>
-    </column>
-    <column id="49" parent="4" name="chow">
-      <mandatory>1</mandatory>
-      <data-type>VARCHAR(200)(0,-1)|12</data-type>
-    </column>
-    <column id="50" parent="4" name="drink">
-      <mandatory>1</mandatory>
-      <data-type>VARCHAR(200)(0,-1)|12</data-type>
     </column>
     <key id="51" parent="4">
       <columns>id</columns>
